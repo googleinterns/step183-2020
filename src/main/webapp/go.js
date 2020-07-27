@@ -18,7 +18,9 @@ const HUNT_ID = 'hunt-area';
 const riddleArr = [];
 const destArr = [];
 
-/*
+window.onload = getHunt();
+
+/**
  * Retrieves scavenger hunt data.
  */
 function getHunt() {
@@ -33,7 +35,7 @@ function getHunt() {
   });
 }
 
-/*
+/**
  * Creates a new paragraph element from text.
  */
 function createLine(text) {
