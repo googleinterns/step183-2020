@@ -39,8 +39,8 @@ public class DataServlet extends HttpServlet {
     firstHints.add("I am golden in color");
     Riddle firstRiddle = new Riddle("I was constructed in 1933", firstHints);
     HuntItem firstHunt = 
-      new HuntItem(
-        "Golden Gate Bridge", "San Francisco", "A famous bridge in San Francisco", firstRiddle);
+        new HuntItem(
+            "Golden Gate Bridge", "San Francisco", "A famous bridge in San Francisco", firstRiddle);
 
     // Constructing the second HuntItem.
     ArrayList<String> secondHints = new ArrayList<String>();
@@ -48,7 +48,7 @@ public class DataServlet extends HttpServlet {
     secondHints.add("I am a popular tourist destination");
     Riddle secondRiddle = new Riddle("A famous tower in Paris", secondHints);
     HuntItem secondHunt = 
-      new HuntItem("Eiffel Tower", "Paris", "A famous tower in Paris", secondRiddle);
+        new HuntItem("Eiffel Tower", "Paris", "A famous tower in Paris", secondRiddle);
 
     // Constructing the third HuntItem.
     ArrayList<String> thirdHints = new ArrayList<String>();
@@ -56,7 +56,7 @@ public class DataServlet extends HttpServlet {
     thirdHints.add("I am very tall");
     Riddle thirdRiddle = new Riddle("I am an item often associated with America", thirdHints);
     HuntItem thirdHunt = 
-      new HuntItem("Statue of Liberty", "NYC", "A statue in New York City", thirdRiddle);
+        new HuntItem("Statue of Liberty", "NYC", "A statue in New York City", thirdRiddle);
     
     // Constructing the scavenger hunt.
     ArrayList<HuntItem> items = new ArrayList<HuntItem>();

@@ -11,21 +11,3 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
-package com.google.sps.data;
-
-import java.util.ArrayList;
-
-// Represents a scavenger hunt.
-public class ScavengerHunt {
-  private ArrayList<HuntItem> items;
-  // For saved scavenger hunts: represents which destination the user is on.
-  private int index;
-  private String city;
-
-  public ScavengerHunt(ArrayList<HuntItem> items, int index, String city) {
-    this.items = items;
-    this.index = index;
-    this.city = city;
-  }
-}

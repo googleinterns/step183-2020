@@ -12,17 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/*
- * Fetches message from /go-data and displays it on the DOM.
- */
-
 const GO_URL = '/go-data';
 const HUNT_ID = 'hunt-area';
 
+/* 
+ * Retrieves scavenger hunt data. 
+ */
 function getHunt() {
   fetch(GO_URL).then(response => response.json()).then((mssg) => {
     const mssgElem = document.getElementById(HUNT_ID);
-    mssgElem.appendChild(createLine('index: ' + mssg.index + ', city: ' + mssg.city));
+    mssgElem.appendChild(createLine('index: ' + mssg.index + ', city: ' 
+        + mssg.city));
   });
 }
 
