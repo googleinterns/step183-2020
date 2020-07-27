@@ -15,7 +15,6 @@
 package com.google.sps.servlets;
 
 import com.google.gson.Gson;
-
 import com.google.sps.data.Riddle;
 import com.google.sps.data.HuntItem;
 import com.google.sps.data.ScavengerHunt;
@@ -74,7 +73,7 @@ public class DataServlet extends HttpServlet {
     Riddle thirdRiddle = new Riddle("I am an item often associated with America", thirdHints);
     HuntItem thirdHunt =
         new HuntItem("Statue of Liberty", "NYC", "A statue in New York City", thirdRiddle);
-    
+
     // Constructing the scavenger hunt.
     ArrayList<HuntItem> items = new ArrayList<HuntItem>();
     items.add(firstHunt);

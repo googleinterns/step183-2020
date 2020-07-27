@@ -21,7 +21,7 @@ const destArr = [];
 /*
  * Retrieves scavenger hunt data.
  */
-export function getHunt() {
+function getHunt() {
   fetch(GO_URL).then((response) => response.json()).then((mssg) => {
     const mssgElem = document.getElementById(HUNT_ID);
     mssgElem.appendChild(createLine('index: ' + mssg.index + ', city: ' +
@@ -36,7 +36,7 @@ export function getHunt() {
 /*
  * Creates a new paragraph element from text.
  */
-export function createLine(text) {
+function createLine(text) {
   const newLine = document.createElement('p');
   newLine.innerText = text;
   return newLine;
