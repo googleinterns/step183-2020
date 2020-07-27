@@ -13,14 +13,11 @@
 // limitations under the License.
 
 const GO_URL = '/go-data';
-const NAME_URL = '/name-data';
 const HUNT_ID = 'hunt-area';
-const START_ID = 'start-button';
-const RIDDLE_ID = 'riddle-area';
 
-let riddleArr = [];
+const riddleArr = [];
 let destIndex = -1;
-let destArr = [];
+const destArr = [];
 
 /* 
  * Retrieves scavenger hunt data. 
@@ -28,8 +25,8 @@ let destArr = [];
 function getHunt() {
   fetch(GO_URL).then(response => response.json()).then((mssg) => {
     const mssgElem = document.getElementById(HUNT_ID);
-    mssgElem.appendChild(createLine('index: ' + mssg.index + ', city: ' 
-        + mssg.city));
+    mssgElem.appendChild(createLine('index: ' + mssg.index + ', city: ' + 
+        mssg.city));
     destIndex = mssg.index;
     for (let i = 0; i < mssg.items.length; i++) {
       riddleArr.push(mssg.items[i].riddle.puzzle);
