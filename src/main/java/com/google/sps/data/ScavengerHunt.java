@@ -28,4 +28,8 @@ public class ScavengerHunt {
     this.index = index;
     this.city = city;
   }
+
+  public void changeIndex(int newIndex) {
+    index = newIndex;
+  }
 }

@@ -30,9 +30,25 @@ public class DataServlet extends HttpServlet {
   private static final String JSON_TYPE = "application/json";
 
   private ScavengerHunt hunt;
+  private int index = -1;
 
   @Override
-  public void init() {
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    String indexStr = request.getParameter("new-index");
+    index = Integer.parseInt(indexStr);
+  }
+
+  @Override
+  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    buildScavengerHunt();
+
+    response.setContentType(JSON_TYPE);
+    Gson gson = new Gson();
+    String json = gson.toJson(hunt);
+    response.getWriter().println(json);
+  }
+
+  public void buildScavengerHunt() {
     // Constructing the first HuntItem.
     ArrayList<String> firstHints = new ArrayList<String>();
     firstHints.add("I am at the periphery of SF");
@@ -63,14 +79,6 @@ public class DataServlet extends HttpServlet {
     items.add(firstHunt);
     items.add(secondHunt);
     items.add(thirdHunt);
-    hunt = new ScavengerHunt(items, 0, "San Francisco");
-  }
-
-  @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    response.setContentType(JSON_TYPE);
-    Gson gson = new Gson();
-    String json = gson.toJson(hunt);
-    response.getWriter().println(json);
+    hunt = new ScavengerHunt(items, index, "San Francisco");
   }
 }

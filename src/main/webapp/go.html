@@ -8,7 +8,15 @@
   </head>
   <body onload="getHunt()">
     <div class="content">
-      <h1>Go On Scavenger Hunt</h1>
+      <form action="/name-data" method="POST">
+        <input type="text" name="name-input" /><br/>
+        <input type="submit" /><br /><br />
+      </form>
+      <div id="submit-message"></div>
+      <button id="start-button" type="button" onclick="startHunt()">Start Hunt</button>
+      <div id="riddle-area"></div>
+      <div id="hint-area"></div>
+      <button id="proceed-button" type="button" onclick="proceed()">Proceed to Next Destination</button>
       <div id="hunt-area"></div>
     </div>
   </body>
