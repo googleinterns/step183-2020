@@ -15,6 +15,7 @@
 package com.google.sps.servlets;
 
 import com.google.gson.Gson;
+
 import com.google.sps.data.Riddle;
 import com.google.sps.data.HuntItem;
 import com.google.sps.data.ScavengerHunt;
@@ -54,7 +55,7 @@ public class DataServlet extends HttpServlet {
     firstHints.add("I am at the periphery of SF");
     firstHints.add("I am golden in color");
     Riddle firstRiddle = new Riddle("I was constructed in 1933", firstHints);
-    HuntItem firstHunt = 
+    HuntItem firstHunt =
         new HuntItem(
             "Golden Gate Bridge", "San Francisco", "A famous bridge in San Francisco", firstRiddle);
 
@@ -63,7 +64,7 @@ public class DataServlet extends HttpServlet {
     secondHints.add("I am very tall");
     secondHints.add("I am a popular tourist destination");
     Riddle secondRiddle = new Riddle("A famous tower in Paris", secondHints);
-    HuntItem secondHunt = 
+    HuntItem secondHunt =
         new HuntItem("Eiffel Tower", "Paris", "A famous tower in Paris", secondRiddle);
 
     // Constructing the third HuntItem.
@@ -71,7 +72,7 @@ public class DataServlet extends HttpServlet {
     thirdHints.add("I am a statue");
     thirdHints.add("I am very tall");
     Riddle thirdRiddle = new Riddle("I am an item often associated with America", thirdHints);
-    HuntItem thirdHunt = 
+    HuntItem thirdHunt =
         new HuntItem("Statue of Liberty", "NYC", "A statue in New York City", thirdRiddle);
     
     // Constructing the scavenger hunt.

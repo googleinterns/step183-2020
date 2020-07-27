@@ -16,18 +16,16 @@ const GO_URL = '/go-data';
 const HUNT_ID = 'hunt-area';
 
 const riddleArr = [];
-let destIndex = -1;
 const destArr = [];
 
-/* 
- * Retrieves scavenger hunt data. 
+/*
+ * Retrieves scavenger hunt data.
  */
-function getHunt() {
-  fetch(GO_URL).then(response => response.json()).then((mssg) => {
+export function getHunt() {
+  fetch(GO_URL).then((response) => response.json()).then((mssg) => {
     const mssgElem = document.getElementById(HUNT_ID);
-    mssgElem.appendChild(createLine('index: ' + mssg.index + ', city: ' + 
+    mssgElem.appendChild(createLine('index: ' + mssg.index + ', city: ' +
         mssg.city));
-    destIndex = mssg.index;
     for (let i = 0; i < mssg.items.length; i++) {
       riddleArr.push(mssg.items[i].riddle.puzzle);
       destArr.push(mssg.items[i].name);
@@ -38,7 +36,7 @@ function getHunt() {
 /*
  * Creates a new paragraph element from text.
  */
-function createLine(text) {
+export function createLine(text) {
   const newLine = document.createElement('p');
   newLine.innerText = text;
   return newLine;
