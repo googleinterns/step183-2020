@@ -22,7 +22,7 @@ public class HuntItem {
   private String description;
   private Riddle riddle;
 
-  public HuntItem(String name, String location, String description, Riddle riddle){
+  public HuntItem(String name, String location, String description, Riddle riddle) {
     this.name = name;
     this.location = location;
     this.description = description;

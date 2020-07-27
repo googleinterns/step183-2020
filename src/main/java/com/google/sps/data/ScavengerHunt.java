@@ -22,7 +22,7 @@ public class ScavengerHunt {
   private int index;
   private String city;
 
-  public ScavengerHunt(ArrayList<HuntItem> items, int index, String city){
+  public ScavengerHunt(ArrayList<HuntItem> items, int index, String city) {
     this.items = items;
     this.index = index;
     this.city = city;

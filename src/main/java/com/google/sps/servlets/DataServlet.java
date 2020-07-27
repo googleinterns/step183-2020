@@ -14,22 +14,12 @@
 
 package com.google.sps.servlets;
 
+import com.google.gson.Gson;
 import com.google.sps.data.Riddle;
 import com.google.sps.data.HuntItem;
 import com.google.sps.data.ScavengerHunt;
-import com.google.appengine.api.datastore.DatastoreService;
-import com.google.appengine.api.datastore.DatastoreServiceFactory;
-import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.FetchOptions;
-import com.google.appengine.api.datastore.PreparedQuery;
-import com.google.appengine.api.datastore.Query;
-import com.google.cloud.language.v1.Document;
-import com.google.cloud.language.v1.LanguageServiceClient;
-import com.google.cloud.language.v1.Sentiment;
-import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -43,30 +33,32 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void init() {
-    //constructing the first HuntItem
+    // Constructing the first HuntItem.
     ArrayList<String> firstHints = new ArrayList<String>();
     firstHints.add("I am at the periphery of SF");
     firstHints.add("I am golden in color");
     Riddle firstRiddle = new Riddle("I was constructed in 1933", firstHints);
-    HuntItem firstHunt = new HuntItem("Golden Gate Bridge", "San Francisco", 
-      "A famous bridge in San Francisco", firstRiddle);
+    HuntItem firstHunt = 
+      new HuntItem(
+        "Golden Gate Bridge", "San Francisco", "A famous bridge in San Francisco", firstRiddle);
 
-    //constructing the second HuntItem
+    // Constructing the second HuntItem.
     ArrayList<String> secondHints = new ArrayList<String>();
     secondHints.add("I am very tall");
     secondHints.add("I am a popular tourist destination");
     Riddle secondRiddle = new Riddle("A famous tower in Paris", secondHints);
-    HuntItem secondHunt = new HuntItem("Eiffel Tower", "Paris", 
-      "A famous tower in Paris", secondRiddle);
+    HuntItem secondHunt = 
+      new HuntItem("Eiffel Tower", "Paris", "A famous tower in Paris", secondRiddle);
 
-    //constructing the third HuntItem
+    // Constructing the third HuntItem.
     ArrayList<String> thirdHints = new ArrayList<String>();
     thirdHints.add("I am a statue");
     thirdHints.add("I am very tall");
     Riddle thirdRiddle = new Riddle("I am an item often associated with America", thirdHints);
-    HuntItem thirdHunt = new HuntItem("Statue of Liberty", "NYC", "A statue in New York City", thirdRiddle);
+    HuntItem thirdHunt = 
+      new HuntItem("Statue of Liberty", "NYC", "A statue in New York City", thirdRiddle);
     
-    //constructing the scavenger hunt
+    // Constructing the scavenger hunt.
     ArrayList<HuntItem> items = new ArrayList<HuntItem>();
     items.add(firstHunt);
     items.add(secondHunt);
