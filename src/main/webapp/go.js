@@ -39,7 +39,7 @@ function getHunt() {
  * Creates a new paragraph element from text.
  *
  * @param {String} text to be displayed on main page.
- * @returns {String} newLine New element to be appended to main page.
+ * @return {String} newLine New element to be appended to main page.
  */
 function createLine(text) {
   const newLine = document.createElement('p');
