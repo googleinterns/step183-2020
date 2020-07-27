@@ -15,8 +15,8 @@
 package com.google.sps.servlets;
 
 import com.google.gson.Gson;
-import com.google.sps.data.Riddle;
 import com.google.sps.data.HuntItem;
+import com.google.sps.data.Riddle;
 import com.google.sps.data.ScavengerHunt;
 import java.io.IOException;
 import java.util.ArrayList;
