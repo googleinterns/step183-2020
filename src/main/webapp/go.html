@@ -6,14 +6,13 @@
     <link rel="stylesheet" href="go.css" />
     <script src="go.js"></script>
   </head>
-  <body onload="getHunt()">
+  <body>
     <div class="content">
       <form action="/name-data" method="POST">
         <input type="text" name="name-input" /><br/>
         <input type="submit" /><br /><br />
       </form>
-      <div id="submit-message"></div>
-      <button id="start-button" type="button" onclick="startHunt()">Start Hunt</button>
+      <button id="start-button" type="button" onclick="updateToCurrentState(0)">Start Hunt</button>
       <div id="riddle-area"></div>
       <div id="hint-area"></div>
       <button id="proceed-button" type="button" onclick="proceed()">Proceed to Next Destination</button>
