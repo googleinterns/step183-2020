@@ -13,7 +13,7 @@
 // limitations under the License.
 
 const GO_URL = '/go-data';
-const HUNT_ID = 'hunt-area';
+
 const INVISIBLE_CLASS = 'slide-invisible';
 const NAME_URL = '/name-data';
 const START_ID = 'start-button';
@@ -22,14 +22,14 @@ const RIDDLE_ID = 'riddle-area';
 const INDEX_PARAM = 'new-index';
 const FINAL_MSSG = 'Congrats, you\'ve finished the hunt!';
 
-let riddleArr = [];
+const riddleArr = [];
 let destIndex;
-let destArr = [];
+const destArr = [];
 
 window.onload = getHunt();
 
 /**
- * Retrieves scavenger hunt data, and updates to the current destination 
+ * Retrieves scavenger hunt data, and updates to the current destination
  * to reflect the current state of the hunt.
  */
 function getHunt() {
@@ -45,8 +45,8 @@ function getHunt() {
 
 /**
  * Updates the hunt to the current destination that the user is on.
- * 
- * @param {int} index The index of the destination that the user needs 
+ *
+ * @param {int} index The index of the destination that the user needs
  * to find.
  */
 function updateToCurrentState(index) {
@@ -63,7 +63,7 @@ function updateToCurrentState(index) {
  * Retrieves the string the user submitted as the destination name.
  */
 function getDestName() {
-  fetch(NAME_URL).then(response => response.json()).then((mssg) => {
+  fetch(NAME_URL).then((response) => response.json()).then((mssg) => {
     if (mssg === destArr[destIndex]) { // The user entered the correct name.
       showProceedButton();
     }
@@ -81,7 +81,7 @@ function createLine(text) {
   newLine.innerText = text;
   return newLine;
 }
- 
+
 /**
  * Hide the proceed button.
  */
@@ -112,20 +112,21 @@ function hideStartButton() {
  */
 function changeRiddleMessage(text) {
   const riddle = document.getElementById(RIDDLE_ID);
-  riddle.innerHTML = "";
+  riddle.innerHTML = '';
   riddle.appendChild(createLine(text));
 }
 
 /**
  * Update the scavenger hunt data with the current destination that
  * the user is on.
+ * @param {int} index Index of the current destination the user needs to find.
  */
 function sendIndexToServlet(index) {
   const params = new URLSearchParams();
   params.append(INDEX_PARAM, index);
   fetch(GO_URL, {method: 'POST', body: params});
 }
- 
+
 /**
  * After the user correctly names the destination, proceed to
  * the next destination in the hunt.
