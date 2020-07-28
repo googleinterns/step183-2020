@@ -1,5 +1,5 @@
 .site-background {
-  background: #05B091;
+  background: #05b091;
   font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
 
@@ -9,8 +9,8 @@
 }
 
 .header {
-  background: #92B9DD;
-  border: 1px solid #03635D;
+  background: #92b9dd;
+  border: 1px solid #03635d;
   border-radius: 15px;
   box-sizing: border-box;
   font-size: 60px;
@@ -22,8 +22,8 @@
 }
 
 .description {
-  background: #69D1DD;
-  border: 1px solid #03635D;
+  background: #69d1dd;
+  border: 1px solid #03635d;
   border-radius: 15px;
   box-sizing: border-box;
   height: 100px;
@@ -53,8 +53,8 @@
 }
 
 .category-label {
-  background: #92B9DD;
-  border: 1px solid #03635D;
+  background: #92b9dd;
+  border: 1px solid #03635d;
   border-radius: 15px;
   box-sizing: border-box;
   font-size: 24px;
@@ -67,8 +67,8 @@
 }
 
 .filter {
-  background: #69D1DD;
-  border: 1px solid #03635D;
+  background: #69d1dd;
+  border: 1px solid #03635d;
   border-radius: 15px;
   box-sizing: border-box;
   font-size: 18px;
@@ -82,13 +82,13 @@
 }
 
 .go-button {
-  background: #92B9DD;
-  border: 1px solid #03635D;
+  background: #92b9dd;
+  border: 1px solid #03635d;
   border-radius: 15px;
   box-sizing: border-box;
   font-size: 24px;
   height: 46px;
-  left: 282px; 
+  left: 282px;
   margin: auto;
   padding: 5px;
   text-align: center;
