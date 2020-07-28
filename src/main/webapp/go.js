@@ -127,6 +127,7 @@ function sendIndexToServlet(index) {
   fetch(GO_URL, {method: 'POST', body: params});
 }
 
+/* exported proceed */
 /**
  * After the user correctly names the destination, proceed to
  * the next destination in the hunt.
