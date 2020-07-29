@@ -19,7 +19,7 @@ import java.util.ArrayList;
 // Represents a scavenger hunt.
 public class ScavengerHunt {
   private ArrayList<HuntItem> items;
-  // For saved scavenger hunts: represents which destination the user is on.
+  // For saved scavenger hunts: represents which destination the user is currently looking for.
   private int index;
   private String city;
 
@@ -27,9 +27,5 @@ public class ScavengerHunt {
     this.items = items;
     this.index = index;
     this.city = city;
-  }
-
-  public void changeIndex(int newIndex) {
-    index = newIndex;
   }
 }

@@ -15,15 +15,16 @@
 package com.google.sps.data;
 
 import java.util.ArrayList;
+import java.util.List;
 
 // Represents a riddle associated with a destination.
 public class Riddle {
   private String puzzle;
-  private ArrayList<String> hints;
+  private List<String> hints;
 
   public static class Builder {
     private String puzzle;
-    private ArrayList<String> hints;
+    private List<String> hints;
 
     public Builder() {
       hints = new ArrayList<String>();

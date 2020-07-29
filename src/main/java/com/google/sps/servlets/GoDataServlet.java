@@ -26,9 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @WebServlet("/go-data")
-public class DataServlet extends HttpServlet {
-  private static final String JSON_TYPE = "application/json";
-
+public class GoDataServlet extends HttpServlet {
   private int index = -1;
 
   @Override
@@ -41,7 +39,7 @@ public class DataServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     ScavengerHunt hunt = buildScavengerHunt();
 
-    response.setContentType(JSON_TYPE);
+    response.setContentType(Constants.JSON_TYPE);
     Gson gson = new Gson();
     String json = gson.toJson(hunt);
     response.getWriter().println(json);

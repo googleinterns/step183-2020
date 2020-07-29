@@ -21,15 +21,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * NameServlet handles the user's guess for the name of the destination
+ * they are trying to find.
+ */
 @WebServlet("/name-data")
 public class NameServlet extends HttpServlet {
   private static final String NAME_PARAMETER = "name-input";
-  private static final String JSON_TYPE = "application/json";
   private static final String TEXT_TYPE = "text/html";
   private static final String MAIN_URL = "/go.html";
 
   private String name = "";
 
+  /**
+   * Receives the user's guess from the form.
+   */
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     name = request.getParameter(NAME_PARAMETER);
@@ -41,10 +47,13 @@ public class NameServlet extends HttpServlet {
     response.sendRedirect(MAIN_URL);
   }
 
+  /**
+   * Allows the user's guess to be fetched from /name-data.
+   */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String json = new Gson().toJson(name);
-    response.setContentType(JSON_TYPE);
+    response.setContentType(Constants.JSON_TYPE);
     response.getWriter().println(json);
   }
 }
