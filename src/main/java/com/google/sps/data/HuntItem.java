@@ -22,10 +22,40 @@ public class HuntItem {
   private String description;
   private Riddle riddle;
 
-  public HuntItem(String name, String location, String description, Riddle riddle) {
-    this.name = name;
-    this.location = location;
-    this.description = description;
-    this.riddle = riddle;
+  public static class Builder {
+    private String name;
+    private String location;
+    private String description;
+    private Riddle riddle;
+
+    public Builder withName(String name) {
+      this.name = name;
+      return this;
+    }
+
+    public Builder atLocation(String location) {
+      this.location = location;
+      return this;
+    }
+
+    public Builder withDescription(String description) {
+      this.description = description;
+      return this;
+    }
+
+    public Builder withRiddle(Riddle riddle) {
+      this.riddle = riddle;
+      return this;
+    }
+
+    public HuntItem build() {
+      HuntItem item = new HuntItem();
+      item.name = this.name;
+      item.location = this.location;
+      item.description = this.description;
+      item.riddle = this.riddle;
+
+      return item;
+    }
   }
 }

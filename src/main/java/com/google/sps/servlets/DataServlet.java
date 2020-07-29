@@ -29,7 +29,6 @@ import javax.servlet.http.HttpServletResponse;
 public class DataServlet extends HttpServlet {
   private static final String JSON_TYPE = "application/json";
 
-  private ScavengerHunt hunt;
   private int index = -1;
 
   @Override
@@ -40,7 +39,7 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    buildScavengerHunt();
+    ScavengerHunt hunt = buildScavengerHunt();
 
     response.setContentType(JSON_TYPE);
     Gson gson = new Gson();
@@ -48,37 +47,33 @@ public class DataServlet extends HttpServlet {
     response.getWriter().println(json);
   }
 
-  public void buildScavengerHunt() {
+  public ScavengerHunt buildScavengerHunt() {
     // Constructing the first HuntItem.
-    ArrayList<String> firstHints = new ArrayList<String>();
-    firstHints.add("I am at the periphery of SF");
-    firstHints.add("I am golden in color");
-    Riddle firstRiddle = new Riddle("I was constructed in 1933", firstHints);
-    HuntItem firstHunt =
-        new HuntItem(
-            "Golden Gate Bridge", "San Francisco", "A famous bridge in San Francisco", firstRiddle);
+    Riddle firstRiddle = new Riddle.Builder().withPuzzle("I was constructed in 1933")
+        .withHint("I am at the periphery of SF").withHint("I am golden in color").build();
+    HuntItem firstHunt = new HuntItem.Builder().withName("Golden Gate Bridge")
+        .atLocation("San Francisco").withDescription("A famous bridge in San Francisco")
+        .withRiddle(firstRiddle).build();
 
     // Constructing the second HuntItem.
-    ArrayList<String> secondHints = new ArrayList<String>();
-    secondHints.add("I am very tall");
-    secondHints.add("I am a popular tourist destination");
-    Riddle secondRiddle = new Riddle("A famous tower in Paris", secondHints);
-    HuntItem secondHunt =
-        new HuntItem("Eiffel Tower", "Paris", "A famous tower in Paris", secondRiddle);
-
+    Riddle secondRiddle = new Riddle.Builder().withPuzzle("A famous tower in Paris")
+        .withHint("I am very tall").withHint("I am a popular tourist destination").build();
+    HuntItem secondHunt = new HuntItem.Builder().withName("Eiffel Tower").atLocation("Paris")
+        .withDescription("A famous tower in Paris").withRiddle(secondRiddle).build();
+    
     // Constructing the third HuntItem.
-    ArrayList<String> thirdHints = new ArrayList<String>();
-    thirdHints.add("I am a statue");
-    thirdHints.add("I am very tall");
-    Riddle thirdRiddle = new Riddle("I am an item often associated with America", thirdHints);
-    HuntItem thirdHunt =
-        new HuntItem("Statue of Liberty", "NYC", "A statue in New York City", thirdRiddle);
+    Riddle thirdRiddle = new Riddle.Builder().withPuzzle("I am often associated with America")
+        .withHint("I am a statue").withHint("I am very tall").build();
+    HuntItem thirdHunt = new HuntItem.Builder().withName("Statue of Liberty")
+        .atLocation("NYC").withDescription("A statue in New York City")
+        .withRiddle(thirdRiddle).build();
 
     // Constructing the scavenger hunt.
     ArrayList<HuntItem> items = new ArrayList<HuntItem>();
     items.add(firstHunt);
     items.add(secondHunt);
     items.add(thirdHunt);
-    hunt = new ScavengerHunt(items, index, "San Francisco");
+    ScavengerHunt hunt = new ScavengerHunt(items, index, "San Francisco");
+    return hunt;
   }
 }

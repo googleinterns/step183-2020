@@ -21,8 +21,30 @@ public class Riddle {
   private String puzzle;
   private ArrayList<String> hints;
 
-  public Riddle(String puzzle, ArrayList<String> hints) {
-    this.puzzle = puzzle;
-    this.hints = hints;
+  public static class Builder {
+    private String puzzle;
+    private ArrayList<String> hints;
+
+    public Builder() {
+      hints = new ArrayList<String>();
+    }
+
+    public Builder withPuzzle(String puzzle) {
+      this.puzzle = puzzle;
+      return this;
+    }
+
+    public Builder withHint(String hint) {
+      hints.add(hint);
+      return this;
+    }
+
+    public Riddle build() {
+      Riddle riddle = new Riddle();
+      riddle.puzzle = this.puzzle;
+      riddle.hints = this.hints;
+
+      return riddle;
+    }
   }
 }
