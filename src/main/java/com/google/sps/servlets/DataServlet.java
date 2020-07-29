@@ -49,43 +49,49 @@ public class DataServlet extends HttpServlet {
 
   public ScavengerHunt buildScavengerHunt() {
     // Constructing the first HuntItem.
-    Riddle firstRiddle = new Riddle.Builder()
-        .withPuzzle("I was constructed in 1933")
-        .withHint("I am at the periphery of SF")
-        .withHint("I am golden in color")
-        .build();
-    HuntItem firstHunt = new HuntItem.Builder()
-        .withName("Golden Gate Bridge")
-        .atLocation("San Francisco")
-        .withDescription("A famous bridge in San Francisco")
-        .withRiddle(firstRiddle)
-        .build();
+    Riddle firstRiddle =
+        new Riddle.Builder()
+            .withPuzzle("I was constructed in 1933")
+            .withHint("I am at the periphery of SF")
+            .withHint("I am golden in color")
+            .build();
+    HuntItem firstHunt =
+        new HuntItem.Builder()
+            .withName("Golden Gate Bridge")
+            .atLocation("San Francisco")
+            .withDescription("A famous bridge in San Francisco")
+            .withRiddle(firstRiddle)
+            .build();
 
     // Constructing the second HuntItem.
-    Riddle secondRiddle = new Riddle.Builder()
-        .withPuzzle("A famous tower in Paris")
-        .withHint("I am very tall")
-        .withHint("I am a popular tourist destination")
-        .build();
-    HuntItem secondHunt = new HuntItem.Builder()
-        .withName("Eiffel Tower")
-        .atLocation("Paris")
-        .withDescription("A famous tower in Paris")
-        .withRiddle(secondRiddle)
-        .build();
+    Riddle secondRiddle =
+        new Riddle.Builder()
+            .withPuzzle("A famous tower in Paris")
+            .withHint("I am very tall")
+            .withHint("I am a popular tourist destination")
+            .build();
+    HuntItem secondHunt =
+        new HuntItem.Builder()
+            .withName("Eiffel Tower")
+            .atLocation("Paris")
+            .withDescription("A famous tower in Paris")
+            .withRiddle(secondRiddle)
+            .build();
     
     // Constructing the third HuntItem.
-    Riddle thirdRiddle = new Riddle.Builder()
-        .withPuzzle("I am often associated with America")
-        .withHint("I am a statue")
-        .withHint("I am very tall")
-        .build();
-    HuntItem thirdHunt = new HuntItem.Builder()
-        .withName("Statue of Liberty")
-        .atLocation("NYC")
-        .withDescription("A statue in New York City")
-        .withRiddle(thirdRiddle)
-        .build();
+    Riddle thirdRiddle =
+        new Riddle.Builder()
+            .withPuzzle("I am often associated with America")
+            .withHint("I am a statue")
+            .withHint("I am very tall")
+            .build();
+    HuntItem thirdHunt =
+        new HuntItem.Builder()
+            .withName("Statue of Liberty")
+            .atLocation("NYC")
+            .withDescription("A statue in New York City")
+            .withRiddle(thirdRiddle)
+            .build();
 
     // Constructing the scavenger hunt.
     ArrayList<HuntItem> items = new ArrayList<HuntItem>();
