@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/** Constructs a fake scavenger hunt. */
 @WebServlet("/go-data")
 public class GoDataServlet extends HttpServlet {
   private int index = -1;
