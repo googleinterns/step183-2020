@@ -77,7 +77,7 @@ public class DataServlet extends HttpServlet {
             .withDescription("A famous tower in Paris")
             .withRiddle(secondRiddle)
             .build();
-    
+
     // Constructing the third HuntItem.
     Riddle thirdRiddle =
         new Riddle.Builder()
