@@ -24,7 +24,7 @@
     "text-ignore-regex": false,
     "tag-bans": [
         "style"
-    ]
+    ],
     "tag-close": true,
     "tag-name-lowercase": true,
     "tag-name-match": true,
