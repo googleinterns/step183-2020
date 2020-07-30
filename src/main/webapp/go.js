@@ -84,6 +84,8 @@ function createLine(text) {
 
 /**
  * Show or hide the proceed button.
+ *
+ * @param {boolean} hide Whether the proceed button should be hidden or shown.
  */
 function toggleProceedButton(hide) {
   const proceedButton = document.getElementById(PROCEED_ID);
