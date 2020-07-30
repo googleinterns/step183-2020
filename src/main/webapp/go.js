@@ -56,7 +56,7 @@ function updateToCurrentState(index) {
     getDestName();
   }
   sendIndexToServlet(index);
-  hideProceedButton();
+  toggleProceedButton(/* hide = */ true);
 }
 
 /**
@@ -65,7 +65,7 @@ function updateToCurrentState(index) {
 function getDestName() {
   fetch(NAME_URL).then((response) => response.json()).then((mssg) => {
     if (mssg === destArr[destIndex]) { // The user entered the correct name.
-      showProceedButton();
+      toggleProceedButton(/* hide = */ false);
     }
   });
 }
@@ -83,19 +83,15 @@ function createLine(text) {
 }
 
 /**
- * Hide the proceed button.
+ * Show or hide the proceed button.
  */
-function hideProceedButton() {
+function toggleProceedButton(hide) {
   const proceedButton = document.getElementById(PROCEED_ID);
-  proceedButton.classList.add(INVISIBLE_CLASS);
-}
-
-/**
- * Show the proceed button.
- */
-function showProceedButton() {
-  const proceedButton = document.getElementById(PROCEED_ID);
-  proceedButton.classList.remove(INVISIBLE_CLASS);
+  if (hide) {
+    proceedButton.classList.add(INVISIBLE_CLASS);
+  } else {
+    proceedButton.classList.remove(INVISIBLE_CLASS);
+  }
 }
 
 /**
@@ -133,11 +129,11 @@ function sendIndexToServlet(index) {
  */
 function proceed() { //eslint-disable-line
   destIndex++;
-  sendIndexToServlet(destIndex);
+  sendIndexToServlet(destIndex); // Update index to next destination.
   if (destIndex < riddleArr.length) {
     changeRiddleMessage(riddleArr[destIndex]);
   } else {
     changeRiddleMessage(FINAL_MSSG);
   }
-  hideProceedButton();
+  toggleProceedButton(/* hide = */ true);
 }

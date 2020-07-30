@@ -28,6 +28,8 @@ import javax.servlet.http.HttpServletResponse;
 /** Constructs a fake scavenger hunt. */
 @WebServlet("/go-data")
 public class GoDataServlet extends HttpServlet {
+  // Keeps track of the current stage in the hunt that the user is on.
+  // Before the user begins the hunt, the index should be -1.
   private int index = -1;
 
   @Override
