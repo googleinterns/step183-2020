@@ -18,13 +18,15 @@ package com.google.sps.data;
 public class HuntItem {
   private String name;
   // Temporarily represented as a String, for simplicity.
-  private String location;
+  private LatLng location;
   private String description;
   private Riddle riddle;
 
+  private HuntItem() {}
+
   public static class Builder {
     private String name;
-    private String location;
+    private LatLng location;
     private String description;
     private Riddle riddle;
 
@@ -33,7 +35,7 @@ public class HuntItem {
       return this;
     }
 
-    public Builder atLocation(String location) {
+    public Builder atLocation(LatLng location) {
       this.location = location;
       return this;
     }

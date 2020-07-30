@@ -4,19 +4,40 @@
     <meta charset="UTF-8" />
     <title>Go On Scavenger Hunt</title>
     <link rel="stylesheet" href="go.css" />
+    <script src="config.js"></script>
     <script src="go.js"></script>
   </head>
   <body>
     <div class="content">
+      <div class="center-block">
+        <div id="map-area"></div>
+      </div>
+      <div class="center-row">
+        <div id="map-message-area"></div>
+      </div>
       <form action="/name-data" method="POST">
-        <input type="text" name="name-input" /><br/>
-        <input type="submit" /><br /><br />
+        <input type="text" name="name-input" size="50"/>
+        <input type="submit" class="button" id="submit-button"/>
       </form>
-      <button id="start-button" type="button" onclick="updateToCurrentState(0)">Start Hunt</button>
-      <div id="riddle-area"></div>
-      <div id="hint-area"></div>
-      <button id="proceed-button" type="button" onclick="proceed()">Proceed to Next Destination</button>
-      <div id="hunt-area"></div>
+      <div class="center-row">
+        <div id="submit-area"></div>
+      </div>
+      <div class="text-block">
+        <div class="center-row">
+          <div id="riddle-area"></div>
+        </div>
+        <div class="center-row">
+          <button class="button" id="start-button" type="button" onclick="updateToCurrentState(0)">Start Hunt</button>
+          <button class="button" id="hint-button" type="button" onclick="getHint()">Get a Hint</button>
+          <button class="button" id="proceed-button" type="button" onclick="proceed()">Proceed to Next Destination</button>
+        </div>
+        <div class="center-row">
+          <div id="hint-area"></div>
+        </div>
+      </div>
+      <div class="footer">
+        <a href="index.html" class="button">Exit</a>
+      </div>
     </div>
   </body>
 </html>

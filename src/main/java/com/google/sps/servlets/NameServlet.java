@@ -35,9 +35,6 @@ public class NameServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     name = request.getParameter(NAME_PARAMETER);
 
-    response.setContentType(TEXT_TYPE);
-    response.getWriter().println(name);
-
     // Redirect back to main page.
     response.sendRedirect(MAIN_URL);
   }
