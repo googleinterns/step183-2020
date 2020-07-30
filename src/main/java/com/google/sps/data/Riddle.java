@@ -22,6 +22,8 @@ public class Riddle {
   private String puzzle;
   private List<String> hints;
 
+  private Riddle() {}
+
   public static class Builder {
     private String puzzle;
     private List<String> hints;

@@ -22,6 +22,8 @@ public class LatLng {
   private Double lat;
   private Double lng;
 
+  private LatLng() {}
+
   public static class Builder {
     private Double lat;
     private Double lng;
