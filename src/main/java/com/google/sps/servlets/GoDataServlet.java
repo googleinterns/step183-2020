@@ -33,7 +33,7 @@ public class GoDataServlet extends HttpServlet {
   // Before the user begins the hunt, the index should be -1.
   private int index = -1;
 
-  /** 
+  /**
    * Updates the index of the scavenger hunt (aka the destination that the user currently needs to
    * find.
    */
