@@ -11,9 +11,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
+ 
 package com.google.sps.servlets;
-
+ 
 import com.google.gson.Gson;
 import com.google.sps.data.HuntItem;
 import com.google.sps.data.LatLng;
@@ -25,34 +25,36 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+ 
 /** Returns a fake scavenger hunt and updates the current index of the hunt. */
 @WebServlet("/go-data")
 public class GoDataServlet extends HttpServlet {
+  private static final String INDEX_PARAMETER = "new-index";
+
   // Keeps track of the current stage in the hunt that the user is on.
   // Before the user begins the hunt, the index should be -1.
   private int index = -1;
-
+ 
   /**
    * Updates the index of the scavenger hunt (aka the destination that the user currently needs to
    * find.
    */
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String indexStr = request.getParameter("new-index");
+    String indexStr = request.getParameter(INDEX_PARAMETER);
     index = Integer.parseInt(indexStr);
   }
-
+ 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     ScavengerHunt hunt = buildScavengerHunt();
-
+ 
     response.setContentType(Constants.JSON_TYPE);
     Gson gson = new Gson();
     String json = gson.toJson(hunt);
     response.getWriter().println(json);
   }
-
+ 
   private ScavengerHunt buildScavengerHunt() {
     // Constructing the first HuntItem.
     Riddle firstRiddle =
@@ -69,7 +71,7 @@ public class GoDataServlet extends HttpServlet {
             .withDescription("A famous bridge in San Francisco")
             .withRiddle(firstRiddle)
             .build();
-
+ 
     // Constructing the second HuntItem.
     Riddle secondRiddle =
         new Riddle.Builder()
@@ -85,7 +87,7 @@ public class GoDataServlet extends HttpServlet {
             .withDescription("A famous tower in Paris")
             .withRiddle(secondRiddle)
             .build();
-
+ 
     // Constructing the third HuntItem.
     Riddle thirdRiddle =
         new Riddle.Builder()
@@ -101,7 +103,7 @@ public class GoDataServlet extends HttpServlet {
             .withDescription("A statue in New York City")
             .withRiddle(thirdRiddle)
             .build();
-
+ 
     // Constructing the scavenger hunt.
     ArrayList<HuntItem> items = new ArrayList<HuntItem>();
     items.add(firstHunt);
