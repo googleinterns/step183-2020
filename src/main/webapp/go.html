@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Go On Scavenger Hunt</title>
+    <link rel="stylesheet" href="go.css" />
+    <script src="go.js"></script>
+  </head>
+  <body>
+    <div class="content">
+      <form action="/name-data" method="POST">
+        <input type="text" name="name-input" />
+        <input type="submit" />
+      </form>
+      <button id="start-button" type="button" onclick="updateToCurrentState(0)">Start Hunt</button>
+      <div id="riddle-area"></div>
+      <button id="proceed-button" type="button" onclick="proceed()">Proceed to Next Destination</button>
+    </div>
+  </body>
+</html>
