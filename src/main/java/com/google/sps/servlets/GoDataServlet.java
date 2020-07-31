@@ -34,7 +34,8 @@ public class GoDataServlet extends HttpServlet {
   private int index = -1;
 
   /** 
-   * Updates the index of the scavenger hunt (aka the destination that the user currently needs to find.
+   * Updates the index of the scavenger hunt (aka the destination that the user currently needs to
+   * find.
    */
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -60,11 +61,7 @@ public class GoDataServlet extends HttpServlet {
             .withHint("I am at the periphery of SF")
             .withHint("I am golden in color")
             .build();
-    LatLng firstCoord =
-        new LatLng.Builder()
-            .withLat(37.819)
-            .withLng(-122.479)
-            .build();
+    LatLng firstCoord = new LatLng.Builder().withLat(37.819).withLng(-122.479).build();
     HuntItem firstHunt =
         new HuntItem.Builder()
             .withName("Golden Gate Bridge")
@@ -80,11 +77,7 @@ public class GoDataServlet extends HttpServlet {
             .withHint("I am very tall")
             .withHint("I am a popular tourist destination")
             .build();
-    LatLng secondCoord =
-        new LatLng.Builder()
-            .withLat(48.858)
-            .withLng(2.295)
-            .build();
+    LatLng secondCoord = new LatLng.Builder().withLat(48.858).withLng(2.295).build();
     HuntItem secondHunt =
         new HuntItem.Builder()
             .withName("Eiffel Tower")
@@ -100,11 +93,7 @@ public class GoDataServlet extends HttpServlet {
             .withHint("I am a statue")
             .withHint("I am very tall")
             .build();
-    LatLng thirdCoord =
-        new LatLng.Builder()
-            .withLat(40.689)
-            .withLng(-74.045)
-            .build();
+    LatLng thirdCoord = new LatLng.Builder().withLat(40.689).withLng(-74.045).build();
     HuntItem thirdHunt =
         new HuntItem.Builder()
             .withName("Statue of Liberty")

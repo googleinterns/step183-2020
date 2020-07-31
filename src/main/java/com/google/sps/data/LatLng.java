@@ -14,9 +14,6 @@
 
 package com.google.sps.data;
 
-import java.util.ArrayList;
-import java.util.List;
-
 // Represents the latitude and longitude of some destination.
 public class LatLng {
   private Double lat;

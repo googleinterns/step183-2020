@@ -26,7 +26,7 @@ const RIDDLE_DISPLAY = 'riddle-area';
 // Hard-coded messages to be displayed to the user.
 const FINAL_MSSG = 'Congrats, you\'ve finished the hunt!';
 
-//Other constants.
+// Other constants.
 const INDEX_PARAM = 'new-index';
 const INVISIBLE_CLASS = 'invisible';
 
@@ -147,8 +147,11 @@ function sendIndexToServlet(index) {
 /**
  * After the user correctly names the destination, proceed to
  * the next destination in the hunt.
+ * This function is used in an onclick attribute in go.html,
+ * so "eslint-disable-line" is used to disable errors that arise
+ * from proceed() not being called in this file.
  */
-function proceed() { //eslint-disable-line : used in an onclick attribute in go.html
+function proceed() { //eslint-disable-line
   destIndex++;
   sendIndexToServlet(destIndex); // Update index to next destination.
   if (destIndex < puzzleArr.length) {
