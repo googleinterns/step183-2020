@@ -12,17 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-const GO_URL = '/go-data';
+// Button IDs.
+const START_BUTTON = 'start-button';
+const PROCEED_BUTTON = 'proceed-button';
 
-const INVISIBLE_CLASS = 'slide-invisible';
+// URLs that data should be fetched from.
+const DATA_URL = '/go-data';
 const NAME_URL = '/name-data';
-const START_ID = 'start-button';
-const PROCEED_ID = 'proceed-button';
-const RIDDLE_ID = 'riddle-area';
-const INDEX_PARAM = 'new-index';
+
+// Div IDs that text or a map should be inserted into.
+const RIDDLE_DISPLAY = 'riddle-area';
+
+// Hard-coded messages to be displayed to the user.
 const FINAL_MSSG = 'Congrats, you\'ve finished the hunt!';
 
-const riddleArr = [];
+//Other constants.
+const INDEX_PARAM = 'new-index';
+const INVISIBLE_CLASS = 'invisible';
+
+// Global variables.
+const puzzleArr = [];
 let destIndex;
 const destArr = [];
 
@@ -33,10 +42,10 @@ window.onload = getHunt();
  * to reflect the current state of the hunt.
  */
 function getHunt() {
-  fetch(GO_URL).then((response) => response.json()).then((mssg) => {
+  fetch(DATA_URL).then((response) => response.json()).then((mssg) => {
     destIndex = mssg.index;
     for (let i = 0; i < mssg.items.length; i++) {
-      riddleArr.push(mssg.items[i].riddle.puzzle);
+      puzzleArr.push(mssg.items[i].riddle.puzzle);
       destArr.push(mssg.items[i].name);
     }
     updateToCurrentState(destIndex);
@@ -49,24 +58,34 @@ function getHunt() {
  * @param {int} index The index of the destination that the user needs
  * to find.
  */
-function updateToCurrentState(index) {
+async function updateToCurrentState(index) {
+  if (index == 0) { // User presses the start button.
+    sendIndexToServlet(index);
+  }
   if (index >= 0) {
     hideStartButton();
-    changeRiddleMessage(riddleArr[index]);
-    getDestName();
+    changeRiddleMessage(puzzleArr[index]);
+    const isCorrect = await checkCorrectDestination();
+    if (isCorrect) {
+      toggleProceedButton(/* hide = */ false);
+    }
+  } else {
+    toggleProceedButton(/* hide = */ true);
   }
-  sendIndexToServlet(index);
-  toggleProceedButton(/* hide = */ true);
 }
 
 /**
  * Retrieves the string the user submitted as the destination name.
+ * This data is fetched from the server because entity extraction
+ * will be used in the MVP.
+ * @return {boolean} Whether or not the user entered the correct name.
  */
-function getDestName() {
+async function checkCorrectDestination() {
   fetch(NAME_URL).then((response) => response.json()).then((mssg) => {
     if (mssg === destArr[destIndex]) { // The user entered the correct name.
-      toggleProceedButton(/* hide = */ false);
+      return true;
     }
+    return false;
   });
 }
 
@@ -88,7 +107,7 @@ function createLine(text) {
  * @param {boolean} hide Whether the proceed button should be hidden or shown.
  */
 function toggleProceedButton(hide) {
-  const proceedButton = document.getElementById(PROCEED_ID);
+  const proceedButton = document.getElementById(PROCEED_BUTTON);
   if (hide) {
     proceedButton.classList.add(INVISIBLE_CLASS);
   } else {
@@ -100,7 +119,7 @@ function toggleProceedButton(hide) {
  * Hide the start button.
  */
 function hideStartButton() {
-  const startButton = document.getElementById(START_ID);
+  const startButton = document.getElementById(START_BUTTON);
   startButton.classList.add(INVISIBLE_CLASS);
 }
 
@@ -109,7 +128,7 @@ function hideStartButton() {
  * @param {String} text Text that the riddle should be changed to.
  */
 function changeRiddleMessage(text) {
-  const riddle = document.getElementById(RIDDLE_ID);
+  const riddle = document.getElementById(RIDDLE_DISPLAY);
   riddle.innerHTML = '';
   riddle.appendChild(createLine(text));
 }
@@ -122,18 +141,18 @@ function changeRiddleMessage(text) {
 function sendIndexToServlet(index) {
   const params = new URLSearchParams();
   params.append(INDEX_PARAM, index);
-  fetch(GO_URL, {method: 'POST', body: params});
+  fetch(DATA_URL, {method: 'POST', body: params});
 }
 
 /**
  * After the user correctly names the destination, proceed to
  * the next destination in the hunt.
  */
-function proceed() { //eslint-disable-line
+function proceed() { //eslint-disable-line : used in an onclick attribute in go.html
   destIndex++;
   sendIndexToServlet(destIndex); // Update index to next destination.
-  if (destIndex < riddleArr.length) {
-    changeRiddleMessage(riddleArr[destIndex]);
+  if (destIndex < puzzleArr.length) {
+    changeRiddleMessage(puzzleArr[destIndex]);
   } else {
     changeRiddleMessage(FINAL_MSSG);
   }
