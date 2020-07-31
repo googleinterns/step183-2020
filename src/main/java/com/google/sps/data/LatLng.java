@@ -16,19 +16,29 @@ package com.google.sps.data;
 
 // Represents a destination's location as a latitude longitude values.
 public class LatLng{
-  private static Double lat;
-  private static Double lng;
+  public static class Builder {
 
-  public LatLng(Double lat, Double lng){
-    this.lat = lat;
-    this.lng = lng;
-  }
+    private Double lat;
+    private Double lng;
 
-  public Double getLatitude(){
-    return lat;
-  }
+    public Builder withLat(Double lat){
+      this.lat = lat;
 
-  public Double getLongitude(){
-    return lng;
+      return this;
+    }
+
+    public Builder withLng(Double lng){
+      this.lng = lng;
+
+      return this;
+    }
+
+    public LatLng build(){
+      LatLng location = new LatLng();
+      location.lat = this.lat;
+      location.lng = this.lng;
+
+      return location;
+    }
   }
 }

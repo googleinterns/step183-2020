@@ -19,37 +19,86 @@ import java.util.ArrayList;
 
 // Represents a destination submitted by a user.
 public class Destination {
-  enum Tag {
-    FOOD,
-    SPORT,
-    TOURIST,
-    HISTORICAL,
-    ART,
-    FAMILY;
-  }
 
-  enum Obscurity {
-    EASY,
-    MEDIUM,
-    HARD;
-  }
+  public static class Builder {
+      
+    enum Tag {
+      FOOD,
+      SPORT,
+      TOURIST,
+      HISTORICAL,
+      ART,
+      FAMILY;
+    }
 
-  private String name;
-  private LatLng location;
-  private String city.
-  private String description;
-  private ArrayList<Riddle> riddles;
-  private Obscurity level;
-  private Tag categories;
+    enum Obscurity {
+      EASY,
+      MEDIUM,
+      HARD;
+    }
 
-  //constructor
-  public Destination(String name, LatLng location, String city, String description, ArrayList<Riddle> riddles, Obscurity level, Tag categories){
-    this.name = name;
-    this.location = location;
-    this.city = city;
-    this.description = description;
-    this.riddles = riddles;
-    this.level = level;
-    this.categories = categories;
+    private String name;
+    private LatLng location;
+    private String city;
+    private String description;
+    private ArrayList<Riddle> riddles;
+    private Obscurity level;
+    private Tag categories;
+
+    public Builder withName(String name){
+      this.name = name;
+
+      return this;
+    }
+
+    public Builder withLocation(LatLng location){
+      this.location = location;
+
+      return this;
+    }
+
+    public Builder withCity(String city){
+      this.city = city;
+
+      return this;
+    }
+
+    public Builder withDescription(String description){
+      this.description = description;
+
+      return this;
+    }
+
+    public Builder withRiddle(Riddle riddle){
+      riddles.add(Riddle);
+
+      return this;
+    }
+
+    public Builder withTags(Tag categories){
+      this.categories = categories;
+
+      return this;
+    }
+
+    public Builder withObscurity(Obscurity level){
+      this.level = level;
+
+      return this;
+    }
+  
+
+    public Destination build(){
+      Destination destination = new Destination();
+      destination.name = this.name;
+      destination.location = this.location;
+      destination.city = this.location;
+      destination.description = this.description;
+      destination.riddles.add(this.riddle);
+      destination.categories = this.categories;
+      destination.level = this.level;
+
+      return destination;
+    }
   }
 }
