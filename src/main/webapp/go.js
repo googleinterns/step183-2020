@@ -62,14 +62,14 @@ async function updateToCurrentState(index) {
   if (index == 0) { // User presses the start button.
     sendIndexToServlet(index);
   }
-  if (index >= 0) {
+  if (index >= 0) { // The user has already begun the hunt.
     hideStartButton();
     changeRiddleMessage(puzzleArr[index]);
     const isCorrect = await checkCorrectDestination();
     if (isCorrect) {
       toggleProceedButton(/* hide = */ false);
     }
-  } else {
+  } else { // The user has not yet pressed the start button.
     toggleProceedButton(/* hide = */ true);
   }
 }
