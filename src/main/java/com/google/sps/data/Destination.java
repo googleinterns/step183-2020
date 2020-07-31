@@ -19,10 +19,33 @@ import java.util.ArrayList;
 
 // Represents a destination submitted by a user.
 public class Destination {
+  private enum Tag {
+     FOOD,
+     SPORT,
+     TOURIST,
+     HISTORICAL,
+     ART,
+     FAMILY;
+    }
+
+  private enum Obscurity {
+    EASY,
+    MEDIUM,
+    HARD;
+  }
+
+  private String name;
+  private LatLng location;
+  private String city;
+  private String description;
+  private ArrayList<Riddle> riddles;
+  private Obscurity level;
+  private Tag categories;
+
+  private Destination() {}
 
   public static class Builder {
-      
-    enum Tag {
+    private enum Tag {
       FOOD,
       SPORT,
       TOURIST,
@@ -31,7 +54,7 @@ public class Destination {
       FAMILY;
     }
 
-    enum Obscurity {
+    private enum Obscurity {
       EASY,
       MEDIUM,
       HARD;
@@ -47,13 +70,11 @@ public class Destination {
 
     public Builder withName(String name){
       this.name = name;
-
       return this;
     }
 
     public Builder withLocation(LatLng location){
       this.location = location;
-
       return this;
     }
 
@@ -77,17 +98,14 @@ public class Destination {
 
     public Builder withTags(Tag categories){
       this.categories = categories;
-
       return this;
     }
 
     public Builder withObscurity(Obscurity level){
       this.level = level;
-
       return this;
     }
   
-
     public Destination build(){
       Destination destination = new Destination();
       destination.name = this.name;
