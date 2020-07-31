@@ -48,7 +48,7 @@ public class GoDataServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     ScavengerHunt hunt = buildScavengerHunt();
- 
+
     response.setContentType(Constants.JSON_TYPE);
     Gson gson = new Gson();
     String json = gson.toJson(hunt);
