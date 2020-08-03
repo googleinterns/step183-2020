@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <title>Destination Creation</title>
+    <link rel="stylesheet" href="destinationCreation.css"/>
+  </head>
+  <body>
+    <div>
+      <h1>Create a Scavenger Hunt Destination</h1>
+      <form action="/destination-data" method="post">
+        <label for="name-input" class="required">Enter the name of the destination:</label><br>
+        <input type="text" name="name" id="name-input" required>
+        <p>Enter the latitude and longitude of the destination:</p>
+        <label for="lat-input" class="required">Latitude:</label><br>
+        <input type="number" name="latitude" id="lat-input" required><br>
+        <label for="lng-input" class="required">Longitude:</label><br>
+        <input type="number" name="longitude" id="lng-input" required><br>
+        <label for="city-input" class="required">Enter the city where the destination is located:</label><br>
+        <input type="text" name="city" id="city-input" required><br>
+        <label for="riddle-input" class="required">Enter a riddle for this destination:</label><br>
+        <input type="text" name="riddle" id="riddle-input" required><br>
+        <p>Enter 1-3 hints for this destination that provides clarity for the riddle:</p><br>
+        <label for="hint1-input" class="required">Hint 1:</label>
+        <input type="text" name="hint1" id="hint1-input" required><br>
+        <label for="hint2-input">Hint 2:</label>
+        <input type="text" name="hint2" id="hint2-input"><br>
+        <label for="hint3-input">Hint 3:</label>
+        <input type="text" name="hint3" id="hint3-input"><br>
+        <label for="desc-input" class="required">Enter a description for this destination:</label><br>
+        <input type="text" name="description" id="desc-input" required><br>
+        <p class="required">Check all the tags that apply to this destination:</p>
+        <input type="checkbox" name="tag" id="food-input" value="food">
+        <label for="food-input">Food</label>
+        <input type="checkbox" name="tag" id="sports-input" value="sports">
+        <label for="sports-input">Sports</label>
+        <input type="checkbox" name="tag" id="historical-input" value="historical">
+        <label for="historical-input">Historical</label>
+        <input type="checkbox" name="tag" id="art-input" value="art">
+        <label for="art-input">Art</label>
+        <input type="checkbox" name="tag" id="tourist-input" value="tourist">
+        <label for="tourist-input">Tourist</label>
+        <input type="checkbox" name="tag" id="family-input" value="family">
+        <label for="family-input">Family</label><br>
+        <br>
+        <p class="required">Select how obscure this destination would be for tourists</p>
+        <input type="checkbox" name="obscurity" id="easy-input" value="easy">
+        <label for="easy-input">Easy</label>
+        <input type="checkbox" name="obscurity" id="med-input" value="medium">
+        <label for="med-input">Medium</label>
+        <input type="checkbox" name="obscurity" id="hard-input" value="hard">
+        <label for="hard-input">Hard</label><br>
+        <br>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  </body>
+</html>

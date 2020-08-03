@@ -14,8 +14,10 @@
 
 package com.google.sps.data;
 
-// Represents the latitude and longitude of some destination.
-public class LatLng {
+
+// Represents a destination's location as a latitude longitude values.
+public class LatLng{
+
   private Double lat;
   private Double lng;
 
@@ -25,17 +27,17 @@ public class LatLng {
     private Double lat;
     private Double lng;
 
-    public Builder withLat(Double lat) {
+    public Builder withLat(Double lat){
       this.lat = lat;
       return this;
     }
 
-    public Builder withLng(Double lng) {
+    public Builder withLng(Double lng){
       this.lng = lng;
       return this;
     }
 
-    public LatLng build() {
+    public LatLng build(){
       LatLng coord = new LatLng();
       coord.lat = this.lat;
       coord.lng = this.lng;
