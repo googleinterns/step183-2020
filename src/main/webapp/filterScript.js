@@ -31,8 +31,8 @@ function getClickedFilters() {
   const JSONArray = JSON.stringify(clickedArray);
   console.log(JSONArray);
   fetch('/generate?clicked-array=' + JSONArray, {method: 'POST'}).then(
-      response => (response.json())).then((message) => {
-      console.log(message);
+      (response) => response.json()).then((message) => {
+    console.log(message);
   });
 }
 
