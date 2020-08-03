@@ -66,8 +66,23 @@
   width: 300px;
 }
 
-.filter {
-  background: #69d1dd;
+.unclicked-filter {
+  background-color: #69d1dd;
+  border: 1px solid #03635d;
+  border-radius: 15px;
+  box-sizing: border-box;
+  font-size: 18px;
+  height: 60px;
+  left: 90px;
+  margin-left: 4%;
+  margin-top: 20px;
+  padding: 15px;
+  text-align: center;
+  width: 150px;
+}
+
+.clicked-filter {
+  background-color: #37B0D2;
   border: 1px solid #03635d;
   border-radius: 15px;
   box-sizing: border-box;
