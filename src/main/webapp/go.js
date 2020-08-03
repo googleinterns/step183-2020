@@ -44,13 +44,13 @@ let map;
 window.onload = function() {
   addScriptToHead();
   getHunt();
-}
+};
 
 /**
  * Add the Map API key to the head.
  */
 function addScriptToHead() {
-  var newScript = document.createElement('script');
+  const newScript = document.createElement('script');
   newScript.src = 'https://maps.googleapis.com/maps/api/js?key=' + mapKey;
   document.getElementsByTagName('head')[0].appendChild(newScript);
 }
@@ -78,10 +78,10 @@ function getHunt() {
  * @param {String} destName: Name of location.
  */
 function addMarkerToMap(destLat, destLng, destName) {
-  let coord = new google.maps.LatLng(destLat, destLng);
-  let marker = new google.maps.Marker({
+  const coord = new google.maps.LatLng(destLat, destLng);
+  const marker = new google.maps.Marker({
     position: coord,
-    title: destName
+    title: destName,
   });
   marker.setMap(map);
 }
@@ -93,13 +93,14 @@ function createMap() {
   map = new google.maps.Map(
       document.getElementById(MAP_DISPLAY),
       // Centered at GooglePlex (updated below).
-      {center: {lat: 37.422, lng: -122.084}, zoom: 7}
+      {center: {lat: 37.422, lng: -122.084}, zoom: 7,}
   );
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position) {
-      let pos = { lat: position.coords.latitude, lng: position.coords.longitude};
+      const pos = {lat: position.coords.latitude,
+          lng: position.coords.longitude};
       addMarkerToMap(position.coords.latitude, position.coords.longitude,
-        'Your current location');
+          'Your current location');
       map.setCenter(pos);
     }, function() {
       updateMessage(MAP_MSSG_DISPLAY, 'Error: I can\'t find your location.');
@@ -113,8 +114,9 @@ function createMap() {
 /** PR #2
  * Show or hide the hint button.
  * @param {boolean} hide Whether the proceed button should be hidden or shown.
+ * Disable lint check because toggleHintButton() is called in PR #1.
  */
-function toggleHintButton(hide) {
+function toggleHintButton(hide) { //eslint-disable-line
   const hintButton = document.getElementById(HINT_BUTTON);
   if (hide) {
     hintButton.classList.add(INVISIBLE_CLASS);
