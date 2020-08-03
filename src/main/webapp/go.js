@@ -284,8 +284,8 @@ function sanitize(unsafeContent) {
  * Exit from hunt. A window will pop up confirming the user's exit.
  * Disable lint check because exit() is called from go.html.
  */
-function exit() {
-  if (confirm('Exit hunt?')) { //eslint-disable-line
+function exit() { //eslint-disable-line
+  if (confirm('Exit hunt?')) {
     window.location.replace('index.html');
   }
 }
