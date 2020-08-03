@@ -87,7 +87,7 @@ function getHunt() {
 }
 
 /**
- * Determines whether the user entered the correct destination, and 
+ * Determines whether the user entered the correct destination, and
  * adjusts the display accordingly.
  * @param {String} guess The destination name entered by the user.
  */
