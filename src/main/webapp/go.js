@@ -60,9 +60,9 @@ class Destination {
     this.lng = lng;
   }
 }
- 
+
 window.onload = getHunt();
- 
+
 /**
  * Retrieves scavenger hunt data, and updates to the current destination
  * to reflect the current state of the hunt.
@@ -96,8 +96,8 @@ function handleDestinationAnswer(guess) {
     toggleProceedButton(/* hide = */ false);
     toggleHintButton(/* hide = */ true);
     updateMessage(SUBMIT_DISPLAY, CORRECT_MSSG);
-    updateMessage(RIDDLE_DISPLAY, huntArr[destIndex].name + ': '
-        + huntArr[destIndex].description);
+    updateMessage(RIDDLE_DISPLAY, huntArr[destIndex].name + ': ' +
+        huntArr[destIndex].description);
     addMarkerToMap(huntArr[destIndex].lat, huntArr[destIndex].lng,
         huntArr[destIndex].name);
   } else if (guess.length != 0) {
@@ -132,7 +132,7 @@ function startHunt() { //eslint-disable-line
 
 /**
  * Updates the hunt to the current destination that the user is on.
- * @param {int} index The index of the destination that the user needs 
+ * @param {int} index The index of the destination that the user needs
  * to find.
  */
 function updateToCurrentState(index) {
@@ -172,7 +172,8 @@ function toggleProceedButton(hide) {
     proceedButton.classList.add(INVISIBLE_CLASS);
   } else {
     if (destIndex == huntArr.length - 1) {
-      document.querySelector('#' + PROCEED_BUTTON).innerText = PROCEED_FINAL_MSSG;
+      document.querySelector('#' + PROCEED_BUTTON).innerText =
+          PROCEED_FINAL_MSSG;
     }
     proceedButton.classList.remove(INVISIBLE_CLASS);
   }
@@ -201,8 +202,8 @@ function hideStartButton() {
 function updateMessage(display, text) {
   const message = document.getElementById(display);
   if (display == HINT_DISPLAY) {
-    message.appendChild(createLine('Hint #' + (hintIndex + 1)
-        + ': ' + text));
+    message.appendChild(createLine('Hint #' + (hintIndex + 1) +
+        ': ' + text));
   } else {
     message.innerHTML = '';
     message.appendChild(createLine(text));
@@ -217,8 +218,8 @@ function updateRiddleToFinalMessage() {
   const newLine = document.createElement('div');
   let message = '<p> Congrats! You\'ve visited the following locations:</p>';
   for (let i = 0; i < huntArr.length; i++) {
-    message += '<p>' + sanitize(huntArr[i].name) + ': '
-        + sanitize(huntArr[i].description) + '</p>';
+    message += '<p>' + sanitize(huntArr[i].name) + ': ' +
+        sanitize(huntArr[i].description) + '</p>';
   }
   newLine.innerHTML = message;
   const riddle = document.getElementById(RIDDLE_DISPLAY);
