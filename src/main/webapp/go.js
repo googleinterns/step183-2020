@@ -13,6 +13,7 @@
 // limitations under the License.
 
 // Button IDs.
+const HINT_BUTTON = 'hint-button';
 const START_BUTTON = 'start-button';
 const PROCEED_BUTTON = 'proceed-button';
 
@@ -21,7 +22,10 @@ const DATA_URL = '/go-data';
 const NAME_URL = '/name-data';
 
 // Div IDs that text or a map should be inserted into.
+const HINT_DISPLAY = 'hint-area';
 const RIDDLE_DISPLAY = 'riddle-area';
+const MAP_DISPLAY = 'map-area';
+const MAP_MSSG_DISPLAY = 'map-message-area';
 
 // Hard-coded messages to be displayed to the user.
 const FINAL_MSSG = 'Congrats, you\'ve finished the hunt!';
@@ -29,13 +33,27 @@ const FINAL_MSSG = 'Congrats, you\'ve finished the hunt!';
 // Other constants.
 const INDEX_PARAM = 'new-index';
 const INVISIBLE_CLASS = 'invisible';
+const mapKey = config.MAP_KEY;
 
 // Global variables.
 const puzzleArr = [];
 let destIndex;
 const destArr = [];
+let map;
 
-window.onload = getHunt();
+window.onload = function() {
+  addScriptToHead();
+  getHunt();
+}
+
+/**
+ * Add the Map API key to the head.
+ */
+function addScriptToHead() {
+  var newScript = document.createElement('script');
+  newScript.src = 'https://maps.googleapis.com/maps/api/js?key=' + mapKey;
+  document.getElementsByTagName('head')[0].appendChild(newScript);
+}
 
 /**
  * Retrieves scavenger hunt data, and updates to the current destination
@@ -48,9 +66,84 @@ function getHunt() {
       puzzleArr.push(mssg.items[i].riddle.puzzle);
       destArr.push(mssg.items[i].name);
     }
+    createMap();
     updateToCurrentState(destIndex);
   });
 }
+
+/**
+ * Add a marker to the map at the specified location.
+ * @param {Double} destLat: latitude of location.
+ * @param {Double} destLng: longitude of location.
+ * @param {String} destName: Name of location.
+ */
+function addMarkerToMap(destLat, destLng, destName) {
+  let coord = new google.maps.LatLng(destLat, destLng);
+  let marker = new google.maps.Marker({
+    position: coord,
+    title: destName
+  });
+  marker.setMap(map);
+}
+
+/**
+ * Creates a map and adds it to the page.
+ */
+function createMap() {
+  map = new google.maps.Map(
+      document.getElementById(MAP_DISPLAY),
+      // Centered at GooglePlex (updated below).
+      {center: {lat: 37.422, lng: -122.084}, zoom: 7}
+  );
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      let pos = { lat: position.coords.latitude, lng: position.coords.longitude};
+      addMarkerToMap(position.coords.latitude, position.coords.longitude,
+        'Your current location');
+      map.setCenter(pos);
+    }, function() {
+      updateMessage(MAP_MSSG_DISPLAY, 'Error: I can\'t find your location.');
+    });
+  } else {
+    updateMessage(MAP_MSSG_DISPLAY, 'Error: Your browser doesn\'t' +
+        'support geolocation.');
+  }
+}
+
+/** PR #2
+ * Show or hide the hint button.
+ * @param {boolean} hide Whether the proceed button should be hidden or shown.
+ */
+function toggleHintButton(hide) {
+  const hintButton = document.getElementById(HINT_BUTTON);
+  if (hide) {
+    hintButton.classList.add(INVISIBLE_CLASS);
+  } else {
+    hintButton.classList.remove(INVISIBLE_CLASS);
+  }
+}
+
+/**
+ * Allow the user to see a hint.
+ * Disable lint check because getHint() is called from go.html.
+ */
+function getHint() { //eslint-disable-line
+  if (destIndex >= 0) {
+    const hintArr = huntArr[destIndex].hints;
+    if (hintIndex < hintArr.length) {
+      updateMessage(HINT_DISPLAY, hintArr[hintIndex]);
+      hintIndex++;
+    }
+  }
+}
+
+/**
+ * Update {code@ display} to specified {code@ text}.
+ * @param {String} display ID of element to be updated
+ * @param {String} text Text that display should be updated to.
+ * This function is implemented in an adjacent PR.
+ */
+function updateMessage(display, text) {}
 
 /**
  * Updates the hunt to the current destination that the user is on.
