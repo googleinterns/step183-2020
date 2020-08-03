@@ -1,3 +1,5 @@
+/* TODO: Move some of these in to common CSS file once next round of PRs are merged in. */
+
 .site-background {
   background: #05b091;
   font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
@@ -41,9 +43,6 @@
   display: flex;
   flex-flow: row wrap;
   justify-content: flex-start;
-  list-style: none;
-  padding: 0;
-  margin: 0;
   width: 100%;
 }
 
