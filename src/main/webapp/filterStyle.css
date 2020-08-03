@@ -1,0 +1,96 @@
+/* TODO: Move some of these in to common CSS file once next round of PRs are merged in. */
+
+.site-background {
+  background: #05b091;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+.full-page {
+  display: flex;
+  flex-flow: column wrap;
+}
+
+.header {
+  background: #92b9dd;
+  border: 1px solid #03635d;
+  border-radius: 15px;
+  box-sizing: border-box;
+  font-size: 60px;
+  height: 200px;
+  margin: auto;
+  padding: 50px;
+  text-align: center;
+  width: 600px;
+}
+
+.description {
+  background: #69d1dd;
+  border: 1px solid #03635d;
+  border-radius: 15px;
+  box-sizing: border-box;
+  height: 100px;
+  font-size: 24px;
+  font-style: italic;
+  left: 103px;
+  margin: auto;
+  padding: 20px;
+  top: 500px;
+  text-align: center;
+  width: 600px;
+}
+
+.filter-container {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.category {
+  display: flex;
+  flex-direction: column;
+}
+
+.category-label {
+  background: #92b9dd;
+  border: 1px solid #03635d;
+  border-radius: 15px;
+  box-sizing: border-box;
+  font-size: 24px;
+  height: 100px;
+  margin-left: 4%;
+  padding: 30px;
+  text-align: center;
+  top: 444px;
+  width: 300px;
+}
+
+.filter {
+  background: #69d1dd;
+  border: 1px solid #03635d;
+  border-radius: 15px;
+  box-sizing: border-box;
+  font-size: 18px;
+  height: 60px;
+  left: 90px;
+  margin-left: 4%;
+  margin-top: 20px;
+  padding: 15px;
+  text-align: center;
+  width: 150px;
+}
+
+.go-button {
+  background: #92b9dd;
+  border: 1px solid #03635d;
+  border-radius: 15px;
+  box-sizing: border-box;
+  font-size: 24px;
+  height: 46px;
+  left: 282px;
+  margin: auto;
+  padding: 5px;
+  text-align: center;
+  top: 1379px;
+  width: 289px;
+}
