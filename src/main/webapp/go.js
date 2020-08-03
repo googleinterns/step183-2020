@@ -93,12 +93,12 @@ function createMap() {
   map = new google.maps.Map(
       document.getElementById(MAP_DISPLAY),
       // Centered at GooglePlex (updated below).
-      {center: {lat: 37.422, lng: -122.084}, zoom: 7,}
+      {center: {lat: 37.422, lng: -122.084}, zoom: 7},
   );
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position) {
       const pos = {lat: position.coords.latitude,
-          lng: position.coords.longitude};
+        lng: position.coords.longitude};
       addMarkerToMap(position.coords.latitude, position.coords.longitude,
           'Your current location');
       map.setCenter(pos);
