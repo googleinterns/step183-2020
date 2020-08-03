@@ -1,7 +1,7 @@
 /**
 * Turn a filter a different color when pressed, and change class accordingly.
 **/
-function turnBlueWhenClicked() {
+function turnBlueWhenClicked() { //eslint-disable-line
   const allFilters = document.querySelectorAll('.unclicked-filter');
   for (let i = 0; i < allFilters.length; i++) {
     allFilters[i].onclick = function() {
@@ -21,7 +21,7 @@ function turnBlueWhenClicked() {
 * Get all filters that have been clicked when user presses submit button,
 * and pass array to servlet, and TODO: return success or error message.
 **/
-function getClickedFilters() {
+function getClickedFilters() { //eslint-disable-line
   const clickedArray = [];
   const clickedFilters = document.querySelectorAll('.clicked-filter');
   for (let i = 0; i < clickedFilters.length; i++) {
