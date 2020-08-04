@@ -50,7 +50,7 @@ window.onload = function() {
  */
 function addScriptToHead() {
   const newScript = document.createElement('script');
-  newScript.src = 'https://maps.googleapis.com/maps/api/js?key=' + config.MAP_KEY;
+  newScript.src = 'https://maps.googleapis.com/maps/api/js?key=' + config.MAP_KEY + '&callback=createMap';
   document.getElementsByTagName('head')[0].appendChild(newScript);
 }
 
@@ -65,7 +65,7 @@ function getHunt() {
       puzzleArr.push(mssg.items[i].riddle.puzzle);
       destArr.push(mssg.items[i].name);
     }
-    createMap();
+    //createMap();
     updateToCurrentState(destIndex);
   });
 }
