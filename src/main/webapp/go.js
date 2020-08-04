@@ -33,7 +33,6 @@ const FINAL_MSSG = 'Congrats, you\'ve finished the hunt!';
 // Other constants.
 const INDEX_PARAM = 'new-index';
 const INVISIBLE_CLASS = 'invisible';
-const mapKey = config.MAP_KEY;
 
 // Global variables.
 const puzzleArr = [];
@@ -51,7 +50,7 @@ window.onload = function() {
  */
 function addScriptToHead() {
   const newScript = document.createElement('script');
-  newScript.src = 'https://maps.googleapis.com/maps/api/js?key=' + mapKey;
+  newScript.src = 'https://maps.googleapis.com/maps/api/js?key=' + config.MAP_KEY;
   document.getElementsByTagName('head')[0].appendChild(newScript);
 }
 
@@ -111,10 +110,12 @@ function createMap() {
   }
 }
 
-/** PR #2
+/**
  * Show or hide the hint button.
  * @param {boolean} hide Whether the proceed button should be hidden or shown.
- * Disable lint check because toggleHintButton() is called in PR #1.
+ * Disable lint check because this will later be called by 
+ * handleDestinationAnswer(), updateToCurrentState(), and proceed().
+ * 
  */
 function toggleHintButton(hide) { //eslint-disable-line
   const hintButton = document.getElementById(HINT_BUTTON);
