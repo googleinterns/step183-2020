@@ -95,15 +95,14 @@ function createMap() {
       {center: {lat: 37.422, lng: -122.084}, zoom: 7},
   );
   if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(function(position) {
+    navigator.geolocation.getCurrentPosition((position) => {
       const pos = {lat: position.coords.latitude,
         lng: position.coords.longitude};
       addMarkerToMap(position.coords.latitude, position.coords.longitude,
           'Your current location');
       map.setCenter(pos);
-    }, function() {
-      updateMessage(MAP_MSSG_DISPLAY, 'Error: I can\'t find your location.');
-    });
+    }, 
+    () => updateMessage(MAP_MSSG_DISPLAY, 'Error: I can\'t find your location.'));
   } else {
     updateMessage(MAP_MSSG_DISPLAY, 'Error: Your browser doesn\'t' +
         'support geolocation.');
