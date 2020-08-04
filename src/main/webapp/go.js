@@ -33,6 +33,7 @@ const FINAL_MSSG = 'Congrats, you\'ve finished the hunt!';
 // Other constants.
 const INDEX_PARAM = 'new-index';
 const INVISIBLE_CLASS = 'invisible';
+const REFRESH_TIME = 10000; //ten seconds
 
 // Global variables.
 const puzzleArr = [];
@@ -45,6 +46,8 @@ window.onload = function() {
   addScriptToHead();
   getHunt();
 };
+
+window.setInterval(updateGeolocation, REFRESH_TIME);
 
 /**
  * Add the Map API key to the head.
@@ -94,6 +97,13 @@ function createMap() {
       // Centered at GooglePlex (updated below).
       {center: {lat: 37.422, lng: -122.084}, zoom: 7},
   );
+  updateGeolocation();
+}
+
+/**
+ * Update the user's current location.
+ */
+function updateGeolocation() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition((position) => {
       const pos = {lat: position.coords.latitude,
