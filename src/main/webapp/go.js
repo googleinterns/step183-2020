@@ -101,8 +101,9 @@ function createMap() {
       addMarkerToMap(position.coords.latitude, position.coords.longitude,
           'Your current location');
       map.setCenter(pos);
-    }, 
-    () => updateMessage(MAP_MSSG_DISPLAY, 'Error: I can\'t find your location.'));
+    },
+    () => updateMessage(MAP_MSSG_DISPLAY,
+        'Error: I can\'t find your location.'));
   } else {
     updateMessage(MAP_MSSG_DISPLAY, 'Error: Your browser doesn\'t' +
         'support geolocation.');
@@ -112,9 +113,9 @@ function createMap() {
 /**
  * Show or hide the hint button.
  * @param {boolean} hide Whether the proceed button should be hidden or shown.
- * Disable lint check because this will later be called by 
+ * Disable lint check because this will later be called by
  * handleDestinationAnswer(), updateToCurrentState(), and proceed().
- * 
+ *
  */
 function toggleHintButton(hide) { //eslint-disable-line
   const hintButton = document.getElementById(HINT_BUTTON);
