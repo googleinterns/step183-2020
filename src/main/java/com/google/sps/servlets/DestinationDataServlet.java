@@ -21,6 +21,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @WebServlet("/destination-data")
 public class DestinationDataServlet extends HttpServlet {
@@ -28,15 +29,15 @@ public class DestinationDataServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String name = request.getParameter("name");
 
-    LatLng location = new LatLng.Builder()
-            .withLat(request.getParameter("latitude"))
-            .withLng(request.getParameter("longitude"))
+    com.google.sps.data.LatLng location = new com.google.sps.data.LatLng.Builder()
+            .withLat(Double.parseDouble(request.getParameter("latitude")))
+            .withLng(Double.parseDouble(request.getParameter("longitude")))
             .build();
 
     String city = request.getParameter("city");
-    String Description = request.getParameter("description");
+    String description = request.getParameter("description");
 
-    Riddle riddle = new Riddle.Builder()
+    com.google.sps.data.Riddle riddle = new com.google.sps.data.Riddle.Builder()
             .withPuzzle(request.getParameter("riddle"))
             .withHint(request.getParameter("hint1"))
             .withHint(request.getParameter("hint2"))
@@ -44,10 +45,12 @@ public class DestinationDataServlet extends HttpServlet {
             .build();
 
     List<String> levels = request.getParameterValues("obscurity").stream().filter(level -> level != null);
+    com.google.sps.data.Destination.Obscurity level = convertLevelToEnum(levels);
 
     List<String> tags = request.getParameterValues("tag").stream().filter(tag -> tag != null);
+    List<com.google.sps.data.Destination.Tag> checkedTags = convertTagsToEnum(tags);
 
-    Destination d1 = new Destination().Builder()
+    com.google.sps.data.Destination d1 = new com.google.sps.data.Destination.Builder()
             .withName(name)
             .withLocation(location)
             .withCity(city)
@@ -64,42 +67,42 @@ public class DestinationDataServlet extends HttpServlet {
     response.sendRedirect("/destination-data");
   }
 
-  public List<Tag> convertTagsToEnum(List<String> tags){
-    List<Tag> tagEnums;
+  public List<com.google.sps.data.Destination.Tag> convertTagsToEnum(List<String> tags){
+    List<com.google.sps.data.Destination.Tag> tagEnums;
     for(String tag: tags){
       switch(tag){
         case "art":
-          tagEnums.add(Tag.ART);
+          tagEnums.add(com.google.sps.data.Destination.Tag.ART);
         case "sport":
-          tagEnums.add(Tag.SPORT);
+          tagEnums.add(com.google.sps.data.Destination.Tag.SPORT);
         case "historical":
-          tagEnums.add(Tag.HISTORICAL);
+          tagEnums.add(com.google.sps.data.Destination.Tag.HISTORICAL);
         case "food":
-          tagEnums.add(Tag.FOOD);
+          tagEnums.add(com.google.sps.data.Destination.Tag.FOOD);
         case "family":
-          tagEnums.add(Tag.FAMILY);
+          tagEnums.add(com.google.sps.data.Destination.Tag.FAMILY);
         case "tourist":
-          tagEnums.add(Tag.TOURIST);
+          tagEnums.add(com.google.sps.data.Destination.Tag.TOURIST);
         default:
-          tagEnums.add(Tag.UNDEFINED);
+          tagEnums.add(com.google.sps.data.Destination.Tag.UNDEFINED);
       }
     }
 
     return tagEnums;
   }
 
-  public obscurity convertLevelToEnum(List<String> levels){
-    Obscurity obscureLevel;
+  public com.google.sps.data.Destination.Obscurity convertLevelToEnum(List<String> levels){
+    com.google.sps.data.Destination.Obscurity obscureLevel;
     for(String level: levels){
       switch(level){
         case "easy":
-          obscureLevel = Obscurity.EASY;
+          obscureLevel = com.google.sps.data.Destination.Obscurity.EASY;
         case "medium":
-          obscureLevel = Obscurity.MEDIUM;
+          obscureLevel = com.google.sps.data.Destination.Obscurity.MEDIUM;
         case "hard":
-          obscureLevel = Obscurity.HARD;
+          obscureLevel = com.google.sps.data.Destination.Obscurity.HARD;
         default:
-          obscureLevel = Obscurity.UNDEFINED;
+          obscureLevel = com.google.sps.data.Destination.Obscurity.UNDEFINED;
       }
     }
   }

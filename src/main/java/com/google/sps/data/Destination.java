@@ -16,6 +16,7 @@ package com.google.sps.data;
  
 import java.lang.Enum;
 import java.util.ArrayList;
+import java.util.List;
  
 // Represents a destination submitted by a user.
 public class Destination {
@@ -25,40 +26,28 @@ public class Destination {
      TOURIST,
      HISTORICAL,
      ART,
-     FAMILY;
+     FAMILY,
+     UNDEFINED;
     }
  
   public enum Obscurity {
     EASY,
     MEDIUM,
-    HARD;
+    HARD,
+    UNDEFINED;
   }
  
   private String name;
   private LatLng location;
   private String city;
   private String description;
-  private ArrayList<Riddle> riddles;
+  private ArrayList<com.google.sps.data.Riddle> riddles;
   private Obscurity level;
-  private ArrayList<Tag> categories;
+  private List<Tag> categories;
  
   private Destination() {}
  
   public static class Builder {
-    public enum Tag {
-      FOOD,
-      SPORT,
-      TOURIST,
-      HISTORICAL,
-      ART,
-      FAMILY;
-    }
- 
-    public enum Obscurity {
-      EASY,
-      MEDIUM,
-      HARD;
-    }
  
     private String name;
     private LatLng location;
@@ -66,7 +55,7 @@ public class Destination {
     private String description;
     private ArrayList<Riddle> riddles;
     private Obscurity level;
-    private Tag categories;
+    private List<Tag> categories;
  
     public Builder withName(String name){
       this.name = name;
@@ -80,25 +69,22 @@ public class Destination {
  
     public Builder withCity(String city){
       this.city = city;
- 
       return this;
     }
  
     public Builder withDescription(String description){
       this.description = description;
- 
       return this;
     }
  
     public Builder withRiddle(Riddle riddle){
-      riddles.add(Riddle);
- 
+      riddles.add(riddle);
       return this;
     }
  
-    public Builder withTags(ArrayList<Tag> categories){
+    public Builder withTags(List<Tag> categories){
       for(int i = 0; i < categories.size(); i++){
-        this.categories[i] = categories[i];
+        this.categories.add(categories.get(i));
       }
       return this;
     }
@@ -112,10 +98,14 @@ public class Destination {
       Destination destination = new Destination();
       destination.name = this.name;
       destination.location = this.location;
-      destination.city = this.location;
+      destination.city = this.city;
       destination.description = this.description;
-      destination.riddles.add(this.riddle);
-      destination.categories = this.categories;
+      for(int i = 0; i < this.riddles.size(); i++){
+        destination.riddles.add(this.riddles.get(i));
+      }
+      for(int i = 0; i < this.categories.size(); i++){
+        destination.categories.add(this.categories.get(i));
+      }
       destination.level = this.level;
  
       return destination;
