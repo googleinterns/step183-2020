@@ -37,6 +37,7 @@ const INVISIBLE_CLASS = 'invisible';
 // Global variables.
 const puzzleArr = [];
 let destIndex;
+let hintIndex = 0; // Marks the hint that the user will see next.
 const destArr = [];
 let map;
 
@@ -65,7 +66,6 @@ function getHunt() {
       puzzleArr.push(mssg.items[i].riddle.puzzle);
       destArr.push(mssg.items[i].name);
     }
-    //createMap();
     updateToCurrentState(destIndex);
   });
 }
