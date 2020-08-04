@@ -1,3 +1,7 @@
+const UNCLICKED = 'unclicked-filter';
+const CLICKED = 'clicked-filter';
+const CLICKED_ARRAY_URL = 'clicked-array=';
+
 /**
 * Turn a filter a different color when pressed, and change class accordingly.
 **/
@@ -6,12 +10,12 @@ function turnBlueWhenClicked() { //eslint-disable-line
   for (let i = 0; i < allFilters.length; i++) {
     allFilters[i].onclick = function() {
       const currFilter = allFilters[i];
-      if (currFilter.classList.contains('unclicked-filter')) {
-        currFilter.classList.remove('unclicked-filter');
-        currFilter.classList.add('clicked-filter');
+      if (currFilter.classList.contains(UNCLICKED)) {
+        currFilter.classList.remove(UNCLICKED);
+        currFilter.classList.add(CLICKED);
       } else {
-        currFilter.classList.remove('clicked-filter');
-        currFilter.classList.add('unclicked-filter');
+        currFilter.classList.remove(CLICKED);
+        currFilter.classList.add(UNCLICKED);
       }
     };
   }
@@ -29,10 +33,9 @@ function getClickedFilters() { //eslint-disable-line
   }
 
   const JSONArray = JSON.stringify(clickedArray);
-  console.log(JSONArray);
-  fetch('/generate?clicked-array=' + JSONArray, {method: 'POST'}).then(
+  fetch('/generate?' + CLICKED_ARRAY_URL + JSONArray, {method: 'POST'}).then(
       (response) => response.json()).then((message) => {
-    console.log(message);
+    console.log(message); //TODO: take out, replace with success or error message
   });
 }
 
