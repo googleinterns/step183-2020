@@ -22,9 +22,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 @WebServlet("/destination-data")
 public class DestinationDataServlet extends HttpServlet {
+
+  List<com.google.sps.data.Destination.Tag> tagEnums;
+  com.google.sps.data.Destination.Obscurity obscureLevel;
+
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String name = request.getParameter("name");
@@ -44,10 +50,10 @@ public class DestinationDataServlet extends HttpServlet {
             .withHint(request.getParameter("hint3"))
             .build();
 
-    List<String> levels = request.getParameterValues("obscurity").stream().filter(level -> level != null);
+    List<String> levels = Arrays.stream(request.getParameterValues("obscurity")).filter(level -> level != null).collect(Collectors.toList());
     com.google.sps.data.Destination.Obscurity level = convertLevelToEnum(levels);
 
-    List<String> tags = request.getParameterValues("tag").stream().filter(tag -> tag != null);
+    List<String> tags = Arrays.stream(request.getParameterValues("tag")).filter(tag -> tag != null).collect(Collectors.toList());
     List<com.google.sps.data.Destination.Tag> checkedTags = convertTagsToEnum(tags);
 
     com.google.sps.data.Destination d1 = new com.google.sps.data.Destination.Builder()
@@ -68,7 +74,6 @@ public class DestinationDataServlet extends HttpServlet {
   }
 
   public List<com.google.sps.data.Destination.Tag> convertTagsToEnum(List<String> tags){
-    List<com.google.sps.data.Destination.Tag> tagEnums;
     for(String tag: tags){
       switch(tag){
         case "art":
@@ -92,7 +97,6 @@ public class DestinationDataServlet extends HttpServlet {
   }
 
   public com.google.sps.data.Destination.Obscurity convertLevelToEnum(List<String> levels){
-    com.google.sps.data.Destination.Obscurity obscureLevel;
     for(String level: levels){
       switch(level){
         case "easy":
@@ -105,5 +109,6 @@ public class DestinationDataServlet extends HttpServlet {
           obscureLevel = com.google.sps.data.Destination.Obscurity.UNDEFINED;
       }
     }
+    return obscureLevel;
   }
 }
