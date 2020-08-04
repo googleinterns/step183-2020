@@ -35,7 +35,8 @@ function getClickedFilters() { //eslint-disable-line
   const JSONArray = JSON.stringify(clickedArray);
   fetch('/generate?' + CLICKED_ARRAY_URL + JSONArray, {method: 'POST'}).then(
       (response) => response.json()).then((message) => {
-    console.log(message); //TODO: take out, replace with success or error message
+    // TODO: take out, replace with success or error message
+    console.log(message); 
   });
 }
 
