@@ -71,7 +71,11 @@ public class DestinationDataServlet extends HttpServlet {
             .build();
 
     /* Retrieves the obscurity level chosen by the user as a List of Strings and converts the level to an Enum Obscurity value */
-    String obscureLevel = request.getParameterValue(OBSCURITY_PARAMETER);
+    String obscureLevel =
+        Arrays.stream(request.getParameterValues(OBSCURITY_PARAMETER))
+            .filter(level -> level != null)
+            .collect(Collectors.toList())
+            .get(0);
     Destination.Obscurity level = convertLevelToEnum(obscureLevel);
 
     /* Retrieves the tags selected by the user as a List of Strings and converts them into a Set of Enum Tags */
@@ -138,7 +142,7 @@ public class DestinationDataServlet extends HttpServlet {
   }
 
   public Destination.Obscurity convertLevelToEnum(String obscureLevel) {
-    switch (level) {
+    switch (obscureLevel) {
       case "easy":
         return Destination.Obscurity.EASY;
       case "medium":
