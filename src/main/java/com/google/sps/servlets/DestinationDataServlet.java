@@ -71,10 +71,7 @@ public class DestinationDataServlet extends HttpServlet {
             .build();
 
     /* Retrieves the obscurity level chosen by the user as a List of Strings and converts the level to an Enum Obscurity value */
-    List<String> obscureLevel =
-        Arrays.stream(request.getParameterValues(OBSCURITY_PARAMETER))
-            .filter(level -> level != null)
-            .collect(Collectors.toList());
+    String obscureLevel = request.getParameterValue(OBSCURITY_PARAMETER);
     Destination.Obscurity level = convertLevelToEnum(obscureLevel);
 
     /* Retrieves the tags selected by the user as a List of Strings and converts them into a Set of Enum Tags */
@@ -95,7 +92,9 @@ public class DestinationDataServlet extends HttpServlet {
             .withObscurity(level)
             .build();
 
+    /* TODO: Store the data in datastore rather than locally */
     destinations.add(destination);
+    /* TODO: redirect back index.html once the data is stored in datastore */
     response.sendRedirect(REDIRECT_URL);
   }
 
@@ -132,27 +131,21 @@ public class DestinationDataServlet extends HttpServlet {
         case "tourist":
           tagEnums.add(Destination.Tag.TOURIST);
           break;
-        default:
-          tagEnums.add(Destination.Tag.UNDEFINED);
       }
     }
 
     return tagEnums;
   }
 
-  public Destination.Obscurity convertLevelToEnum(List<String> obscureLevel) {
-    for (String level : obscureLevel) {
-      switch (level) {
-        case "easy":
-          return Destination.Obscurity.EASY;
-        case "medium":
-          return Destination.Obscurity.MEDIUM;
-        case "hard":
-          return Destination.Obscurity.HARD;
-        default:
-          return Destination.Obscurity.UNDEFINED;
+  public Destination.Obscurity convertLevelToEnum(String obscureLevel) {
+    switch (level) {
+      case "easy":
+        return Destination.Obscurity.EASY;
+      case "medium":
+        return Destination.Obscurity.MEDIUM;
+      case "hard":
+        return Destination.Obscurity.HARD;
       }
-    }
 
     return Destination.Obscurity.UNDEFINED;
   }
