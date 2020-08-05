@@ -55,53 +55,53 @@ public class Destination {
     private Obscurity level;
     private Set<Tag> categories = new HashSet<>();
  
-    public Builder withName(String name){
+    public Builder withName(String name) {
       this.name = name;
       return this;
     }
  
-    public Builder withLocation(LatLng location){
+    public Builder withLocation(LatLng location) {
       this.location = location;
       return this;
     }
  
-    public Builder withCity(String city){
+    public Builder withCity(String city) {
       this.city = city;
       return this;
     }
  
-    public Builder withDescription(String description){
+    public Builder withDescription(String description) {
       this.description = description;
       return this;
     }
  
-    public Builder withRiddle(Riddle riddle){
+    public Builder withRiddle(Riddle riddle) {
       riddles.add(riddle);
       return this;
     }
  
-    public Builder withTags(Set<Tag> categories){
+    public Builder withTags(Set<Tag> categories) {
       for(Tag tag : categories){
         this.categories.add(tag);
       }
       return this;
     }
  
-    public Builder withObscurity(Obscurity level){
+    public Builder withObscurity(Obscurity level) {
       this.level = level;
       return this;
     }
   
-    public Destination build(){
+    public Destination build() {
       Destination destination = new Destination();
       destination.name = this.name;
       destination.location = this.location;
       destination.city = this.city;
       destination.description = this.description;
-      for(Riddle riddle : this.riddles){
+      for(Riddle riddle : this.riddles) {
         destination.riddles.add(riddle);
       }
-      for(Tag tag : this.categories){
+      for(Tag tag : this.categories) {
         destination.categories.add(tag);
       }
       destination.level = this.level;

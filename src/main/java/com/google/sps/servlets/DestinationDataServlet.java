@@ -84,7 +84,7 @@ public class DestinationDataServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     Gson gson = new Gson();
-    String json = gson.toJson(destinations.get(destinations.size()-1));
+    String json = gson.toJson(destinations.get(destinations.size() - 1));
     response.setContentType("application/json;");
     response.getWriter().println(json);
   }
