@@ -37,7 +37,7 @@ import javax.servlet.http.HttpServletResponse;
 /* Returns a destination created from user submitted information */
 @WebServlet("/destination-data")
 public class DestinationDataServlet extends HttpServlet {
-  
+
   // Temporarily stores the destination created by the user
   public List<Destination> destinations = new ArrayList<>();
 
@@ -61,7 +61,7 @@ public class DestinationDataServlet extends HttpServlet {
             .withHint(request.getParameter("hint2"))
             .withHint(request.getParameter("hint3"))
             .build();
-            
+
     /* Retrieves the obscurity level chosen by the user as a List of Strings and converts the level to an Enum Obscurity value */
     List<String> levels =
         Arrays.stream(request.getParameterValues("obscurity"))
@@ -86,7 +86,7 @@ public class DestinationDataServlet extends HttpServlet {
             .withTags(checkedTags)
             .withObscurity(level)
             .build();
-    
+
     destinations.add(d1);
     response.sendRedirect("/destination-data");
   }
@@ -128,6 +128,7 @@ public class DestinationDataServlet extends HttpServlet {
           tagEnums.add(Destination.Tag.UNDEFINED);
       }
     }
+
     return tagEnums;
   }
 
@@ -144,6 +145,7 @@ public class DestinationDataServlet extends HttpServlet {
           return Destination.Obscurity.UNDEFINED;
       }
     }
+
     return Destination.Obscurity.UNDEFINED;
   }
 }
