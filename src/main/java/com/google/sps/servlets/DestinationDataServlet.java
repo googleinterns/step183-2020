@@ -149,7 +149,7 @@ public class DestinationDataServlet extends HttpServlet {
         return Destination.Obscurity.MEDIUM;
       case "hard":
         return Destination.Obscurity.HARD;
-      }
+    }
 
     return Destination.Obscurity.UNDEFINED;
   }
