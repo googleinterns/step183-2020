@@ -15,20 +15,24 @@
 package com.google.sps.servlets;
 
 import com.google.gson.Gson;
-import java.io.IOException;
+
+import com.google.sps.data.Destination;
+import com.google.sps.data.LatLng;
+import com.google.sps.data.Riddle;
+
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import java.io.IOException;
+
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
-import java.util.Arrays;
-import java.util.stream.Collectors;
-import java.util.Set;
-import java.util.HashSet;
-import com.google.sps.data.Destination;
-import com.google.sps.data.Riddle;
-import com.google.sps.data.LatLng;
 
 /* Returns a destination created from user submitted information */
 @WebServlet("/destination-data")
@@ -41,7 +45,8 @@ public class DestinationDataServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String name = request.getParameter("name");
 
-    LatLng location = new LatLng.Builder()
+    LatLng location = 
+        new LatLng.Builder()
             .withLat(Double.parseDouble(request.getParameter("latitude")))
             .withLng(Double.parseDouble(request.getParameter("longitude")))
             .build();
@@ -49,7 +54,8 @@ public class DestinationDataServlet extends HttpServlet {
     String city = request.getParameter("city");
     String description = request.getParameter("description");
 
-    Riddle riddle = new Riddle.Builder()
+    Riddle riddle = 
+        new Riddle.Builder()
             .withPuzzle(request.getParameter("riddle"))
             .withHint(request.getParameter("hint1"))
             .withHint(request.getParameter("hint2"))
@@ -57,14 +63,21 @@ public class DestinationDataServlet extends HttpServlet {
             .build();
             
     /* Retrieves the obscurity level chosen by the user as a List of Strings and converts the level to an Enum Obscurity value */
-    List<String> levels = Arrays.stream(request.getParameterValues("obscurity")).filter(level -> level != null).collect(Collectors.toList());
+    List<String> levels = 
+        Arrays.stream(request.getParameterValues("obscurity"))
+            .filter(level -> level != null)
+            .collect(Collectors.toList());
     Destination.Obscurity level = convertLevelToEnum(levels);
 
     /* Retrieves the tags selected by the user as a List of Strings and converts them into a Set of Enum Tags */
-    List<String> tags = Arrays.stream(request.getParameterValues("tag")).filter(tag -> tag != null).collect(Collectors.toList());
+    List<String> tags = 
+        Arrays.stream(request.getParameterValues("tag"))
+            .filter(tag -> tag != null)
+            .collect(Collectors.toList());
     Set<Destination.Tag> checkedTags = convertTagsToEnum(tags);
 
-    Destination d1 = new Destination.Builder()
+    Destination d1 = 
+        new Destination.Builder()
             .withName(name)
             .withLocation(location)
             .withCity(city)
@@ -89,10 +102,10 @@ public class DestinationDataServlet extends HttpServlet {
     response.getWriter().println(json);
   }
 
-  public Set<Destination.Tag> convertTagsToEnum(List<String> tags){
+  public Set<Destination.Tag> convertTagsToEnum(List<String> tags) {
     Set<Destination.Tag> tagEnums = new HashSet<Destination.Tag>();
-    for(String tag: tags){
-      switch(tag){
+    for (String tag: tags) {
+      switch(tag) {
         case "art":
           tagEnums.add(Destination.Tag.ART);
           break;
@@ -118,8 +131,8 @@ public class DestinationDataServlet extends HttpServlet {
     return tagEnums;
   }
 
-  public Destination.Obscurity convertLevelToEnum(List<String> levels){
-    for(String level: levels){
+  public Destination.Obscurity convertLevelToEnum(List<String> levels) {
+    for (String level: levels) {
       switch(level){
         case "easy":
           return Destination.Obscurity.EASY;

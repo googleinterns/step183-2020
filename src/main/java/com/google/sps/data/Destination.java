@@ -15,9 +15,11 @@
 package com.google.sps.data;
  
 import java.lang.Enum;
+
 import java.util.ArrayList;
-import java.util.Set;
 import java.util.HashSet;
+import java.util.Set;
+
  
 // Represents a destination submitted by a user.
 public class Destination {
@@ -81,7 +83,7 @@ public class Destination {
     }
  
     public Builder withTags(Set<Tag> categories) {
-      for(Tag tag : categories){
+      for (Tag tag : categories) {
         this.categories.add(tag);
       }
       return this;
@@ -98,10 +100,10 @@ public class Destination {
       destination.location = this.location;
       destination.city = this.city;
       destination.description = this.description;
-      for(Riddle riddle : this.riddles) {
+      for (Riddle riddle : this.riddles) {
         destination.riddles.add(riddle);
       }
-      for(Tag tag : this.categories) {
+      for (Tag tag : this.categories) {
         destination.categories.add(tag);
       }
       destination.level = this.level;
