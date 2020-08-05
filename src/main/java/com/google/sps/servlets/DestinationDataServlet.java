@@ -33,18 +33,18 @@ import javax.servlet.http.HttpServletResponse;
 /* Returns a destination created from user submitted information */
 @WebServlet("/destination-data")
 public class DestinationDataServlet extends HttpServlet {
-  private static final NAME_PARAMETER = "name";
-  private static final LAT_PARAMETER = "latitude";
-  private static final LNG_PARAMETER = "longitude";
-  private static final CITY_PARAMETER = "city";
-  private static final DESCRIPTION_PARAMETER = "description";
-  private static final RIDDLE_PARAMETER = "riddle";
-  private static final HINT1_PARAMETER = "hint1";
-  private static final HINT2_PARAMETER = "hint2";
-  private static final HINT3_PARAMETER = "hint3";
-  private static final OBSCURITY_PARAMETER = "obscurity";
-  private static final TAG_PARAMETER = "tag";
-  private static final REDIRECT_URL = "/destination-data";
+  private static final String NAME_PARAMETER = "name";
+  private static final String LAT_PARAMETER = "latitude";
+  private static final String LNG_PARAMETER = "longitude";
+  private static final String CITY_PARAMETER = "city";
+  private static final String DESCRIPTION_PARAMETER = "description";
+  private static final String RIDDLE_PARAMETER = "riddle";
+  private static final String HINT1_PARAMETER = "hint1";
+  private static final String HINT2_PARAMETER = "hint2";
+  private static final String HINT3_PARAMETER = "hint3";
+  private static final String OBSCURITY_PARAMETER = "obscurity";
+  private static final String TAG_PARAMETER = "tag";
+  private static final String REDIRECT_URL = "/destination-data";
 
   // Temporarily stores the destination created by the user
   public List<Destination> destinations = new ArrayList<>();
