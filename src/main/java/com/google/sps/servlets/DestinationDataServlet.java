@@ -91,7 +91,7 @@ public class DestinationDataServlet extends HttpServlet {
     response.sendRedirect("/destination-data");
   }
 
-  /* Retrieves the destination created by the user, turns it into a JSON formatted string, 
+  /* Retrieves the destination created by the user, turns it into a JSON formatted string,
    *and displays the JSON-ified String on /destination-data
    */
   @Override
@@ -133,7 +133,7 @@ public class DestinationDataServlet extends HttpServlet {
 
   public Destination.Obscurity convertLevelToEnum(List<String> levels) {
     for (String level : levels) {
-      switch (level){
+      switch (level) {
         case "easy":
           return Destination.Obscurity.EASY;
         case "medium":
