@@ -38,29 +38,6 @@ let destIndex; // Marks the destination that the user currently needs to find.
 let hintIndex = 0; // Marks the hint that the user will see next.
 const huntArr = []; // Stores scavenger hunt data retrieved from the server.
 
-/**
- * Represents a destination on the scavenger hunt.
- */
-class Destination {
-  /**
-   * Constructor for Destination class.
-   * @param {String} name Name of destination
-   * @param {String} description Description of destination
-   * @param {String} puzzle Primary riddle used to find destination
-   * @param {array} hints Array of hints to supplement puzzle
-   * @param {Double} lat Latitude of destination
-   * @param {Double} lng Longitude of destination
-   */
-  constructor(name, description, puzzle, hints, lat, lng) {
-    this.name = name;
-    this.description = description;
-    this.puzzle = puzzle;
-    this.hints = hints;
-    this.lat = lat;
-    this.lng = lng;
-  }
-}
-
 window.onload = getHunt();
 
 /**
@@ -110,13 +87,13 @@ function handleDestinationAnswer(guess) {
  * @param {Double} destLat: latitude of location.
  * @param {Double} destLng: longitude of location.
  * @param {String} destName: Name of location.
- * This function is implemented in another PR.
+ * TODO: Implement this function.
  */
 function addMarkerToMap(destLat, destLng, destName) {}
 
 /**
  * Creates a map and adds it to the page.
- * This function is implemented in another PR.
+ * TODO: Implement this function.
  */
 function createMap() {}
 
@@ -171,7 +148,7 @@ function toggleProceedButton(hide) {
   if (hide) {
     proceedButton.classList.add(INVISIBLE_CLASS);
   } else {
-    if (destIndex == huntArr.length - 1) {
+    if (destIndex === huntArr.length - 1) {
       document.querySelector('#' + PROCEED_BUTTON).innerText =
           PROCEED_FINAL_MSSG;
     }
@@ -182,7 +159,7 @@ function toggleProceedButton(hide) {
 /**
  * Show or hide the hint button.
  * @param {boolean} hide Whether the proceed button should be hidden or shown.
- * This function is implemented in the adjacent PR.
+ * TODO: Implement this function.
  */
 function toggleHintButton(hide) {}
 
