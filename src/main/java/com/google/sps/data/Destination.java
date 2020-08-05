@@ -93,7 +93,7 @@ public class Destination {
       this.level = level;
       return this;
     }
- 
+
     public Destination build() {
       Destination destination = new Destination();
       destination.name = this.name;
