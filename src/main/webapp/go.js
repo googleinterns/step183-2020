@@ -33,7 +33,7 @@ const FINAL_MSSG = 'Congrats, you\'ve finished the hunt!';
 // Other constants.
 const INDEX_PARAM = 'new-index';
 const INVISIBLE_CLASS = 'invisible';
-const REFRESH_TIME = 10000; //ten seconds
+const REFRESH_TIME = 10000; // ten seconds
 
 // Global variables.
 const puzzleArr = [];
@@ -46,8 +46,6 @@ window.onload = function() {
   addScriptToHead();
   getHunt();
 };
-
-window.setInterval(updateGeolocation, REFRESH_TIME);
 
 /**
  * Add the Map API key to the head.
@@ -90,13 +88,16 @@ function addMarkerToMap(destLat, destLng, destName) {
 
 /**
  * Creates a map and adds it to the page.
+ * Disabled lint check because createMap() is called once
+ * addScriptToHead() executes.
  */
-function createMap() {
+function createMap() { // eslint-disable-line
   map = new google.maps.Map(
       document.getElementById(MAP_DISPLAY),
       // Centered at GooglePlex (updated below).
       {center: {lat: 37.422, lng: -122.084}, zoom: 7},
   );
+  window.setInterval(updateGeolocation, REFRESH_TIME);
   updateGeolocation();
 }
 
