@@ -13,8 +13,6 @@
 // limitations under the License.
  
 package com.google.sps.data;
- 
-import java.lang.Enum;
 
 import java.util.ArrayList;
 import java.util.HashSet;

@@ -20,14 +20,14 @@ import com.google.sps.data.Destination;
 import com.google.sps.data.LatLng;
 import com.google.sps.data.Riddle;
 
+import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import java.io.IOException;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -45,7 +45,7 @@ public class DestinationDataServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String name = request.getParameter("name");
 
-    LatLng location = 
+    LatLng location =
         new LatLng.Builder()
             .withLat(Double.parseDouble(request.getParameter("latitude")))
             .withLng(Double.parseDouble(request.getParameter("longitude")))
@@ -54,7 +54,7 @@ public class DestinationDataServlet extends HttpServlet {
     String city = request.getParameter("city");
     String description = request.getParameter("description");
 
-    Riddle riddle = 
+    Riddle riddle =
         new Riddle.Builder()
             .withPuzzle(request.getParameter("riddle"))
             .withHint(request.getParameter("hint1"))
@@ -63,20 +63,20 @@ public class DestinationDataServlet extends HttpServlet {
             .build();
             
     /* Retrieves the obscurity level chosen by the user as a List of Strings and converts the level to an Enum Obscurity value */
-    List<String> levels = 
+    List<String> levels =
         Arrays.stream(request.getParameterValues("obscurity"))
             .filter(level -> level != null)
             .collect(Collectors.toList());
     Destination.Obscurity level = convertLevelToEnum(levels);
 
     /* Retrieves the tags selected by the user as a List of Strings and converts them into a Set of Enum Tags */
-    List<String> tags = 
+    List<String> tags =
         Arrays.stream(request.getParameterValues("tag"))
             .filter(tag -> tag != null)
             .collect(Collectors.toList());
     Set<Destination.Tag> checkedTags = convertTagsToEnum(tags);
 
-    Destination d1 = 
+    Destination d1 =
         new Destination.Builder()
             .withName(name)
             .withLocation(location)
@@ -104,8 +104,8 @@ public class DestinationDataServlet extends HttpServlet {
 
   public Set<Destination.Tag> convertTagsToEnum(List<String> tags) {
     Set<Destination.Tag> tagEnums = new HashSet<Destination.Tag>();
-    for (String tag: tags) {
-      switch(tag) {
+    for (String tag : tags) {
+      switch (tag) {
         case "art":
           tagEnums.add(Destination.Tag.ART);
           break;
@@ -132,8 +132,8 @@ public class DestinationDataServlet extends HttpServlet {
   }
 
   public Destination.Obscurity convertLevelToEnum(List<String> levels) {
-    for (String level: levels) {
-      switch(level){
+    for (String level : levels) {
+      switch (level){
         case "easy":
           return Destination.Obscurity.EASY;
         case "medium":
