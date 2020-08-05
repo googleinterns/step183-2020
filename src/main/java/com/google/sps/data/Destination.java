@@ -16,21 +16,20 @@ package com.google.sps.data;
  
 import java.lang.Enum;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
  
 // Represents a destination submitted by a user.
 public class Destination {
   public enum Tag {
-     FOOD,
-     SPORT,
-     TOURIST,
-     HISTORICAL,
-     ART,
-     FAMILY,
-     UNDEFINED;
-    }
+    FOOD,
+    SPORT,
+    TOURIST,
+    HISTORICAL,
+    ART,
+    FAMILY,
+    UNDEFINED;
+  }
   public enum Obscurity {
     EASY,
     MEDIUM,
@@ -46,7 +45,7 @@ public class Destination {
   private Set<Tag> categories = new HashSet<>();
  
   private Destination() {}
- 
+
   public static class Builder {
     private String name;
     private LatLng location;

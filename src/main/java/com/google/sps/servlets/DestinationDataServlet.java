@@ -26,19 +26,22 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 import java.util.Set;
 import java.util.HashSet;
+import com.google.sps.data.Destination;
+import com.google.sps.data.Riddle;
+import com.google.sps.data.LatLng;
 
 /* Returns a destination created from user submitted information */
 @WebServlet("/destination-data")
 public class DestinationDataServlet extends HttpServlet {
   
   // Temporarily stores the destination created by the user
-  public List<com.google.sps.data.Destination> destinations = new ArrayList<>();
+  public List<Destination> destinations = new ArrayList<>();
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String name = request.getParameter("name");
 
-    com.google.sps.data.LatLng location = new com.google.sps.data.LatLng.Builder()
+    LatLng location = new LatLng.Builder()
             .withLat(Double.parseDouble(request.getParameter("latitude")))
             .withLng(Double.parseDouble(request.getParameter("longitude")))
             .build();
@@ -46,7 +49,7 @@ public class DestinationDataServlet extends HttpServlet {
     String city = request.getParameter("city");
     String description = request.getParameter("description");
 
-    com.google.sps.data.Riddle riddle = new com.google.sps.data.Riddle.Builder()
+    Riddle riddle = new Riddle.Builder()
             .withPuzzle(request.getParameter("riddle"))
             .withHint(request.getParameter("hint1"))
             .withHint(request.getParameter("hint2"))
@@ -55,13 +58,13 @@ public class DestinationDataServlet extends HttpServlet {
             
     /* Retrieves the obscurity level chosen by the user as a List of Strings and converts the level to an Enum Obscurity value */
     List<String> levels = Arrays.stream(request.getParameterValues("obscurity")).filter(level -> level != null).collect(Collectors.toList());
-    com.google.sps.data.Destination.Obscurity level = convertLevelToEnum(levels);
+    Destination.Obscurity level = convertLevelToEnum(levels);
 
     /* Retrieves the tags selected by the user as a List of Strings and converts them into a Set of Enum Tags */
     List<String> tags = Arrays.stream(request.getParameterValues("tag")).filter(tag -> tag != null).collect(Collectors.toList());
-    Set<com.google.sps.data.Destination.Tag> checkedTags = convertTagsToEnum(tags);
+    Set<Destination.Tag> checkedTags = convertTagsToEnum(tags);
 
-    com.google.sps.data.Destination d1 = new com.google.sps.data.Destination.Builder()
+    Destination d1 = new Destination.Builder()
             .withName(name)
             .withLocation(location)
             .withCity(city)
@@ -86,48 +89,48 @@ public class DestinationDataServlet extends HttpServlet {
     response.getWriter().println(json);
   }
 
-  public Set<com.google.sps.data.Destination.Tag> convertTagsToEnum(List<String> tags){
-    Set<com.google.sps.data.Destination.Tag> tagEnums = new HashSet<com.google.sps.data.Destination.Tag>();
+  public Set<Destination.Tag> convertTagsToEnum(List<String> tags){
+    Set<Destination.Tag> tagEnums = new HashSet<Destination.Tag>();
     for(String tag: tags){
       switch(tag){
         case "art":
-          tagEnums.add(com.google.sps.data.Destination.Tag.ART);
+          tagEnums.add(Destination.Tag.ART);
           break;
         case "sports":
-          tagEnums.add(com.google.sps.data.Destination.Tag.SPORT);
+          tagEnums.add(Destination.Tag.SPORT);
           break;
         case "historical":
-          tagEnums.add(com.google.sps.data.Destination.Tag.HISTORICAL);
+          tagEnums.add(Destination.Tag.HISTORICAL);
           break;
         case "food":
-          tagEnums.add(com.google.sps.data.Destination.Tag.FOOD);
+          tagEnums.add(Destination.Tag.FOOD);
           break;
         case "family":
-          tagEnums.add(com.google.sps.data.Destination.Tag.FAMILY);
+          tagEnums.add(Destination.Tag.FAMILY);
           break;
         case "tourist":
-          tagEnums.add(com.google.sps.data.Destination.Tag.TOURIST);
+          tagEnums.add(Destination.Tag.TOURIST);
           break;
         default:
-          tagEnums.add(com.google.sps.data.Destination.Tag.UNDEFINED);
+          tagEnums.add(Destination.Tag.UNDEFINED);
       }
     }
     return tagEnums;
   }
 
-  public com.google.sps.data.Destination.Obscurity convertLevelToEnum(List<String> levels){
+  public Destination.Obscurity convertLevelToEnum(List<String> levels){
     for(String level: levels){
       switch(level){
         case "easy":
-          return com.google.sps.data.Destination.Obscurity.EASY;
+          return Destination.Obscurity.EASY;
         case "medium":
-          return com.google.sps.data.Destination.Obscurity.MEDIUM;
+          return Destination.Obscurity.MEDIUM;
         case "hard":
-          return com.google.sps.data.Destination.Obscurity.HARD;
+          return Destination.Obscurity.HARD;
         default:
-          return com.google.sps.data.Destination.Obscurity.UNDEFINED;
+          return Destination.Obscurity.UNDEFINED;
       }
     }
-    return com.google.sps.data.Destination.Obscurity.UNDEFINED;
+    return Destination.Obscurity.UNDEFINED;
   }
 }
