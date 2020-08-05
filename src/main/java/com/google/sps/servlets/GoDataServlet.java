@@ -29,14 +29,11 @@ import javax.servlet.http.HttpServletResponse;
 /** Returns a fake scavenger hunt and updates the current index of the hunt. */
 @WebServlet("/go-data")
 public class GoDataServlet extends HttpServlet {
-  private static final String NAME_PARAMETER = "name-input";
   private static final String INDEX_PARAMETER = "new-index";
-  private static final String MAIN_URL = "/go.html";
 
   // Keeps track of the current stage in the hunt that the user is on.
   // Before the user begins the hunt, the index should be -1.
   private int index = -1;
-  private String nameGuess = "";
 
   /**
    * Updates the index of the scavenger hunt (aka the destination that the user currently needs to
@@ -50,10 +47,8 @@ public class GoDataServlet extends HttpServlet {
     } catch (Exception e) {
     }
 
-    nameGuess = request.getParameter(NAME_PARAMETER);
-
     // Redirect back to main page.
-    response.sendRedirect(MAIN_URL);
+    response.sendRedirect(Constants.MAIN_URL);
   }
 
   @Override
@@ -120,7 +115,7 @@ public class GoDataServlet extends HttpServlet {
     items.add(firstHunt);
     items.add(secondHunt);
     items.add(thirdHunt);
-    ScavengerHunt hunt = new ScavengerHunt(items, index, "San Francisco", nameGuess);
+    ScavengerHunt hunt = new ScavengerHunt(items, index, "San Francisco");
     return hunt;
   }
 }

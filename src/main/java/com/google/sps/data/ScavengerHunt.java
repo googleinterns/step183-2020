@@ -22,12 +22,10 @@ public class ScavengerHunt {
   // For saved scavenger hunts: represents which destination the user is currently looking for.
   private int index;
   private String city;
-  private String guess;
 
-  public ScavengerHunt(ArrayList<HuntItem> items, int index, String city, String guess) {
+  public ScavengerHunt(ArrayList<HuntItem> items, int index, String city) {
     this.items = items;
     this.index = index;
     this.city = city;
-    this.guess = guess;
   }
 }

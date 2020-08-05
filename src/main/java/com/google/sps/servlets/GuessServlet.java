@@ -21,28 +21,27 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** NameServlet handles the user's guess for the destination they are trying to find. */
-@WebServlet("/name-data")
-public class NameServlet extends HttpServlet {
-  private static final String NAME_PARAMETER = "name-input";
+/** GuessServlet handles the user's guess for the destination they are trying to find. */
+@WebServlet("/guess-data")
+public class GuessServlet extends HttpServlet {
+  private static final String GUESS_PARAMETER = "guess-input";
   private static final String TEXT_TYPE = "text/html";
-  private static final String MAIN_URL = "/go.html";
 
-  private String name = "";
+  private String guess = "";
 
   /** Receives the user's guess from the form. */
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    name = request.getParameter(NAME_PARAMETER);
+    guess = request.getParameter(GUESS_PARAMETER);
 
     // Redirect back to main page.
-    response.sendRedirect(MAIN_URL);
+    response.sendRedirect(Constants.MAIN_URL);
   }
 
-  /** Allows the user's guess to be fetched from /name-data. */
+  /** Allows the user's guess to be fetched from /guess-data. */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String json = new Gson().toJson(name);
+    String json = new Gson().toJson(guess);
     response.setContentType(Constants.JSON_TYPE);
     response.getWriter().println(json);
   }

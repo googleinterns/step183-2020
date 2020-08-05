@@ -18,6 +18,7 @@ const PROCEED_BUTTON = 'proceed-button';
 
 // URLs that data should be fetched from.
 const DATA_URL = '/go-data';
+const GUESS_URL = '/guess-data';
 
 // Div IDs that text or a map should be inserted into.
 const HINT_DISPLAY = 'hint-area';
@@ -58,7 +59,7 @@ function getHunt() {
     createMap();
     updateToCurrentState(destIndex);
     if (destIndex >= 0) {
-      handleDestinationAnswer(mssg.guess);
+      handleDestinationAnswer();
     }
   });
 }
@@ -66,20 +67,21 @@ function getHunt() {
 /**
  * Determines whether the user entered the correct destination, and
  * adjusts the display accordingly.
- * @param {String} guess The destination name entered by the user.
  */
-function handleDestinationAnswer(guess) {
-  if (guess === huntArr[destIndex].name) {
-    toggleProceedButton(/* hide = */ false);
-    toggleHintButton(/* hide = */ true);
-    updateMessage(SUBMIT_DISPLAY, CORRECT_MSSG);
-    updateMessage(RIDDLE_DISPLAY, huntArr[destIndex].name + ': ' +
-        huntArr[destIndex].description);
-    addMarkerToMap(huntArr[destIndex].lat, huntArr[destIndex].lng,
-        huntArr[destIndex].name);
-  } else if (guess.length != 0) {
-    updateMessage(SUBMIT_DISPLAY, WRONG_MSSG);
-  }
+function handleDestinationAnswer() {
+  fetch(GUESS_URL).then((response) => response.json()).then((guess) => {
+    if (guess === huntArr[destIndex].name) {
+      toggleProceedButton(/* hide = */ false);
+      toggleHintButton(/* hide = */ true);
+      updateMessage(SUBMIT_DISPLAY, CORRECT_MSSG);
+      updateMessage(RIDDLE_DISPLAY, huntArr[destIndex].name + ': ' +
+          huntArr[destIndex].description);
+      addMarkerToMap(huntArr[destIndex].lat, huntArr[destIndex].lng,
+          huntArr[destIndex].name);
+    } else if (guess.length != 0) {
+      updateMessage(SUBMIT_DISPLAY, WRONG_MSSG);
+    }
+  });
 }
 
 /**
