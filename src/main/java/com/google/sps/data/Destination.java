@@ -17,6 +17,8 @@ package com.google.sps.data;
 import java.lang.Enum;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
  
 // Represents a destination submitted by a user.
 public class Destination {
@@ -41,9 +43,9 @@ public class Destination {
   private LatLng location;
   private String city;
   private String description;
-  private ArrayList<com.google.sps.data.Riddle> riddles;
+  private ArrayList<com.google.sps.data.Riddle> riddles = new ArrayList<>();
   private Obscurity level;
-  private List<Tag> categories;
+  private Set<Tag> categories = new HashSet<>();
  
   private Destination() {}
  
@@ -53,9 +55,9 @@ public class Destination {
     private LatLng location;
     private String city;
     private String description;
-    private ArrayList<Riddle> riddles;
+    private ArrayList<Riddle> riddles = new ArrayList<>();
     private Obscurity level;
-    private List<Tag> categories;
+    private Set<Tag> categories = new HashSet<>();
  
     public Builder withName(String name){
       this.name = name;
@@ -82,9 +84,9 @@ public class Destination {
       return this;
     }
  
-    public Builder withTags(List<Tag> categories){
-      for(int i = 0; i < categories.size(); i++){
-        this.categories.add(categories.get(i));
+    public Builder withTags(Set<Tag> categories){
+      for(Tag tag : categories){
+        this.categories.add(tag);
       }
       return this;
     }
@@ -100,11 +102,11 @@ public class Destination {
       destination.location = this.location;
       destination.city = this.city;
       destination.description = this.description;
-      for(int i = 0; i < this.riddles.size(); i++){
-        destination.riddles.add(this.riddles.get(i));
+      for(Riddle riddle : this.riddles){
+        destination.riddles.add(riddle);
       }
-      for(int i = 0; i < this.categories.size(); i++){
-        destination.categories.add(this.categories.get(i));
+      for(Tag tag : this.categories){
+        destination.categories.add(tag);
       }
       destination.level = this.level;
  

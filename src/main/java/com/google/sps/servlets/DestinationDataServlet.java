@@ -24,12 +24,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Arrays;
 import java.util.stream.Collectors;
+import java.util.Set;
+import java.util.HashSet;
 
 @WebServlet("/destination-data")
 public class DestinationDataServlet extends HttpServlet {
 
-  List<com.google.sps.data.Destination.Tag> tagEnums;
-  com.google.sps.data.Destination.Obscurity obscureLevel;
+  public List<com.google.sps.data.Destination> destinations = new ArrayList<>();
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -54,7 +55,11 @@ public class DestinationDataServlet extends HttpServlet {
     com.google.sps.data.Destination.Obscurity level = convertLevelToEnum(levels);
 
     List<String> tags = Arrays.stream(request.getParameterValues("tag")).filter(tag -> tag != null).collect(Collectors.toList());
-    List<com.google.sps.data.Destination.Tag> checkedTags = convertTagsToEnum(tags);
+    System.err.println(tags);
+    Set<com.google.sps.data.Destination.Tag> checkedTags = convertTagsToEnum(tags);
+    System.err.println(checkedTags);
+
+    
 
     com.google.sps.data.Destination d1 = new com.google.sps.data.Destination.Builder()
             .withName(name)
@@ -66,33 +71,47 @@ public class DestinationDataServlet extends HttpServlet {
             .withObscurity(level)
             .build();
     
-    Gson gson = new Gson();
-    String json = gson.toJson(d1);
-    response.setContentType("application/json;");
-    response.getWriter().println(json);
+    destinations.add(d1);
     response.sendRedirect("/destination-data");
   }
 
-  public List<com.google.sps.data.Destination.Tag> convertTagsToEnum(List<String> tags){
+  @Override
+  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    //response.setContentType("text/html");
+    //response.getWriter().println("Im here");
+    
+    Gson gson = new Gson();
+    String json = gson.toJson(destinations.get(destinations.size()-1));
+    response.setContentType("application/json;");
+    response.getWriter().println(json);
+  }
+
+  public Set<com.google.sps.data.Destination.Tag> convertTagsToEnum(List<String> tags){
+    Set<com.google.sps.data.Destination.Tag> tagEnums = new HashSet<com.google.sps.data.Destination.Tag>();
     for(String tag: tags){
       switch(tag){
         case "art":
           tagEnums.add(com.google.sps.data.Destination.Tag.ART);
-        case "sport":
+          break;
+        case "sports":
           tagEnums.add(com.google.sps.data.Destination.Tag.SPORT);
+          break;
         case "historical":
           tagEnums.add(com.google.sps.data.Destination.Tag.HISTORICAL);
+          break;
         case "food":
           tagEnums.add(com.google.sps.data.Destination.Tag.FOOD);
+          break;
         case "family":
           tagEnums.add(com.google.sps.data.Destination.Tag.FAMILY);
+          break;
         case "tourist":
           tagEnums.add(com.google.sps.data.Destination.Tag.TOURIST);
+          break;
         default:
           tagEnums.add(com.google.sps.data.Destination.Tag.UNDEFINED);
       }
     }
-
     return tagEnums;
   }
 
@@ -100,15 +119,15 @@ public class DestinationDataServlet extends HttpServlet {
     for(String level: levels){
       switch(level){
         case "easy":
-          obscureLevel = com.google.sps.data.Destination.Obscurity.EASY;
+          return com.google.sps.data.Destination.Obscurity.EASY;
         case "medium":
-          obscureLevel = com.google.sps.data.Destination.Obscurity.MEDIUM;
+          return com.google.sps.data.Destination.Obscurity.MEDIUM;
         case "hard":
-          obscureLevel = com.google.sps.data.Destination.Obscurity.HARD;
+          return com.google.sps.data.Destination.Obscurity.HARD;
         default:
-          obscureLevel = com.google.sps.data.Destination.Obscurity.UNDEFINED;
+          return com.google.sps.data.Destination.Obscurity.UNDEFINED;
       }
     }
-    return obscureLevel;
+    return com.google.sps.data.Destination.Obscurity.UNDEFINED;
   }
 }
