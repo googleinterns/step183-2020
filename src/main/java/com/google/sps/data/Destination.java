@@ -42,7 +42,7 @@ public class Destination {
   private LatLng location;
   private String city;
   private String description;
-  private ArrayList<com.google.sps.data.Riddle> riddles = new ArrayList<>();
+  private ArrayList<Riddle> riddles = new ArrayList<>();
   private Obscurity level;
   private Set<Tag> categories = new HashSet<>();
 

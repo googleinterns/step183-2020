@@ -33,46 +33,58 @@ import javax.servlet.http.HttpServletResponse;
 /* Returns a destination created from user submitted information */
 @WebServlet("/destination-data")
 public class DestinationDataServlet extends HttpServlet {
+  private static final NAME_PARAMETER = "name";
+  private static final LAT_PARAMETER = "latitude";
+  private static final LNG_PARAMETER = "longitude";
+  private static final CITY_PARAMETER = "city";
+  private static final DESCRIPTION_PARAMETER = "description";
+  private static final RIDDLE_PARAMETER = "riddle";
+  private static final HINT1_PARAMETER = "hint1";
+  private static final HINT2_PARAMETER = "hint2";
+  private static final HINT3_PARAMETER = "hint3";
+  private static final OBSCURITY_PARAMETER = "obscurity";
+  private static final TAG_PARAMETER = "tag";
+  private static final REDIRECT_URL = "/destination-data";
 
   // Temporarily stores the destination created by the user
   public List<Destination> destinations = new ArrayList<>();
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String name = request.getParameter("name");
+    String name = request.getParameter(NAME_PARAMETER);
 
     LatLng location =
         new LatLng.Builder()
-            .withLat(Double.parseDouble(request.getParameter("latitude")))
-            .withLng(Double.parseDouble(request.getParameter("longitude")))
+            .withLat(Double.parseDouble(request.getParameter(LAT_PARAMETER)))
+            .withLng(Double.parseDouble(request.getParameter(LNG_PARAMETER)))
             .build();
 
-    String city = request.getParameter("city");
-    String description = request.getParameter("description");
+    String city = request.getParameter(CITY_PARAMETER);
+    String description = request.getParameter(DESCRIPTION_PARAMETER);
 
     Riddle riddle =
         new Riddle.Builder()
-            .withPuzzle(request.getParameter("riddle"))
-            .withHint(request.getParameter("hint1"))
-            .withHint(request.getParameter("hint2"))
-            .withHint(request.getParameter("hint3"))
+            .withPuzzle(request.getParameter(RIDDLE_PARAMETER))
+            .withHint(request.getParameter(HINT1_PARAMETER))
+            .withHint(request.getParameter(HINT2_PARAMETER))
+            .withHint(request.getParameter(HINT3_PARAMETER))
             .build();
 
     /* Retrieves the obscurity level chosen by the user as a List of Strings and converts the level to an Enum Obscurity value */
-    List<String> levels =
-        Arrays.stream(request.getParameterValues("obscurity"))
+    List<String> obscureLevel =
+        Arrays.stream(request.getParameterValues(OBSCURITY_PARAMETER))
             .filter(level -> level != null)
             .collect(Collectors.toList());
-    Destination.Obscurity level = convertLevelToEnum(levels);
+    Destination.Obscurity level = convertLevelToEnum(obscureLevel);
 
     /* Retrieves the tags selected by the user as a List of Strings and converts them into a Set of Enum Tags */
     List<String> tags =
-        Arrays.stream(request.getParameterValues("tag"))
+        Arrays.stream(request.getParameterValues(TAG_PARAMETER))
             .filter(tag -> tag != null)
             .collect(Collectors.toList());
     Set<Destination.Tag> checkedTags = convertTagsToEnum(tags);
 
-    Destination d1 =
+    Destination destination =
         new Destination.Builder()
             .withName(name)
             .withLocation(location)
@@ -83,11 +95,11 @@ public class DestinationDataServlet extends HttpServlet {
             .withObscurity(level)
             .build();
 
-    destinations.add(d1);
-    response.sendRedirect("/destination-data");
+    destinations.add(destination);
+    response.sendRedirect(REDIRECT_URL);
   }
 
-  /* Retrieves the destination created by the user, turns it into a JSON formatted string,
+  /* Retrieves the most recent destination created by the user, turns it into a JSON formatted string,
    *and displays the JSON-ified String on /destination-data
    */
   @Override
@@ -128,8 +140,8 @@ public class DestinationDataServlet extends HttpServlet {
     return tagEnums;
   }
 
-  public Destination.Obscurity convertLevelToEnum(List<String> levels) {
-    for (String level : levels) {
+  public Destination.Obscurity convertLevelToEnum(List<String> obscureLevel) {
+    for (String level : obscureLevel) {
       switch (level) {
         case "easy":
           return Destination.Obscurity.EASY;
