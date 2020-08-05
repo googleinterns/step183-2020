@@ -31,14 +31,12 @@ public class Destination {
      FAMILY,
      UNDEFINED;
     }
- 
   public enum Obscurity {
     EASY,
     MEDIUM,
     HARD,
     UNDEFINED;
   }
- 
   private String name;
   private LatLng location;
   private String city;
@@ -50,7 +48,6 @@ public class Destination {
   private Destination() {}
  
   public static class Builder {
- 
     private String name;
     private LatLng location;
     private String city;

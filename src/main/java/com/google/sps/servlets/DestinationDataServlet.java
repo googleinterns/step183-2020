@@ -27,9 +27,11 @@ import java.util.stream.Collectors;
 import java.util.Set;
 import java.util.HashSet;
 
+/* Returns a destination created from user submitted information */
 @WebServlet("/destination-data")
 public class DestinationDataServlet extends HttpServlet {
-
+  
+  // Temporarily stores the destination created by the user
   public List<com.google.sps.data.Destination> destinations = new ArrayList<>();
 
   @Override
@@ -50,16 +52,14 @@ public class DestinationDataServlet extends HttpServlet {
             .withHint(request.getParameter("hint2"))
             .withHint(request.getParameter("hint3"))
             .build();
-
+            
+    /* Retrieves the obscurity level chosen by the user as a List of Strings and converts the level to an Enum Obscurity value */
     List<String> levels = Arrays.stream(request.getParameterValues("obscurity")).filter(level -> level != null).collect(Collectors.toList());
     com.google.sps.data.Destination.Obscurity level = convertLevelToEnum(levels);
 
+    /* Retrieves the tags selected by the user as a List of Strings and converts them into a Set of Enum Tags */
     List<String> tags = Arrays.stream(request.getParameterValues("tag")).filter(tag -> tag != null).collect(Collectors.toList());
-    System.err.println(tags);
     Set<com.google.sps.data.Destination.Tag> checkedTags = convertTagsToEnum(tags);
-    System.err.println(checkedTags);
-
-    
 
     com.google.sps.data.Destination d1 = new com.google.sps.data.Destination.Builder()
             .withName(name)
@@ -75,11 +75,11 @@ public class DestinationDataServlet extends HttpServlet {
     response.sendRedirect("/destination-data");
   }
 
+  /* Retrieves the destination created by the user, turns it into a JSON formatted string, 
+   *and displays the JSON-ified String on /destination-data
+   */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    //response.setContentType("text/html");
-    //response.getWriter().println("Im here");
-    
     Gson gson = new Gson();
     String json = gson.toJson(destinations.get(destinations.size()-1));
     response.setContentType("application/json;");
