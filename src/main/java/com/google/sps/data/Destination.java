@@ -48,6 +48,19 @@ public class Destination {
 
   private Destination() {}
 
+  // Getter methods 
+  public String getName() {
+    return this.name;
+  }
+
+  public Obscurity getDifficulty() {
+    return this.level;
+  }
+
+  public String getCity() {
+    return this.city;
+  }
+
   public static class Builder {
     private String name;
     private LatLng location;
