@@ -65,10 +65,6 @@
   width: 300px;
 }
 
-.unclicked-filter {
-  background-color: #69d1dd;
-}
-
 .filter {
   border: 1px solid #03635d;
   border-radius: 15px;
@@ -83,19 +79,12 @@
   width: 150px;
 }
 
+.unclicked-filter {
+  background-color: #69d1dd;
+}
+
 .clicked-filter {
   background-color: #37b0d2;
-  border: 1px solid #03635d;
-  border-radius: 15px;
-  box-sizing: border-box;
-  font-size: 18px;
-  height: 60px;
-  left: 90px;
-  margin-left: 4%;
-  margin-top: 20px;
-  padding: 15px;
-  text-align: center;
-  width: 150px;
 }
 
 .go-button {
