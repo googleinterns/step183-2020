@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Generate Hunt</title>
     <link rel="stylesheet" href="filterStyle.css">
-    <script src="filterScript.js"></script>
+    <script src="filter.js"></script>
   </head>
   <body class="site-background" onload="turnBlueWhenClicked()">
     <div class="full-page">
@@ -15,12 +15,12 @@
       <div class="category">
         <div class="category-label">City</div>
         <div class="filter-container">
-          <div class="unclicked-filter" name="sf-filter">San Francisco</div>
-          <div class="unclicked-filter">New York City</div>
-          <div class="unclicked-filter">Paris</div>
-          <div class="unclicked-filter">London</div>
-          <div class="unclicked-filter">Sydney</div>
-          <div class="unclicked-filter">Venice</div>
+          <div class="filter unclicked-filter">San Francisco</div>
+          <div class="filter unclicked-filter">New York City</div>
+          <div class="filter unclicked-filter">Paris</div>
+          <div class="filter unclicked-filter">London</div>
+          <div class="filter unclicked-filter">Sydney</div>
+          <div class="filter unclicked-filter">Venice</div>
         </div>
       </div>
       <br>
@@ -29,35 +29,35 @@
       <div class="category">
         <div class="category-label">Level of Difficulty</div>
         <div class="filter-container">
-          <div class="unclicked-filter">Infamous Landmarks</div>
-          <div class="unclicked-filter">2</div>
-          <div class="unclicked-filter">Hidden Gems</div>
+          <div class="filter unclicked-filter">Infamous Landmarks</div>
+          <div class="filter unclicked-filter">2</div>
+          <div class="filter unclicked-filter">Hidden Gems</div>
         </div>
       </div>
       <div class="category">
         <div class="category-label"># of Stops</div>
         <div class="filter-container">
-          <div class="unclicked-filter">Five</div>
-          <div class="unclicked-filter">Ten</div>
+          <div class="filter unclicked-filter">Five</div>
+          <div class="filter unclicked-filter">Ten</div>
         </div>
       </div>
       <div class="category">
         <div class="category-label">Other Filters</div>
         <div class="filter-container">
-          <div class="unclicked-filter">Kid Friendly</div>
-          <div class="unclicked-filter">2</div>
-          <div class="unclicked-filter">3</div>
-          <div class="unclicked-filter">4</div>
-          <div class="unclicked-filter">5</div>
-          <div class="unclicked-filter">6</div>
-          <div class="unclicked-filter">7</div>
-          <div class="unclicked-filter">8</div>
-          <div class="unclicked-filter">9</div>
+          <div class="filter unclicked-filter">Kid Friendly</div>
+          <div class="filter unclicked-filter">2</div>
+          <div class="filter unclicked-filter">3</div>
+          <div class="filter unclicked-filter">4</div>
+          <div class="filter unclicked-filter">5</div>
+          <div class="filter unclicked-filter">6</div>
+          <div class="filter unclicked-filter">7</div>
+          <div class="filter unclicked-filter">8</div>
+          <div class="filter unclicked-filter">9</div>
         </div>
       </div>
       <br>
       <br>
-      <input type="submit" value="Generate Hunt" class="go-button" onclick="getClickedFilters()"></input>
+      <input type="submit" value="Generate Hunt" class="go-button" onclick="sendClickedFiltersToServer()"></input>
     </div>
   </body>
 </html>

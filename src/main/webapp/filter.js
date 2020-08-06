@@ -1,12 +1,15 @@
+const FILTER = '.filter'
 const UNCLICKED = 'unclicked-filter';
 const CLICKED = 'clicked-filter';
-const CLICKED_ARRAY_URL = 'clicked-array=';
+const CLICKED_ARRAY_URL_PARAM = 'clicked-array';
 
 /**
-* Turn a filter a different color when pressed, and change class accordingly.
+* Swap between "clicked" and "unclicked" classes (which change the color of the button)
+* when the button is pressed.
+* Note: function declaration disabled because the function is called in an onload attribute in generateHunt.html.
 **/
 function turnBlueWhenClicked() { //eslint-disable-line
-  const allFilters = document.querySelectorAll('.unclicked-filter');
+  const allFilters = document.querySelectorAll(FILTER);
   for (let i = 0; i < allFilters.length; i++) {
     allFilters[i].onclick = function() {
       const currFilter = allFilters[i];
@@ -24,17 +27,18 @@ function turnBlueWhenClicked() { //eslint-disable-line
 /**
 * Get all filters that have been clicked when user presses submit button,
 * and pass array to servlet, and TODO: return success or error message.
+* Note: function declaration disabled because the function is called from an onclick attribute in generateHunt.html.
 **/
-function getClickedFilters() { //eslint-disable-line
+function sendClickedFiltersToServer() { //eslint-disable-line
   const clickedArray = [];
-  const clickedFilters = document.querySelectorAll('.clicked-filter');
+  const clickedFilters = document.querySelectorAll('.' + CLICKED);
   for (let i = 0; i < clickedFilters.length; i++) {
-    clickedArray[i] = clickedFilters[i].innerHTML;
+    clickedArray[i] = clickedFilters[i].innerText;
   }
 
-  const JSONArray = JSON.stringify(clickedArray);
-  fetch('/generate?' + CLICKED_ARRAY_URL + JSONArray, {method: 'POST'}).then(
-      (response) => response.json()).then((message) => {
+  const jsonArray = JSON.stringify(clickedArray);
+  fetch('/generate-hunt?' + CLICKED_ARRAY_URL_PARAM + "=" + jsonArray, {method: 'POST'}).then(
+      (response) => response.text()).then((message) => {
     // TODO: take out, replace with success or error message
     console.log(message);
   });

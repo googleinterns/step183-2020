@@ -23,22 +23,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /** Servlet that returns bucket list content */
-@WebServlet("/generate")
-public class generateServlet extends HttpServlet {
+@WebServlet("/generate-hunt")
+public class GenerateServlet extends HttpServlet {
 
   private static final String FILTER_ARRAY = "clicked-array";
-  String JSONclickedArray;
-  HashSet<String> clickedFilters;
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Get array of clicked filters and convert to ArrayList<String>
-    JSONclickedArray = request.getParameter(FILTER_ARRAY);
     Gson gson = new Gson();
-    clickedFilters = gson.fromJson(JSONclickedArray, HashSet.class);
+    HashSet<String> clickedFilters = gson.fromJson(request.getParameter(FILTER_ARRAY), HashSet.class);
 
     response.setContentType("text/html;");
     response.getWriter().println(clickedFilters);
-    response.sendRedirect("/index.html");
   }
 }
