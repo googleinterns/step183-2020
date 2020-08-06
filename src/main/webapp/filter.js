@@ -39,12 +39,12 @@ function sendClickedFiltersToServer() { //eslint-disable-line
   }
 
   const jsonArray = JSON.stringify(clickedArray);
-  fetch('/generate-hunt?' + CLICKED_ARRAY_URL_PARAM + '=' + jsonArray, 
-    {method: 'POST'}).then((response) => response.text())
+  fetch('/generate-hunt?' + CLICKED_ARRAY_URL_PARAM + '=' + jsonArray,
+      {method: 'POST'}).then((response) => response.text())
       .then((message) => {
-    // TODO: take out, replace with success or error message
-    console.log(message);
-  });
+        // TODO: take out, replace with success or error message
+        console.log(message);
+      });
 }
 
 
