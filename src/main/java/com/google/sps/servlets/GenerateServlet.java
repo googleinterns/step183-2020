@@ -32,7 +32,8 @@ public class GenerateServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Get array of clicked filters and convert to ArrayList<String>
     Gson gson = new Gson();
-    HashSet<String> clickedFilters = gson.fromJson(request.getParameter(FILTER_ARRAY), HashSet.class);
+    HashSet<String> clickedFilters = 
+      gson.fromJson(request.getParameter(FILTER_ARRAY), HashSet.class);
 
     response.setContentType("text/html;");
     response.getWriter().println(clickedFilters);
