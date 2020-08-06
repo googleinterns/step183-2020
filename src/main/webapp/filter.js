@@ -4,9 +4,9 @@ const CLICKED = 'clicked-filter';
 const CLICKED_ARRAY_URL_PARAM = 'clicked-array';
 
 /**
-* Swap between "clicked" and "unclicked" classes 
+* Swap between "clicked" and "unclicked" classes
 * (which change the color of the button) when the button is pressed.
-* Note: function declaration disabled because the function is called 
+* Note: function declaration disabled because the function is called
 * in an onload attribute in generateHunt.html.
 **/
 function turnBlueWhenClicked() { //eslint-disable-line
@@ -28,7 +28,7 @@ function turnBlueWhenClicked() { //eslint-disable-line
 /**
 * Get all filters that have been clicked when user presses submit button,
 * and pass array to servlet, and TODO: return success or error message.
-* Note: function declaration disabled because the function is called from an 
+* Note: function declaration disabled because the function is called from an
 * onclick attribute in generateHunt.html.
 **/
 function sendClickedFiltersToServer() { //eslint-disable-line
@@ -39,8 +39,9 @@ function sendClickedFiltersToServer() { //eslint-disable-line
   }
 
   const jsonArray = JSON.stringify(clickedArray);
-  fetch('/generate-hunt?' + CLICKED_ARRAY_URL_PARAM + '=' + jsonArray, {method: 'POST'})
-    .then((response) => response.text()).then((message) => {
+  fetch('/generate-hunt?' + CLICKED_ARRAY_URL_PARAM + '=' + jsonArray, 
+    {method: 'POST'}).then((response) => response.text())
+      .then((message) => {
     // TODO: take out, replace with success or error message
     console.log(message);
   });

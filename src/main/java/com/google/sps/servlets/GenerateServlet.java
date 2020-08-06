@@ -33,7 +33,7 @@ public class GenerateServlet extends HttpServlet {
     // Get array of clicked filters and convert to ArrayList<String>
     Gson gson = new Gson();
     HashSet<String> clickedFilters = 
-      gson.fromJson(request.getParameter(FILTER_ARRAY), HashSet.class);
+        gson.fromJson(request.getParameter(FILTER_ARRAY), HashSet.class);
 
     response.setContentType("text/html;");
     response.getWriter().println(clickedFilters);
