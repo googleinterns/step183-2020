@@ -22,20 +22,20 @@ import java.util.Set;
 public class Destination {
 
   public enum Tag {
+    UNDEFINED,
     FOOD,
     SPORT,
     TOURIST,
     HISTORICAL,
     ART,
-    FAMILY,
-    UNDEFINED;
+    FAMILY;
   }
 
   public enum Obscurity {
+    UNDEFINED,
     EASY,
     MEDIUM,
-    HARD,
-    UNDEFINED;
+    HARD;
   }
 
   private String name;
@@ -100,12 +100,8 @@ public class Destination {
       destination.location = this.location;
       destination.city = this.city;
       destination.description = this.description;
-      for (Riddle riddle : this.riddles) {
-        destination.riddles.add(riddle);
-      }
-      for (Tag tag : this.categories) {
-        destination.categories.add(tag);
-      }
+      destination.riddles.addAll(this.riddles);
+      destination.categories.addAll(this.categories);
       destination.level = this.level;
 
       return destination;

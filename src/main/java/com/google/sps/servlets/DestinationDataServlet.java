@@ -109,7 +109,7 @@ public class DestinationDataServlet extends HttpServlet {
     response.getWriter().println(json);
   }
 
-  public Set<Destination.Tag> convertTagsToEnum(List<String> tags) {
+  private Set<Destination.Tag> convertTagsToEnum(List<String> tags) {
     Set<Destination.Tag> tagEnums = new HashSet<Destination.Tag>();
     for (String tag : tags) {
       switch (tag) {
@@ -137,7 +137,7 @@ public class DestinationDataServlet extends HttpServlet {
     return tagEnums;
   }
 
-  public Destination.Obscurity convertLevelToEnum(String obscureLevel) {
+  private Destination.Obscurity convertLevelToEnum(String obscureLevel) {
     switch (obscureLevel) {
       case "easy":
         return Destination.Obscurity.EASY;
@@ -145,8 +145,8 @@ public class DestinationDataServlet extends HttpServlet {
         return Destination.Obscurity.MEDIUM;
       case "hard":
         return Destination.Obscurity.HARD;
+      default:
+        return Destination.Obscurity.UNDEFINED;
     }
-
-    return Destination.Obscurity.UNDEFINED;
   }
 }
