@@ -23,7 +23,7 @@ const GUESS_URL = '/guess-data';
 // Div IDs that text or a map should be inserted into.
 const HINT_DISPLAY = 'hint-area';
 const RIDDLE_DISPLAY = 'riddle-area';
-const SUBMIT_DISPLAY = 'submit-area';
+const SUBMIT_DISPLAY = 'response-area';
 
 // Hard-coded messages to be displayed to the user.
 const PROCEED_FINAL_MSSG = 'Finish the Hunt';
@@ -48,13 +48,11 @@ window.onload = getHunt();
 function getHunt() {
   fetch(DATA_URL).then((response) => response.json()).then((mssg) => {
     destIndex = mssg.index;
-    if (huntArr.length == 0) {
-      for (let i = 0; i < mssg.items.length; i++) {
+    for (let i = 0; i < mssg.items.length; i++) {
         const cur = mssg.items[i];
         huntArr.push(new Destination(cur.name, cur.description,
             cur.riddle.puzzle, cur.riddle.hints, cur.location.lat,
             cur.location.lng));
-      }
     }
     createMap();
     updateToCurrentState(destIndex);
@@ -142,7 +140,8 @@ function createLine(text) {
 }
 
 /**
- * Show or hide the proceed button.
+ * Show or hide the proceed button. If the user has found the final
+ * destination, the text of the button will change.
  * @param {boolean} hide Whether the proceed button should be hidden or shown.
  */
 function toggleProceedButton(hide) {
@@ -151,8 +150,7 @@ function toggleProceedButton(hide) {
     proceedButton.classList.add(INVISIBLE_CLASS);
   } else {
     if (destIndex === huntArr.length - 1) {
-      document.querySelector('#' + PROCEED_BUTTON).innerText =
-          PROCEED_FINAL_MSSG;
+      proceedButton.innerText = PROCEED_FINAL_MSSG;
     }
     proceedButton.classList.remove(INVISIBLE_CLASS);
   }
@@ -181,6 +179,8 @@ function hideStartButton() {
 function updateMessage(display, text) {
   const message = document.getElementById(display);
   if (display == HINT_DISPLAY) {
+  // Special case for HINT_DISPLAY to avoid clearing out its existing contents
+  // because it may already contain previous hints.
     message.appendChild(createLine('Hint #' + (hintIndex + 1) +
         ': ' + text));
   } else {
