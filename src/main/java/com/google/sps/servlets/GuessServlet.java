@@ -14,7 +14,6 @@
 
 package com.google.sps.servlets;
 
-import com.google.gson.Gson;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -24,25 +23,19 @@ import javax.servlet.http.HttpServletResponse;
 /** GuessServlet handles the user's guess for the destination they are trying to find. */
 @WebServlet("/guess-data")
 public class GuessServlet extends HttpServlet {
-  private static final String GUESS_PARAMETER = "guess-input";
+  private static final String USER_PARAMETER = "user-input";
+  private static final String ANSWER_PARAMETER = "answer";
   private static final String TEXT_TYPE = "text/html";
-
-  private String guess = "";
-
-  /** Receives the user's guess from the form. */
-  @Override
-  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    guess = request.getParameter(GUESS_PARAMETER);
-
-    // Redirect back to main page.
-    response.sendRedirect(Constants.GO_URL);
-  }
 
   /** Allows the user's guess to be fetched from /guess-data. */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String json = new Gson().toJson(guess);
-    response.setContentType(Constants.JSON_TYPE);
-    response.getWriter().println(json);
+    String userGuess = request.getParameter(USER_PARAMETER);
+    String answer = request.getParameter(ANSWER_PARAMETER);
+
+    boolean result = (userGuess.equals(answer)) ? true : false;
+
+    response.setContentType(TEXT_TYPE);
+    response.getWriter().println(result);
   }
 }

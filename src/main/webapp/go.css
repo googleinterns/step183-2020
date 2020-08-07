@@ -4,7 +4,8 @@
 
 .content,
 .map-container,
-form {
+.progress-container,
+.submit-block {
   display: flex;
   justify-content: center;
 }
@@ -17,7 +18,7 @@ p {
   flex-direction: column;
 }
 
-form {
+.submit-block {
   flex-direction: row;
   padding-top: 10px;
 }
@@ -101,4 +102,15 @@ button:hover a {
   border: thin solid black;
   height: 500px;
   width: 70%;
+}
+
+#progress-area {
+  width: 70%;
+  background-color: grey;
+}
+ 
+#progress-bar {
+  width: 1%;
+  height: 30px;
+  background-color: #e1f0c4;
 }
