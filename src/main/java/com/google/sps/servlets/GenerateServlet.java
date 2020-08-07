@@ -105,7 +105,7 @@ public class GenerateServlet extends HttpServlet {
     // Create an array of difficulty levels NOT chosen by user
     // If any Destination object in list has any of those levels, delete from filteredDestinations
     HashSet<Destination.Obscurity> diffNotPicked = 
-          filterDifficultyHelper(allDifficulties, userDifficulties);
+        filterDifficultyHelper(allDifficulties, userDifficulties);
     for (int i = 0; i < allDestinations.size(); i++) {
       Destination currDestination = allDestinations.get(i);
       if (diffNotPicked.contains(currDestination.getDifficulty())) {
@@ -146,7 +146,6 @@ public class GenerateServlet extends HttpServlet {
 
   public ArrayList<Destination> createFakeDestinations() {
     ArrayList<Destination> allDestinations = new ArrayList();
-    
     Destination dest1 =
         new Destination.Builder()
             .withName("Golden Gate")
