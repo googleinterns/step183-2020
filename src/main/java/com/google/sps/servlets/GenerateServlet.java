@@ -16,34 +16,26 @@ package com.google.sps.servlets;
 
 import com.google.gson.Gson;
 import java.io.IOException;
+import java.util.HashSet;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** NameServlet handles the user's guess for the destination they are trying to find. */
-@WebServlet("/name-data")
-public class NameServlet extends HttpServlet {
-  private static final String NAME_PARAMETER = "name-input";
-  private static final String TEXT_TYPE = "text/html";
-  private static final String MAIN_URL = "/go.html";
+/** Servlet that returns bucket list content */
+@WebServlet("/generate-hunt")
+public class GenerateServlet extends HttpServlet {
 
-  private String name = "";
+  private static final String FILTER_ARRAY = "clicked-array";
 
-  /** Receives the user's guess from the form. */
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    name = request.getParameter(NAME_PARAMETER);
+    // Get array of clicked filters and convert to ArrayList<String>
+    Gson gson = new Gson();
+    HashSet<String> clickedFilters =
+        gson.fromJson(request.getParameter(FILTER_ARRAY), HashSet.class);
 
-    // Redirect back to main page.
-    response.sendRedirect(MAIN_URL);
-  }
-
-  /** Allows the user's guess to be fetched from /name-data. */
-  @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String json = new Gson().toJson(name);
-    response.setContentType(Constants.JSON_TYPE);
-    response.getWriter().println(json);
+    response.setContentType("text/html;");
+    response.getWriter().println(clickedFilters);
   }
 }
