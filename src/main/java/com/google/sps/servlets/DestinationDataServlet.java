@@ -22,7 +22,6 @@ import com.google.sps.data.Destination;
 import com.google.sps.data.LatLng;
 import com.google.sps.data.Riddle;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
