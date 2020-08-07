@@ -101,36 +101,36 @@ public class GenerateServlet extends HttpServlet {
       ArrayList<String> filteredDestinations,
       HashSet<String> userDifficulties,
       ArrayList<Destination> allDestinations) {
-     // Iterate through difficulty levels
-     // Create an array of difficulty levels NOT chosen by user
-     // If any Destination object in list has any of those levels, delete from filteredDestinations
-      HashSet<Destination.Obscurity> diffNotPicked = 
+    // Iterate through difficulty levels
+    // Create an array of difficulty levels NOT chosen by user
+    // If any Destination object in list has any of those levels, delete from filteredDestinations
+    HashSet<Destination.Obscurity> diffNotPicked = 
           filterDifficultyHelper(allDifficulties, userDifficulties);
-      for (int i = 0; i < allDestinations.size(); i++) {
-        Destination currDestination = allDestinations.get(i);
-        if (diffNotPicked.contains(currDestination.getDifficulty())) {
-            filteredDestinations.remove(currDestination.getName());
-        }
+    for (int i = 0; i < allDestinations.size(); i++) {
+      Destination currDestination = allDestinations.get(i);
+      if (diffNotPicked.contains(currDestination.getDifficulty())) {
+        filteredDestinations.remove(currDestination.getName());
       }
+    }
     return filteredDestinations;
   }
 
   /* Create an HashSet of difficulty levels NOT chosen by the user, and conver those to Destination.Obscurity objects. */
   public HashSet<Destination.Obscurity> filterDifficultyHelper(
-      String [] allDifficulties, HashSet<String> userDifficulties) {
+      String[] allDifficulties, HashSet<String> userDifficulties) {
     HashSet<Destination.Obscurity> diffNotPicked = new HashSet();
     for (int i = 0; i < allDifficulties.length; i++) {
       String currDiff = allDifficulties[i];
-      // If difficulty is one selected by user, 
+      // If difficulty is one selected by user,
       if (!userDifficulties.contains(currDiff)) {
         switch (currDiff) {
-          case "Easy" : 
+          case "Easy":
             diffNotPicked.add(Destination.Obscurity.EASY);
             break;
-          case "Medium" :
+          case "Medium":
             diffNotPicked.add(Destination.Obscurity.MEDIUM);
             break;
-          case "Hard" :
+          case "Hard":
             diffNotPicked.add(Destination.Obscurity.HARD);
             break;
         }
@@ -199,6 +199,3 @@ public class GenerateServlet extends HttpServlet {
     return allDestinations;
   }
 }
-
-
-
