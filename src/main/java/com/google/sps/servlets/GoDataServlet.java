@@ -48,7 +48,7 @@ public class GoDataServlet extends HttpServlet {
     }
 
     // Redirect back to main page.
-    response.sendRedirect(Constants.MAIN_URL);
+    response.sendRedirect(Constants.GO_URL);
   }
 
   @Override

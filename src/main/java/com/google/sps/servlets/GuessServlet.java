@@ -35,7 +35,7 @@ public class GuessServlet extends HttpServlet {
     guess = request.getParameter(GUESS_PARAMETER);
 
     // Redirect back to main page.
-    response.sendRedirect(Constants.MAIN_URL);
+    response.sendRedirect(Constants.GO_URL);
   }
 
   /** Allows the user's guess to be fetched from /guess-data. */
