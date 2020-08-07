@@ -4,7 +4,7 @@
  * which destination the user is on, and which hint
  * they are on.
  */
-class ScavengerHuntManager {
+class ScavengerHuntManager { //eslint-disable-line
   /**
    * Constructor for ScavengerHuntManager class.
    * @param {int} destIndex The index of the destination

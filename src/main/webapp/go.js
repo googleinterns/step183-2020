@@ -61,12 +61,28 @@ window.onload = function() {
  * and hours since the user started the scavenger hunt.
  */
 function updateTimer() {
-  let difference = new Date() - startTime;
-  let seconds = Math.floor((difference % (1000 * 60)) / 1000);
-  let minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-  let hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const difference = new Date() - startTime;
+  const seconds = difference % (1000 * 60) / 1000;
+  const minutes = difference % (1000 * 60 * 60) / (1000 * 60);
+  const hours = difference % (1000 * 60 * 60 * 24)
+      / (1000 * 60 * 60);
   document.getElementById(TIMER_DISPLAY).innerText = 
-      'Timer: ' + hours + ':' + minutes + ':' + seconds;
+      'Timer: ' + standardizeTime(hours) + ':'
+      + standardizeTime(minutes) + ':' + standardizeTime(seconds);
+}
+
+/**
+ * Standardize timer display by ensuring that {@code num} is an
+ * integer and is two digits long.
+ * @param {int} num Number to be standardized.
+ * @return {String} standardized number.
+ */
+function standardizeTime(num) {
+  if (num < 10) {
+    return '0' + Math.floor(num);
+  } else {
+    return Math.floor(num);
+  }
 }
 
 /**
@@ -74,7 +90,8 @@ function updateTimer() {
  */
 function addScriptToHead() {
   const newScript = document.createElement('script');
-  newScript.src = 'https://maps.googleapis.com/maps/api/js?key=' + config.MAP_KEY + '&callback=createMap';
+  newScript.src = 'https://maps.googleapis.com/maps/api/js?key='
+      + config.MAP_KEY + '&callback=createMap';
   document.getElementsByTagName('head')[0].appendChild(newScript);
 }
 
@@ -84,8 +101,8 @@ function addScriptToHead() {
  */
 function getHunt() {
   fetch(DATA_URL).then((response) => response.json()).then((mssg) => {
-    let destIndex = mssg.index;
-    let huntArr = [];
+    const destIndex = mssg.index;
+    const huntArr = [];
     for (let i = 0; i < mssg.items.length; i++) {
       const cur = mssg.items[i];
       huntArr.push(new Destination(cur.name, cur.description,
@@ -187,8 +204,8 @@ function handleDestinationAnswer() { //eslint-disable-line
   if (hunt.getDestIndex() == -1) { // User has not yet started the hunt.
     return;
   }
-  let userGuess = document.getElementById(GUESS_DISPLAY).value;
-  let queryStr = GUESS_URL + '?user-input=' + userGuess + '&answer=' + hunt.getCurName();
+  const userGuess = document.getElementById(GUESS_DISPLAY).value;
+  const queryStr = GUESS_URL + '?user-input=' + userGuess + '&answer=' + hunt.getCurName();
   fetch(queryStr).then((response) => response.json()).then((result) => {
     if (result) {
       toggleProceedButton(false);
@@ -354,8 +371,8 @@ function proceed() { //eslint-disable-line
  * on the scavenger hunt.
  */
 function updateProgressBar() {
-  let bar = document.getElementById(PROGRESS_DISPLAY);
-  let newWidth = (hunt.getDestIndex() / hunt.getNumItems()) * 100;
+  const bar = document.getElementById(PROGRESS_DISPLAY);
+  const newWidth = (hunt.getDestIndex() / hunt.getNumItems()) * 100;
   bar.style.width = newWidth + '%';
 }
 
