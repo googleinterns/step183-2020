@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /** Servlet that returns bucket list content */
-@WebServlet("/generate")
+@WebServlet("/generate-hunt")
 public class GenerateServlet extends HttpServlet {
 
   private static final String FILTER_ARRAY = "clicked-array";
