@@ -69,8 +69,8 @@ function getHunt() {
     for (let i = 0; i < mssg.items.length; i++) {
       const cur = mssg.items[i];
       huntArr.push(new Destination(cur.name, cur.description,
-        cur.riddle.puzzle, cur.riddle.hints, cur.location.lat,
-        cur.location.lng));
+          cur.riddle.puzzle, cur.riddle.hints, cur.location.lat,
+          cur.location.lng));
     }
     updateToCurrentState(destIndex);
     if (destIndex >= 0) {
