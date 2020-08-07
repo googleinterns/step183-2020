@@ -42,7 +42,13 @@ public class GoDataServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String indexStr = request.getParameter(INDEX_PARAMETER);
-    index = Integer.parseInt(indexStr);
+    try {
+      index = Integer.parseInt(indexStr);
+    } catch (Exception e) {
+    }
+
+    // Redirect back to main page.
+    response.sendRedirect(Constants.GO_URL);
   }
 
   @Override
