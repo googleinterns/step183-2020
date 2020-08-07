@@ -38,7 +38,8 @@ form {
   top: 70%;
 }
 
-button, #submit-button {
+button,
+#submit-button {
   background-color: #e1f0c4;
   border: 2px solid #413c58;
   border-radius: 12px;
@@ -50,7 +51,8 @@ button, #submit-button {
   transition-duration: 0.4s;
 }
 
-button:hover, #submit-button:hover {
+button:hover,
+#submit-button:hover {
   background-color: #413c58;
   color: white;
 }

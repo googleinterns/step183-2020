@@ -1,7 +1,7 @@
 /**
  * Represents a destination on the scavenger hunt.
  */
-class Destination {
+class Destination { //eslint-disable-line
   /**
    * Constructor for Destination class.
    * @param {String} name Name of destination
