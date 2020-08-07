@@ -28,8 +28,8 @@ function turnBlueWhenClicked() { //eslint-disable-line
 /**
 * Get all filters that have been clicked when user presses submit button,
 * and pass array to servlet, and TODO: return success or error message.
-* Note: function declaration lint disabled because the function is called from an
-* onclick attribute in generateHunt.html.
+* Note: function declaration lint disabled because the function is called from
+* an onclick attribute in generateHunt.html.
 **/
 function sendClickedFiltersToServer() { //eslint-disable-line
   const clickedArray = [];
