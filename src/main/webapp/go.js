@@ -64,11 +64,11 @@ function updateTimer() {
   const difference = new Date() - startTime;
   const seconds = difference % (1000 * 60) / 1000;
   const minutes = difference % (1000 * 60 * 60) / (1000 * 60);
-  const hours = difference % (1000 * 60 * 60 * 24)
-      / (1000 * 60 * 60);
-  document.getElementById(TIMER_DISPLAY).innerText = 
-      'Timer: ' + standardizeTime(hours) + ':'
-      + standardizeTime(minutes) + ':' + standardizeTime(seconds);
+  const hours = difference % (1000 * 60 * 60 * 24) / 
+      (1000 * 60 * 60);
+  document.getElementById(TIMER_DISPLAY).innerText =
+      'Timer: ' + standardizeTime(hours) + ':' +
+      standardizeTime(minutes) + ':' + standardizeTime(seconds);
 }
 
 /**
@@ -90,8 +90,8 @@ function standardizeTime(num) {
  */
 function addScriptToHead() {
   const newScript = document.createElement('script');
-  newScript.src = 'https://maps.googleapis.com/maps/api/js?key='
-      + config.MAP_KEY + '&callback=createMap';
+  newScript.src = 'https://maps.googleapis.com/maps/api/js?key=' +
+      config.MAP_KEY + '&callback=createMap';
   document.getElementsByTagName('head')[0].appendChild(newScript);
 }
 
@@ -205,7 +205,8 @@ function handleDestinationAnswer() { //eslint-disable-line
     return;
   }
   const userGuess = document.getElementById(GUESS_DISPLAY).value;
-  const queryStr = GUESS_URL + '?user-input=' + userGuess + '&answer=' + hunt.getCurName();
+  const queryStr = GUESS_URL + '?user-input=' + userGuess +
+      '&answer=' + hunt.getCurName();
   fetch(queryStr).then((response) => response.json()).then((result) => {
     if (result) {
       toggleProceedButton(false);
@@ -256,7 +257,8 @@ function updateToCurrentState(index) {
   toggleProceedButton(/* hide = */ true);
   // Add all found destinations to the map as markers.
   for (let i = 0; i < index; i++) {
-    addMarkerToMap(hunt.getDest(i).lat, hunt.getDest(i).lng, hunt.getDest(i).name);
+    addMarkerToMap(hunt.getDest(i).lat, hunt.getDest(i).lng,
+        hunt.getDest(i).name);
   }
 }
 
