@@ -14,8 +14,8 @@
 
 package com.google.sps.servlets;
 
-import com.google.sps.data.Destination;
 import com.google.gson.Gson;
+import com.google.sps.data.Destination;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -39,18 +39,18 @@ public class GenerateServlet extends HttpServlet {
     HashSet<String> userDifficulties = new HashSet();
 
     ArrayList<Destination> allDestinations = new ArrayList();
-    // ArrayList<Name of Destination> 
+    // ArrayList<Name of Destination>
     ArrayList<String> filteredDestinations = new ArrayList();
 
     // Get array of clicked filters and convert to ArrayList<String>
-    HashSet<String> clickedFilters = 
+    HashSet<String> clickedFilters =
         new Gson().fromJson(request.getParameter(FILTER_ARRAY), HashSet.class);
 
     allDestinations = createFakeDestinations();
     userPlaces = separatePlaceFilters(clickedFilters);
     userDifficulties = separateDifficultyFilters(clickedFilters);
     filteredDestinations = filterPlaces(userPlaces, allDestinations);
-    filteredDestinations = 
+    filteredDestinations =
         filterDifficulty(filteredDestinations, userDifficulties, allDestinations);
     writeToDataStore(filteredDestinations);
 
@@ -88,10 +88,10 @@ public class GenerateServlet extends HttpServlet {
     // If Destination place is in userPlaces array
     // Add Destination to filteredDestinations array
     for (int i = 0; i < allDestinations.size(); i++) {
-        Destination currDestination = allDestinations.get(i);
-        if (userPlaces.contains(currDestination.getCity())) {
-          filteredDestinations.add(currDestination.getName());
-        }
+      Destination currDestination = allDestinations.get(i);
+      if (userPlaces.contains(currDestination.getCity())) {
+        filteredDestinations.add(currDestination.getName());
+      }
     }
     return filteredDestinations;
   }
@@ -99,7 +99,7 @@ public class GenerateServlet extends HttpServlet {
   /* Return Destination objects with specified difficulty. */
   public ArrayList<String> filterDifficulty(
       ArrayList<String> filteredDestinations,
-      HashSet<String> userDifficulties, 
+      HashSet<String> userDifficulties,
       ArrayList<Destination> allDestinations) {
      // Iterate through difficulty levels
      // Create an array of difficulty levels NOT chosen by user
@@ -118,25 +118,25 @@ public class GenerateServlet extends HttpServlet {
   /* Create an HashSet of difficulty levels NOT chosen by the user, and conver those to Destination.Obscurity objects. */
   public HashSet<Destination.Obscurity> filterDifficultyHelper(
       String [] allDifficulties, HashSet<String> userDifficulties) {
-   HashSet<Destination.Obscurity> diffNotPicked = new HashSet();
-      for (int i = 0; i < allDifficulties.length; i++) {
-        String currDiff = allDifficulties[i];
-        // If difficulty is one selected by user, 
-        if (!userDifficulties.contains(currDiff)) {
-          switch (currDiff) {
-            case "Easy" : 
-              diffNotPicked.add(Destination.Obscurity.EASY);
-              break;
-            case "Medium" :
-              diffNotPicked.add(Destination.Obscurity.MEDIUM);
-              break;
-            case "Hard" :
-              diffNotPicked.add(Destination.Obscurity.HARD);
-              break;
-          }
+    HashSet<Destination.Obscurity> diffNotPicked = new HashSet();
+    for (int i = 0; i < allDifficulties.length; i++) {
+      String currDiff = allDifficulties[i];
+      // If difficulty is one selected by user, 
+      if (!userDifficulties.contains(currDiff)) {
+        switch (currDiff) {
+          case "Easy" : 
+            diffNotPicked.add(Destination.Obscurity.EASY);
+            break;
+          case "Medium" :
+            diffNotPicked.add(Destination.Obscurity.MEDIUM);
+            break;
+          case "Hard" :
+            diffNotPicked.add(Destination.Obscurity.HARD);
+            break;
         }
       }
-      return diffNotPicked;
+    }
+    return diffNotPicked;
   }
 
   /* TODO: Create hunt item / scavenger hunt objects and store in DataStore. */
@@ -148,41 +148,41 @@ public class GenerateServlet extends HttpServlet {
     ArrayList<Destination> allDestinations = new ArrayList();
     
     Destination dest1 =
-      new Destination.Builder()
-          .withName("Golden Gate")
-          .withCity("San Francisco")
-          .withObscurity(Destination.Obscurity.EASY)
-          .build();
+        new Destination.Builder()
+            .withName("Golden Gate")
+            .withCity("San Francisco")
+            .withObscurity(Destination.Obscurity.EASY)
+            .build();
 
-    Destination dest2 = 
+    Destination dest2 =
         new Destination.Builder()
             .withName("Tea Garden")
             .withCity("San Francisco")
             .withObscurity(Destination.Obscurity.MEDIUM)
             .build();
 
-    Destination dest3 = 
+    Destination dest3 =
         new Destination.Builder()
             .withName("Orpheum Theater")
             .withCity("San Francisco")
             .withObscurity(Destination.Obscurity.HARD)
             .build();
 
-    Destination dest4 = 
+    Destination dest4 =
         new Destination.Builder()
             .withName("Louvre")
             .withCity("Paris")
             .withObscurity(Destination.Obscurity.EASY)
             .build();
 
-    Destination dest5 = 
+    Destination dest5 =
         new Destination.Builder()
             .withName("Eiffel Tower")
             .withCity("Paris")
             .withObscurity(Destination.Obscurity.MEDIUM)
             .build();
 
-    Destination dest6 = 
+    Destination dest6 =
         new Destination.Builder()
             .withName("Arc de Triomphe")
             .withCity("Paris")

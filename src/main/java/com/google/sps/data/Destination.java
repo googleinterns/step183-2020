@@ -48,7 +48,7 @@ public class Destination {
 
   private Destination() {}
 
-  // Getter methods 
+  // Getter methods
   public String getName() {
     return this.name;
   }
