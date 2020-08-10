@@ -64,7 +64,7 @@ function updateTimer() {
   const difference = new Date() - startTime;
   const seconds = difference % (1000 * 60) / 1000;
   const minutes = difference % (1000 * 60 * 60) / (1000 * 60);
-  const hours = difference % (1000 * 60 * 60 * 24) / 
+  const hours = difference % (1000 * 60 * 60 * 24) /
       (1000 * 60 * 60);
   document.getElementById(TIMER_DISPLAY).innerText =
       'Timer: ' + standardizeTime(hours) + ':' +
