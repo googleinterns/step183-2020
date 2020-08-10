@@ -21,7 +21,6 @@ import java.util.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -100,18 +99,16 @@ public class GenerateServlet extends HttpServlet {
     // Filter by place
     Set<Destination> filteredDestinations =
         allDestinations.stream()
-          .filter(destination->userPlaces
-          .contains(destination.getCity()))
-          .map(destination->destination)
-          .collect(Collectors.toSet());
+            .filter(destination->userPlaces.contains(destination.getCity()))
+            .map(destination->destination)
+            .collect(Collectors.toSet());
     
     // Filter by difficulty
     filteredDestinations =
         filteredDestinations.stream()
-          .filter(destination->userDifficultyLevels
-          .contains(destination.getDifficulty()))
-          .map(destination->destination)
-          .collect(Collectors.toSet());
+            .filter(destination->userDifficultyLevels.contains(destination.getDifficulty()))
+            .map(destination->destination)
+            .collect(Collectors.toSet());
 
     return filteredDestinations;
   }
