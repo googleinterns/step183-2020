@@ -32,7 +32,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/* Returns a destination created from user submitted information */
+/* Stores a destination in datastore */
 @WebServlet("/destination-data")
 public class DestinationDataServlet extends HttpServlet {
   private static final String NAME_PARAMETER = "name";
@@ -48,10 +48,14 @@ public class DestinationDataServlet extends HttpServlet {
   private static final String TAG_PARAMETER = "tag";
   private static final String HOME_URL = "/index.html";
 
-  private static final DatastoreService DATASTORE = DatastoreServiceFactory.getDatastoreService();
+  private static final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
   private static final Gson GSON = new Gson();
 
+  /*
+   * Creates a destination object from the request parameters retreieved from user submitted information.
+   * The destination object is then formatted into a JSON string and stored in datastore.
+   */
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String name = request.getParameter(NAME_PARAMETER);
@@ -98,9 +102,9 @@ public class DestinationDataServlet extends HttpServlet {
     /* Takes the destination object and turns it into a JSON String to be stored in Datastore */
     String jsonDestination = GSON.toJson(destination);
 
-    Entity destinationEntity = new Entity("Destination");
-    destinationEntity.setProperty("value", jsonDestination);
-    DATASTORE.put(destinationEntity);
+    Entity destinationEntity = new Entity(Constants.DESTINATION_ENTITY);
+    destinationEntity.setProperty(Constants.DESTINATION_JSON, jsonDestination);
+    datastore.put(destinationEntity);
 
     response.sendRedirect(HOME_URL);
   }
