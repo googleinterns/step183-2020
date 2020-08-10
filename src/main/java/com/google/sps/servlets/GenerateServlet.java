@@ -18,10 +18,9 @@ import com.google.gson.Gson;
 import com.google.sps.data.Destination;
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors; 
-import java.util.stream.Stream;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.stream.Collectors; 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -45,7 +44,7 @@ public class GenerateServlet extends HttpServlet {
     // Create fake destinations TODO: get destinations from datastore
     ArrayList<Destination> allDestinations = createFakeDestinations();
 
-    // Create arrays for each category of filter 
+    // Create arrays for each category of filter
     HashSet<String> userPlaces = new HashSet(clickedFilters);
     HashSet<String> userDifficultyStrings = new HashSet(clickedFilters);
 
@@ -54,10 +53,12 @@ public class GenerateServlet extends HttpServlet {
     userDifficultyStrings.retainAll(Arrays.asList(allDifficulties));
 
     // Convert difficulty level strings to Destination.Obscurity
-    HashSet<Destination.Obscurity> userDifficultyLevels = convertStringsToEnum(userDifficultyStrings);
+    HashSet<Destination.Obscurity> userDifficultyLevels = 
+        convertStringsToEnum(userDifficultyStrings);
 
     // Filter
-    Set<Destination> filteredDestinations = filter(allDestinations, userPlaces, userDifficultyLevels);
+    Set<Destination> filteredDestinations = 
+        filter(allDestinations, userPlaces, userDifficultyLevels);
 
     writeToDataStore(filteredDestinations);
 
@@ -66,14 +67,14 @@ public class GenerateServlet extends HttpServlet {
   }
 
   /* Takes strings of difficulty level and converts into Destination.Obscurity objects. */
-  public HashSet<Destination.Obscurity> convertStringsToEnum (HashSet<String> userDifficultyStrings) {
+  public HashSet<Destination.Obscurity> convertStringsToEnum(
+      HashSet<String> userDifficultyStrings) {
     HashSet<Destination.Obscurity> userDifficultyLevels = new HashSet();
     if (userDifficultyStrings.isEmpty()) {
       userDifficultyLevels.add(Destination.Obscurity.EASY);
       userDifficultyLevels.add(Destination.Obscurity.MEDIUM);
       userDifficultyLevels.add(Destination.Obscurity.HARD);
-    }
-    else {
+    } else {
       for (String userLevel : userDifficultyStrings) {
         switch (userLevel) {
           case "Easy":
@@ -91,16 +92,21 @@ public class GenerateServlet extends HttpServlet {
     return userDifficultyLevels;
   }
 
-  public Set<Destination> filter(ArrayList<Destination> allDestinations, HashSet<String> userPlaces, HashSet<Destination.Obscurity> userDifficultyLevels) {
+  public Set<Destination> filter(
+      ArrayList<Destination> allDestinations, 
+      HashSet<String> userPlaces, 
+      HashSet<Destination.Obscurity> userDifficultyLevels) {
     // Filter by place
-    Set<Destination> filteredDestinations = allDestinations.stream()
+    Set<Destination> filteredDestinations =
+        allDestinations.stream()
       .filter(destination->userPlaces
       .contains(destination.getCity()))
       .map(destination->destination)
       .collect(Collectors.toSet());
     
     // Filter by difficulty
-    filteredDestinations = filteredDestinations.stream()
+    filteredDestinations = 
+        filteredDestinations.stream()
       .filter(destination->userDifficultyLevels
       .contains(destination.getDifficulty()))
       .map(destination->destination)
