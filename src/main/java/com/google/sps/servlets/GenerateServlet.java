@@ -58,7 +58,7 @@ public class GenerateServlet extends HttpServlet {
     response.getWriter().println(clickedFilters);
   }
 
-  public HashSet<String> separateFilters(HashSet<String> clickedFilters, String [] allTypeFilters) {
+  public HashSet<String> separateFilters(HashSet<String> clickedFilters, String[] allTypeFilters) {
     HashSet<String> userFilters = new HashSet();
     for (int i = 0; i < allTypeFilters.length; i++) {
       if (clickedFilters.contains(allTypeFilters[i])) {
@@ -92,7 +92,6 @@ public class GenerateServlet extends HttpServlet {
     if (userDifficulties.isEmpty()) {
       return filteredDestinations;
     }
- 
     // Iterate through difficulty levels
     // Create an array of difficulty levels NOT chosen by user
     // If any Destination object in list has any of those levels, delete from filteredDestinations
