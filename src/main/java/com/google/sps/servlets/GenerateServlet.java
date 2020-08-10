@@ -100,14 +100,14 @@ public class GenerateServlet extends HttpServlet {
     Set<Destination> filteredDestinations =
         allDestinations.stream()
             .filter(destination->userPlaces.contains(destination.getCity()))
-            .map(destination->destination)
+            .map(destination -> destination)
             .collect(Collectors.toSet());
     
     // Filter by difficulty
     filteredDestinations =
         filteredDestinations.stream()
             .filter(destination->userDifficultyLevels.contains(destination.getDifficulty()))
-            .map(destination->destination)
+            .map(destination -> destination)
             .collect(Collectors.toSet());
 
     return filteredDestinations;
