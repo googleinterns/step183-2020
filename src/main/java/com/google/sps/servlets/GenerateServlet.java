@@ -60,11 +60,11 @@ public class GenerateServlet extends HttpServlet {
 
   public HashSet<String> separateFilters(HashSet<String> clickedFilters, String [] allTypeFilters) {
     HashSet<String> userFilters = new HashSet();
-      for (int i = 0; i < allTypeFilters.length; i++) {
-        if (clickedFilters.contains(allTypeFilters[i])) {
-          userFilters.add(allTypeFilters[i]);
-        }
+    for (int i = 0; i < allTypeFilters.length; i++) {
+      if (clickedFilters.contains(allTypeFilters[i])) {
+        userFilters.add(allTypeFilters[i]);
       }
+    }
     return userFilters;
   }
 
