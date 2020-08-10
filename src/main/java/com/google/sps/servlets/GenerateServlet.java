@@ -17,6 +17,9 @@ package com.google.sps.servlets;
 import com.google.gson.Gson;
 import com.google.sps.data.Destination;
 import java.io.IOException;
+import java.util.*;
+import java.util.stream.Collectors; 
+import java.util.stream.Stream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import javax.servlet.annotation.WebServlet;
@@ -35,106 +38,83 @@ public class GenerateServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    HashSet<String> userPlaces = new HashSet();
-    HashSet<String> userDifficulties = new HashSet();
-
-    ArrayList<Destination> allDestinations = new ArrayList();
-    // ArrayList<Name of Destination>
-    ArrayList<String> filteredDestinations = new ArrayList();
-
     // Get array of clicked filters and convert to ArrayList<String>
     HashSet<String> clickedFilters =
         new Gson().fromJson(request.getParameter(FILTER_ARRAY), HashSet.class);
 
-    allDestinations = createFakeDestinations();
-    userPlaces = separateFilters(clickedFilters, allPlaces);
-    userDifficulties = separateFilters(clickedFilters, allDifficulties);
-    filteredDestinations = filterPlaces(userPlaces, allDestinations);
-    filteredDestinations =
-        filterDifficulty(filteredDestinations, userDifficulties, allDestinations);
+    // Create fake destinations TODO: get destinations from datastore
+    ArrayList<Destination> allDestinations = createFakeDestinations();
+
+    // Create arrays for each category of filter 
+    HashSet<String> userPlaces = new HashSet(clickedFilters);
+    HashSet<String> userDifficultyStrings = new HashSet(clickedFilters);
+
+    // Retain only the filters that user chose (for each category)
+    userPlaces.retainAll(Arrays.asList(allPlaces));
+    userDifficultyStrings.retainAll(Arrays.asList(allDifficulties));
+
+    // Convert difficulty level strings to Destination.Obscurity
+    HashSet<Destination.Obscurity> userDifficultyLevels = convertStringsToEnum(userDifficultyStrings);
+
+    // Filter
+    Set<Destination> filteredDestinations = filter(allDestinations, userPlaces, userDifficultyLevels);
+
     writeToDataStore(filteredDestinations);
 
     response.setContentType("text/html;");
     response.getWriter().println(clickedFilters);
   }
 
-  public HashSet<String> separateFilters(HashSet<String> clickedFilters, String[] allTypeFilters) {
-    HashSet<String> userFilters = new HashSet();
-    for (int i = 0; i < allTypeFilters.length; i++) {
-      if (clickedFilters.contains(allTypeFilters[i])) {
-        userFilters.add(allTypeFilters[i]);
-      }
+  /* Takes strings of difficulty level and converts into Destination.Obscurity objects. */
+  public HashSet<Destination.Obscurity> convertStringsToEnum (HashSet<String> userDifficultyStrings) {
+    HashSet<Destination.Obscurity> userDifficultyLevels = new HashSet();
+    if (userDifficultyStrings.isEmpty()) {
+      userDifficultyLevels.add(Destination.Obscurity.EASY);
+      userDifficultyLevels.add(Destination.Obscurity.MEDIUM);
+      userDifficultyLevels.add(Destination.Obscurity.HARD);
     }
-    return userFilters;
-  }
-
-  /* Return Destination objects within specified place. */
-  public ArrayList<String> filterPlaces(
-      HashSet<String> userPlaces, ArrayList<Destination> allDestinations) {
-    ArrayList<String> filteredDestinations = new ArrayList();
-    // Iterate through destinations
-    // If Destination place is in userPlaces array
-    // Add Destination to filteredDestinations array
-    for (Destination currDestination : allDestinations) {
-      if (userPlaces.contains(currDestination.getCity())) {
-        filteredDestinations.add(currDestination.getName());
-      }
-    }
-    return filteredDestinations;
-  }
-
-  /* Return Destination objects with specified difficulty. */
-  public ArrayList<String> filterDifficulty(
-      ArrayList<String> filteredDestinations,
-      HashSet<String> userDifficulties,
-      ArrayList<Destination> allDestinations) {
-    // If all difficulty levels are okay, return current array filteredDestinations
-    if (userDifficulties.isEmpty()) {
-      return filteredDestinations;
-    }
-    // Iterate through difficulty levels
-    // Create an array of difficulty levels NOT chosen by user
-    // If any Destination object in list has any of those levels, delete from filteredDestinations
-    HashSet<Destination.Obscurity> diffNotPicked =
-        filterDifficultyHelper(allDifficulties, userDifficulties);
-    for (int i = 0; i < allDestinations.size(); i++) {
-      Destination currDestination = allDestinations.get(i);
-      if (diffNotPicked.contains(currDestination.getDifficulty())) {
-        filteredDestinations.remove(currDestination.getName());
-      }
-    }
-    return filteredDestinations;
-  }
-
-  /* Create an HashSet of difficulty levels NOT chosen by the user, and conver those to Destination.Obscurity objects. */
-  public HashSet<Destination.Obscurity> filterDifficultyHelper(
-      String[] allDifficulties, HashSet<String> userDifficulties) {
-    HashSet<Destination.Obscurity> diffNotPicked = new HashSet();
-    for (int i = 0; i < allDifficulties.length; i++) {
-      String currDiff = allDifficulties[i];
-      // If difficulty is one selected by user
-      if (!userDifficulties.contains(currDiff)) {
-        switch (currDiff) {
+    else {
+      for (String userLevel : userDifficultyStrings) {
+        switch (userLevel) {
           case "Easy":
-            diffNotPicked.add(Destination.Obscurity.EASY);
+            userDifficultyLevels.add(Destination.Obscurity.EASY);
             break;
           case "Medium":
-            diffNotPicked.add(Destination.Obscurity.MEDIUM);
+            userDifficultyLevels.add(Destination.Obscurity.MEDIUM);
             break;
           case "Hard":
-            diffNotPicked.add(Destination.Obscurity.HARD);
+            userDifficultyLevels.add(Destination.Obscurity.HARD);
             break;
         }
       }
     }
-    return diffNotPicked;
+    return userDifficultyLevels;
+  }
+
+  public Set<Destination> filter(ArrayList<Destination> allDestinations, HashSet<String> userPlaces, HashSet<Destination.Obscurity> userDifficultyLevels) {
+    // Filter by place
+    Set<Destination> filteredDestinations = allDestinations.stream()
+      .filter(destination->userPlaces
+      .contains(destination.getCity()))
+      .map(destination->destination)
+      .collect(Collectors.toSet());
+    
+    // Filter by difficulty
+    filteredDestinations = filteredDestinations.stream()
+      .filter(destination->userDifficultyLevels
+      .contains(destination.getDifficulty()))
+      .map(destination->destination)
+      .collect(Collectors.toSet());
+
+    return filteredDestinations;
   }
 
   /* TODO: Create hunt item / scavenger hunt objects and store in DataStore. */
-  public void writeToDataStore(ArrayList<String> filteredDestinations) {
+  public void writeToDataStore(Set<Destination> filteredDestinations) {
     System.out.println(filteredDestinations);
   }
 
+  /* Temporary function to create fake Destination objects. */
   public ArrayList<Destination> createFakeDestinations() {
     ArrayList<Destination> allDestinations = new ArrayList();
     Destination dest1 =
