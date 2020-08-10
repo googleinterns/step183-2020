@@ -47,8 +47,8 @@ public class GenerateServlet extends HttpServlet {
         new Gson().fromJson(request.getParameter(FILTER_ARRAY), HashSet.class);
 
     allDestinations = createFakeDestinations();
-    userPlaces = separatePlaceFilters(clickedFilters);
-    userDifficulties = separateDifficultyFilters(clickedFilters);
+    userPlaces = separateFilters(clickedFilters, allPlaces);
+    userDifficulties = separateFilters(clickedFilters, allDifficulties);
     filteredDestinations = filterPlaces(userPlaces, allDestinations);
     filteredDestinations =
         filterDifficulty(filteredDestinations, userDifficulties, allDestinations);
@@ -58,26 +58,14 @@ public class GenerateServlet extends HttpServlet {
     response.getWriter().println(clickedFilters);
   }
 
-  /* Separate place filters from rest of user filters. */
-  public HashSet<String> separatePlaceFilters(HashSet<String> clickedFilters) {
-    HashSet<String> userPlaces = new HashSet();
-    for (int i = 0; i < allPlaces.length; i++) {
-      if (clickedFilters.contains(allPlaces[i])) {
-        userPlaces.add(allPlaces[i]);
+  public HashSet<String> separateFilters(HashSet<String> clickedFilters, String [] allTypeFilters) {
+    HashSet<String> userFilters = new HashSet();
+      for (int i = 0; i < allTypeFilters.length; i++) {
+        if (clickedFilters.contains(allTypeFilters[i])) {
+          userFilters.add(allTypeFilters[i]);
+        }
       }
-    }
-    return userPlaces;
-  }
-
-  /* Return HashSet of only difficulty filters. */
-  public HashSet<String> separateDifficultyFilters(HashSet<String> clickedFilters) {
-    HashSet<String> userDifficulties = new HashSet();
-    for (int i = 0; i < allDifficulties.length; i++) {
-      if (clickedFilters.contains(allDifficulties[i])) {
-        userDifficulties.add(allDifficulties[i]);
-      }
-    }
-    return userDifficulties;
+    return userFilters;
   }
 
   /* Return Destination objects within specified place. */
@@ -87,8 +75,7 @@ public class GenerateServlet extends HttpServlet {
     // Iterate through destinations
     // If Destination place is in userPlaces array
     // Add Destination to filteredDestinations array
-    for (int i = 0; i < allDestinations.size(); i++) {
-      Destination currDestination = allDestinations.get(i);
+    for (Destination currDestination : allDestinations) {
       if (userPlaces.contains(currDestination.getCity())) {
         filteredDestinations.add(currDestination.getName());
       }
@@ -101,6 +88,11 @@ public class GenerateServlet extends HttpServlet {
       ArrayList<String> filteredDestinations,
       HashSet<String> userDifficulties,
       ArrayList<Destination> allDestinations) {
+    // If all difficulty levels are okay, return current array filteredDestinations
+    if (userDifficulties.isEmpty()) {
+      return filteredDestinations;
+    }
+ 
     // Iterate through difficulty levels
     // Create an array of difficulty levels NOT chosen by user
     // If any Destination object in list has any of those levels, delete from filteredDestinations
@@ -121,7 +113,7 @@ public class GenerateServlet extends HttpServlet {
     HashSet<Destination.Obscurity> diffNotPicked = new HashSet();
     for (int i = 0; i < allDifficulties.length; i++) {
       String currDiff = allDifficulties[i];
-      // If difficulty is one selected by user,
+      // If difficulty is one selected by user
       if (!userDifficulties.contains(currDiff)) {
         switch (currDiff) {
           case "Easy":
