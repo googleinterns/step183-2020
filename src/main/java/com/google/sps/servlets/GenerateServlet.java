@@ -20,7 +20,8 @@ import java.io.IOException;
 import java.util.*;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.stream.Collectors; 
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -53,11 +54,11 @@ public class GenerateServlet extends HttpServlet {
     userDifficultyStrings.retainAll(Arrays.asList(allDifficulties));
 
     // Convert difficulty level strings to Destination.Obscurity
-    HashSet<Destination.Obscurity> userDifficultyLevels = 
+    HashSet<Destination.Obscurity> userDifficultyLevels =
         convertStringsToEnum(userDifficultyStrings);
 
     // Filter
-    Set<Destination> filteredDestinations = 
+    Set<Destination> filteredDestinations =
         filter(allDestinations, userPlaces, userDifficultyLevels);
 
     writeToDataStore(filteredDestinations);
@@ -93,24 +94,24 @@ public class GenerateServlet extends HttpServlet {
   }
 
   public Set<Destination> filter(
-      ArrayList<Destination> allDestinations, 
-      HashSet<String> userPlaces, 
+      ArrayList<Destination> allDestinations,
+      HashSet<String> userPlaces,
       HashSet<Destination.Obscurity> userDifficultyLevels) {
     // Filter by place
     Set<Destination> filteredDestinations =
         allDestinations.stream()
-      .filter(destination->userPlaces
-      .contains(destination.getCity()))
-      .map(destination->destination)
-      .collect(Collectors.toSet());
+          .filter(destination->userPlaces
+          .contains(destination.getCity()))
+          .map(destination->destination)
+          .collect(Collectors.toSet());
     
     // Filter by difficulty
-    filteredDestinations = 
+    filteredDestinations =
         filteredDestinations.stream()
-      .filter(destination->userDifficultyLevels
-      .contains(destination.getDifficulty()))
-      .map(destination->destination)
-      .collect(Collectors.toSet());
+          .filter(destination->userDifficultyLevels
+          .contains(destination.getDifficulty()))
+          .map(destination->destination)
+          .collect(Collectors.toSet());
 
     return filteredDestinations;
   }
