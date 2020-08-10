@@ -46,7 +46,7 @@ public class DestinationDataServlet extends HttpServlet {
   private static final String HINT3_PARAMETER = "hint3";
   private static final String OBSCURITY_PARAMETER = "obscurity";
   private static final String TAG_PARAMETER = "tag";
-  private static final String REDIRECT_URL = "/index.html";
+  private static final String HOME_URL = "/index.html";
 
   private static final DatastoreService DATASTORE = DatastoreServiceFactory.getDatastoreService();
 
@@ -102,7 +102,7 @@ public class DestinationDataServlet extends HttpServlet {
     destinationEntity.setProperty("value", jsonDestination);
     DATASTORE.put(destinationEntity);
 
-    response.sendRedirect(REDIRECT_URL);
+    response.sendRedirect(HOME_URL);
   }
 
   private Set<Destination.Tag> convertTagsToEnum(List<String> tags) {
