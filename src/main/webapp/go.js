@@ -187,9 +187,10 @@ function toggleHintButton(hide) { //eslint-disable-line
 function getHint() { //eslint-disable-line
   if (hunt.getDestIndex() >= 0) {
     const hintArr = hunt.getCurHints();
-    if (hunt.getHintIndex() < hintArr.length) {
-      updateMessage(HINT_DISPLAY, hintArr[hunt.getHintIndex()]);
-      hunt.setHintIndex(hunt.getHintIndex() + 1);
+    const hintIndex = hunt.getHintIndex();
+    if (hintIndex < hintArr.length) {
+      updateMessage(HINT_DISPLAY, hintArr[hintIndex]);
+      hunt.setHintIndex(hintIndex + 1);
     }
   }
 }
