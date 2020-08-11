@@ -58,8 +58,10 @@ window.onload = function() {
 /**
  * Updates the timer with the total number of seconds, minutes,
  * and hours since the user started the scavenger hunt.
+ * Disabled lint check because updateTimer() is called in
+ * scavengerHuntManager.js.
  */
-function updateTimer() {
+function updateTimer() { // eslint-disable-line
   const difference = hunt.getTimeElapsed();
   const seconds = difference % (1000 * 60) / 1000;
   const minutes = difference % (1000 * 60 * 60) / (1000 * 60);
@@ -232,7 +234,7 @@ function startHunt() { //eslint-disable-line
  * Updates the hunt to the current destination that the user is on.
  */
 function updateToCurrentState() {
-  if (hunt.getDestIndex() <= -1) { // The user has not yet pressed the start button.
+  if (hunt.getDestIndex() <= -1) { // User has not pressed the start button.
     toggleHintButton(/* hide = */ true);
   } else { // The user has started the hunt, and needs to solve the riddle.
     delayHintButton();

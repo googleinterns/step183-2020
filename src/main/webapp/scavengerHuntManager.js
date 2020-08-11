@@ -107,7 +107,7 @@ class ScavengerHuntManager { //eslint-disable-line
   start() {
     this.destIndex = 0;
     this.startTime = new Date();
-    setInterval(updateTimer, 1000);
+    setInterval(updateTimer, TIMER_INTERVAL_MS);
   }
 
   /**
