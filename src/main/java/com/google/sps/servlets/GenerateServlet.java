@@ -18,7 +18,6 @@ import com.google.gson.Gson;
 import com.google.sps.data.Destination;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -47,12 +46,12 @@ public class GenerateServlet extends HttpServlet {
 
     // Convert difficulty level strings to Destination.Obscurity
     HashSet<Destination.Obscurity> userDifficultyLevels = new HashSet();
-      for (String level : userDifficultyStrings) {
-        Destination.Obscurity obscurity = Destination.stringToEnum(level);
-        if (obscurity != Destination.Obscurity.UNDEFINED) {
-          userDifficultyLevels.add(obscurity);
-        }
+    for (String level : userDifficultyStrings) {
+      Destination.Obscurity obscurity = Destination.stringToEnum(level);
+      if (obscurity != Destination.Obscurity.UNDEFINED) {
+        userDifficultyLevels.add(obscurity);
       }
+    }
 
     // Filter
     Set<Destination> filteredDestinations =

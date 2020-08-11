@@ -1,14 +1,12 @@
 package com.google.sps.data;
 
 import com.google.sps.servlets.GenerateServlet;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -57,7 +55,8 @@ public final class GenerateHuntTest {
           .withObscurity(Destination.Obscurity.HARD)
           .build();
 
-  List<Destination> arrayDest = Arrays.asList(goldenGate, teaGarden, orpheumTheater, louvre, eiffelTower, arcDeTriomphe);
+  List<Destination> arrayDest =
+      Arrays.asList(goldenGate, teaGarden, orpheumTheater, louvre, eiffelTower, arcDeTriomphe);
   List<Destination> allDestinations = Collections.unmodifiableList(arrayDest);
 
   @Test
