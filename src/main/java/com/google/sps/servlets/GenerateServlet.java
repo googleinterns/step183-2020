@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -78,7 +77,7 @@ public class GenerateServlet extends HttpServlet {
         allDestinations.stream()
             .filter(
                 destination ->
-                    userPlaces.contains(destination.getCity()) 
+                    userPlaces.contains(destination.getCity())
                         && userDifficultyLevels.contains(destination.getDifficulty()))
             .collect(Collectors.toSet());
     return filteredDestinations;
