@@ -33,7 +33,7 @@ public class GuessServlet extends HttpServlet {
     String userGuess = request.getParameter(USER_PARAMETER);
     String answer = request.getParameter(ANSWER_PARAMETER);
 
-    // TODO: Use entity extraction to determine if this guess is correct 
+    // TODO: Use entity extraction to determine if this guess is correct
     // instead of forcing that the strings match exactly.
     boolean result = userGuess.equals(answer);
 
