@@ -61,6 +61,22 @@ public class Destination {
     return this.city;
   }
 
+  public static Obscurity stringToEnum(String difficulty) {
+    Obscurity level = Obscurity.UNDEFINED;
+    switch(difficulty) {
+      case "Easy":
+        level = Obscurity.EASY;
+        break;
+      case "Medium":
+        level = Obscurity.MEDIUM;
+        break;
+      case "Hard":
+        level = Obscurity.HARD;
+        break;
+    }
+    return level;
+  }
+
   public static class Builder {
     private String name;
     private LatLng location;

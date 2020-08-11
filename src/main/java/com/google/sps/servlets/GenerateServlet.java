@@ -30,31 +30,33 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/generate-hunt")
 public class GenerateServlet extends HttpServlet {
 
-  private static final String FILTER_ARRAY = "clicked-array";
+  private static final String PLACE_FILTERS = "user-places";
+  private static final String DIFF_FILTERS = "user-diff";
 
   String[] allPlaces = {"Paris", "New York City", "San Francisco", "London", "Sydney", "Venice"};
   String[] allDifficulties = {"Easy", "Medium", "Hard"};
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    // Get array of clicked filters and convert to ArrayList<String>
-    HashSet<String> clickedFilters =
-        new Gson().fromJson(request.getParameter(FILTER_ARRAY), HashSet.class);
+
+    HashSet<String> userPlaces =
+        new Gson().fromJson(request.getParameter(PLACE_FILTERS), HashSet.class);
+    HashSet<String> userDifficultyStrings =
+        new Gson().fromJson(request.getParameter(DIFF_FILTERS), HashSet.class);
 
     // Create fake destinations TODO: get destinations from datastore
     ArrayList<Destination> allDestinations = createFakeDestinations();
 
-    // Create arrays for each category of filter
-    HashSet<String> userPlaces = new HashSet(clickedFilters);
-    HashSet<String> userDifficultyStrings = new HashSet(clickedFilters);
-
-    // Retain only the filters that user chose (for each category)
-    userPlaces.retainAll(Arrays.asList(allPlaces));
-    userDifficultyStrings.retainAll(Arrays.asList(allDifficulties));
-
     // Convert difficulty level strings to Destination.Obscurity
-    HashSet<Destination.Obscurity> userDifficultyLevels =
-        convertStringsToEnum(userDifficultyStrings);
+    HashSet<Destination.Obscurity> userDifficultyLevels = new HashSet();
+    for (String level : userDifficultyStrings) {
+      userDifficultyLevels.add(Destination.stringToEnum(level));
+    }
+    if (userDifficultyStrings.size() == 0) {
+      userDifficultyLevels.add(Destination.stringToEnum("Easy"));
+      userDifficultyLevels.add(Destination.stringToEnum("Medium"));
+      userDifficultyLevels.add(Destination.stringToEnum("Hard"));
+    }
 
     // Filter
     Set<Destination> filteredDestinations =
@@ -63,52 +65,19 @@ public class GenerateServlet extends HttpServlet {
     writeToDataStore(filteredDestinations);
 
     response.setContentType("text/html;");
-    response.getWriter().println(clickedFilters);
+    response.getWriter().println(filteredDestinations);
   }
 
-  /* Takes strings of difficulty level and converts into Destination.Obscurity objects. */
-  public HashSet<Destination.Obscurity> convertStringsToEnum(
-      HashSet<String> userDifficultyStrings) {
-    HashSet<Destination.Obscurity> userDifficultyLevels = new HashSet();
-    if (userDifficultyStrings.isEmpty()) {
-      userDifficultyLevels.add(Destination.Obscurity.EASY);
-      userDifficultyLevels.add(Destination.Obscurity.MEDIUM);
-      userDifficultyLevels.add(Destination.Obscurity.HARD);
-    } else {
-      for (String userLevel : userDifficultyStrings) {
-        switch (userLevel) {
-          case "Easy":
-            userDifficultyLevels.add(Destination.Obscurity.EASY);
-            break;
-          case "Medium":
-            userDifficultyLevels.add(Destination.Obscurity.MEDIUM);
-            break;
-          case "Hard":
-            userDifficultyLevels.add(Destination.Obscurity.HARD);
-            break;
-        }
-      }
-    }
-    return userDifficultyLevels;
-  }
-
+  /* Return ArrayList<Destination> of filtered Destination objects. */
   public Set<Destination> filter(
       ArrayList<Destination> allDestinations,
       HashSet<String> userPlaces,
       HashSet<Destination.Obscurity> userDifficultyLevels) {
-    // Filter by place
-    Set<Destination> filteredDestinations =
+    Set<Destination> filteredDestinations = 
         allDestinations.stream()
-            .filter(destination -> userPlaces.contains(destination.getCity()))
-            .map(destination -> destination)
-            .collect(Collectors.toSet());
-    // Filter by difficulty
-    filteredDestinations =
-        filteredDestinations.stream()
-            .filter(destination -> userDifficultyLevels.contains(destination.getDifficulty()))
-            .map(destination -> destination)
-            .collect(Collectors.toSet());
-
+          .filter(destination -> userPlaces.contains(destination.getCity()) 
+          && userDifficultyLevels.contains(destination.getDifficulty()))
+          .collect(Collectors.toSet());
     return filteredDestinations;
   }
 

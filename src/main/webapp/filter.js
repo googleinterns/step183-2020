@@ -1,7 +1,8 @@
 const FILTER = '.filter';
 const UNCLICKED = 'unclicked-filter';
 const CLICKED = 'clicked-filter';
-const CLICKED_ARRAY_URL_PARAM = 'clicked-array';
+const PLACE_ARRAY_URL_PARAM = 'user-places';
+const DIFF_ARRAY_URL_PARAM = 'user-diff';
 
 /**
 * Swap between "clicked" and "unclicked" classes
@@ -32,14 +33,34 @@ function turnBlueWhenClicked() { //eslint-disable-line
 * an onclick attribute in generateHunt.html.
 **/
 function sendClickedFiltersToServer() { //eslint-disable-line
-  const clickedArray = [];
-  const clickedFilters = document.querySelectorAll('.' + CLICKED);
-  for (let i = 0; i < clickedFilters.length; i++) {
-    clickedArray[i] = clickedFilters[i].innerText;
+  // Get clicked places
+  const clickedPlacesArray = [];
+  let cityContainer = document.getElementsByClassName('city')[0];
+  let clickedPlaces = cityContainer.getElementsByClassName(CLICKED);
+  for (let i = 0; i < clickedPlaces.length; i++) {
+    clickedPlacesArray[i] = clickedPlaces[i].innerText;
   }
+  const jsonPlaceArray = JSON.stringify(clickedPlacesArray);
 
-  const jsonArray = JSON.stringify(clickedArray);
-  fetch('/generate-hunt?' + CLICKED_ARRAY_URL_PARAM + '=' + jsonArray,
+  // Get clicked difficulty 
+  const clickedDiffArray = [];
+  let diffContainer = document.getElementsByClassName('difficulty')[0];
+  let clickedDifficulties = diffContainer.getElementsByClassName(CLICKED);
+  if (clickedDifficulties.length === 0) {
+    clickedDiffArray[0] = "Easy";
+    clickedDiffArray[1] = "Medium";
+    clickedDiffArray[2] = "Hard";
+  } else {
+    for (let i = 0; i < clickedPlaces.length; i++) {
+      clickedDiffArray[i] = clickedDifficulties[i].innerText;
+    }
+  }
+  const jsonDiffArray = JSON.stringify(clickedDiffArray);
+
+  // TODO: Get clicked num stops 
+  // TODO: Get clicked tags
+
+  fetch('/generate-hunt?' + PLACE_ARRAY_URL_PARAM + '=' + jsonPlaceArray + "&" + DIFF_ARRAY_URL_PARAM + "=" + jsonDiffArray,
       {method: 'POST'}).then((response) => response.text())
       .then((message) => {
         // TODO: take out, replace with success or error message
