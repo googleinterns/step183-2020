@@ -38,9 +38,9 @@ const CORRECT_MSSG = 'Correct!';
 const WRONG_MSSG = 'Wrong. Try again!';
 
 // Interval durations.
-const MAP_INTERVAL = 10000; // ten seconds
-const HIDE_INTERVAL = 5000; // five seconds
-const TIMER_INTERVAL = 1000; // one second
+const MAP_INTERVAL_MS = 10000; // ten seconds
+const HIDE_INTERVAL_MS = 5000; // five seconds
+const TIMER_INTERVAL_MS = 1000; // one second
 
 // Other constants.
 const INDEX_PARAM = 'new-index';
@@ -140,7 +140,7 @@ function createMap() { // eslint-disable-line
       // Centered at GooglePlex (updated below).
       {center: {lat: 37.422, lng: -122.084}, zoom: 7},
   );
-  window.setInterval(updateGeolocation, MAP_INTERVAL);
+  window.setInterval(updateGeolocation, MAP_INTERVAL_MS);
   updateGeolocation();
 }
 
@@ -185,13 +185,9 @@ function toggleHintButton(hide) { //eslint-disable-line
  * Disable lint check because getHint() is called from go.html.
  */
 function getHint() { //eslint-disable-line
-  if (hunt.getDestIndex() >= 0) {
-    const hintArr = hunt.getCurHints();
-    const hintIndex = hunt.getHintIndex();
-    if (hintIndex < hintArr.length) {
-      updateMessage(HINT_DISPLAY, hintArr[hintIndex]);
-      hunt.setHintIndex(hintIndex + 1);
-    }
+  const nextHint = hunt.getNextHint();
+  if (nextHint != '') {
+    updateMessage(HINT_DISPLAY, nextHint);
   }
 }
 
@@ -202,22 +198,22 @@ function getHint() { //eslint-disable-line
  * from go.html.
  */
 function handleDestinationAnswer() { //eslint-disable-line
-  if (hunt.getDestIndex() == -1) { // User has not yet started the hunt.
+  if (hunt.hasNotStarted()) { // User has not yet started the hunt.
     return;
   }
   const userGuess = document.getElementById(GUESS_DISPLAY).value;
   const queryStr = GUESS_URL + '?user-input=' + userGuess +
-      '&answer=' + hunt.getCurName();
-  fetch(queryStr).then((response) => response.json()).then((result) => {
-    if (result) {
+      '&answer=' + hunt.getName();
+  fetch(queryStr).then((response) => response.json()).then((correctGuess) => {
+    if (correctGuess) {
       toggleProceedButton(false);
       toggleHintButton(true);
       updateMessage(SUBMIT_DISPLAY, CORRECT_MSSG);
-      updateMessage(RIDDLE_DISPLAY, hunt.getCurName() + ': ' +
-          hunt.getCurDescription());
-      addMarkerToMap(hunt.getCurLat(), hunt.getCurLng(),
-          hunt.getCurName());
-    } else if (userGuess.length != 0) {
+      updateMessage(RIDDLE_DISPLAY, hunt.getName() + ': ' +
+          hunt.getDescription());
+      addMarkerToMap(hunt.getLat(), hunt.getLng(),
+          hunt.getName());
+    } else {
       updateMessage(SUBMIT_DISPLAY, WRONG_MSSG);
     }
   });
@@ -228,7 +224,7 @@ function handleDestinationAnswer() { //eslint-disable-line
  * Disable lint check because startHunt() is called from go.html.
  */
 function startHunt() { //eslint-disable-line
-  hunt.incrementDestIndex();
+  hunt.start();
   sendIndexToServlet(0);
   updateToCurrentState(0);
   startTimer();
@@ -239,7 +235,7 @@ function startHunt() { //eslint-disable-line
  */
 function startTimer() {
   startTime = new Date();
-  setInterval(updateTimer, TIMER_INTERVAL);
+  setInterval(updateTimer, TIMER_INTERVAL_MS);
 }
 
 /**
@@ -253,7 +249,7 @@ function updateToCurrentState(index) {
   } else { // The user has started the hunt, and needs to solve the riddle.
     delayHintButton();
     hideStartButton();
-    updateMessage(RIDDLE_DISPLAY, 'Riddle: ' + hunt.getDest(index).puzzle);
+    updateMessage(RIDDLE_DISPLAY, 'Riddle: ' + hunt.getPuzzle());
   }
   toggleProceedButton(/* hide = */ true);
   // Add all found destinations to the map as markers.
@@ -285,7 +281,7 @@ function toggleProceedButton(hide) {
   if (hide) {
     proceedButton.classList.add(INVISIBLE_CLASS);
   } else {
-    if (hunt.getDestIndex() === hunt.getNumItems() - 1) {
+    if (hunt.isAtLastStop()) {
       proceedButton.innerText = PROCEED_FINAL_MSSG;
     }
     proceedButton.classList.remove(INVISIBLE_CLASS);
@@ -310,7 +306,7 @@ function updateMessage(display, text) {
   if (display == HINT_DISPLAY) {
   // Special case for HINT_DISPLAY to avoid clearing out its existing contents
   // because it may already contain previous hints.
-    message.appendChild(createLine('Hint #' + (hunt.getHintIndex() + 1) +
+    message.appendChild(createLine('Hint #' + (hunt.getHintIndex()) +
         ': ' + text));
   } else {
     message.innerHTML = '';
@@ -353,10 +349,10 @@ function sendIndexToServlet(index) {
  * Disable lint check because proceed() is called from go.html.
  */
 function proceed() { //eslint-disable-line
-  hunt.incrementDestIndex();
+  hunt.destIndex = hunt.destIndex + 1;
   sendIndexToServlet(hunt.getDestIndex());
   if (hunt.getDestIndex() < hunt.getNumItems()) {
-    updateMessage(RIDDLE_DISPLAY, 'Riddle: ' + hunt.getCurPuzzle());
+    updateMessage(RIDDLE_DISPLAY, 'Riddle: ' + hunt.getPuzzle());
     delayHintButton();
   } else {
     updateRiddleToFinalMessage();
@@ -386,7 +382,7 @@ function updateProgressBar() {
  */
 function delayHintButton() {
   toggleHintButton(/* hide = */ true);
-  window.setTimeout(toggleHintButton, HIDE_INTERVAL, false);
+  window.setTimeout(toggleHintButton, HIDE_INTERVAL_MS, false);
 }
 
 /**

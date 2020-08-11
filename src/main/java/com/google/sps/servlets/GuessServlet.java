@@ -27,13 +27,15 @@ public class GuessServlet extends HttpServlet {
   private static final String ANSWER_PARAMETER = "answer";
   private static final String TEXT_TYPE = "text/html";
 
-  /** Allows the user's guess to be fetched from /guess-data. */
+  /** Determines if the user's guess matches the destination location. */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String userGuess = request.getParameter(USER_PARAMETER);
     String answer = request.getParameter(ANSWER_PARAMETER);
 
-    boolean result = (userGuess.equals(answer)) ? true : false;
+    // TODO: Use entity extraction to determine if this guess is correct 
+    // instead of forcing that the strings match exactly.
+    boolean result = userGuess.equals(answer);
 
     response.setContentType(TEXT_TYPE);
     response.getWriter().println(result);

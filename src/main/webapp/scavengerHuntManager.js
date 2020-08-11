@@ -21,6 +21,35 @@ class ScavengerHuntManager { //eslint-disable-line
   }
 
   /**
+   * @return {String} Next hint that the user should see.
+   */
+  getNextHint() {
+    if (this.destIndex >= 0) {
+      const hintArr = this.huntArr[this.destIndex].hints;
+      if (this.hintIndex < hintArr.length) {
+        const nextHint = hintArr[this.hintIndex];
+        this.hintIndex++;
+        return nextHint;
+      }
+    }
+    return '';
+  }
+
+  /**
+   * @return {boolean} Whether the user has clicked the start button.
+   */
+  hasNotStarted() {
+    return this.destIndex === -1;
+  }
+
+  /**
+   * @return {boolean} Whether the user is on the last destination.
+   */
+  isAtLastStop() {
+    return this.destIndex === this.huntArr.length - 1;
+  }
+
+  /**
    * Get the specific destination.
    * @param {int} index Index of the destination
    * to be retrieved.
@@ -33,42 +62,35 @@ class ScavengerHuntManager { //eslint-disable-line
   /**
    * @return {String} name of the current destination.
    */
-  getCurName() {
+  getName() {
     return this.huntArr[this.destIndex].name;
   }
 
   /**
    * @return {String} description of the current destination.
    */
-  getCurDescription() {
+  getDescription() {
     return this.huntArr[this.destIndex].description;
-  }
-
-  /**
-   * @return {array} hints for the current destination.
-   */
-  getCurHints() {
-    return this.huntArr[this.destIndex].hints;
   }
 
   /**
    * @return {String} puzzle for the current destination.
    */
-  getCurPuzzle() {
+  getPuzzle() {
     return this.huntArr[this.destIndex].puzzle;
   }
 
   /**
    * @return {Double} latitude for the current destination.
    */
-  getCurLat() {
+  getLat() {
     return this.huntArr[this.destIndex].lat;
   }
 
   /**
    * @return {Double} longitude for the current destination.
    */
-  getCurLng() {
+  getLng() {
     return this.huntArr[this.destIndex].lng;
   }
 
@@ -80,10 +102,10 @@ class ScavengerHuntManager { //eslint-disable-line
   }
 
   /**
-   * Increase destIndex by one.
+   * Start hunt by setting destIndex to 0.
    */
-  incrementDestIndex() {
-    this.destIndex++;
+  start() {
+    this.destIndex = 0;
   }
 
   /**
