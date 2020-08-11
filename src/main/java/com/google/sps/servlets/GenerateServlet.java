@@ -73,11 +73,13 @@ public class GenerateServlet extends HttpServlet {
       ArrayList<Destination> allDestinations,
       HashSet<String> userPlaces,
       HashSet<Destination.Obscurity> userDifficultyLevels) {
-    Set<Destination> filteredDestinations = 
+    Set<Destination> filteredDestinations =
         allDestinations.stream()
-          .filter(destination -> userPlaces.contains(destination.getCity()) 
-          && userDifficultyLevels.contains(destination.getDifficulty()))
-          .collect(Collectors.toSet());
+            .filter(
+                destination -> 
+                    userPlaces.contains(destination.getCity()) 
+                        && userDifficultyLevels.contains(destination.getDifficulty()))
+            .collect(Collectors.toSet());
     return filteredDestinations;
   }
 
