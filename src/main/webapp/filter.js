@@ -38,20 +38,20 @@ function sendClickedFiltersToServer() { //eslint-disable-line
   if (document.getElementsByClassName('city').length > 0) {
     const cityContainer = document.getElementsByClassName('city')[0];
     clickedPlaces = Array.from(cityContainer.getElementsByClassName(CLICKED))
-      .map(element => element.innerText);
+        .map((element) => element.innerText);
   }
   const jsonPlaceArray = JSON.stringify(clickedPlaces);
-  
 
   // Get clicked difficulty
   let clickedDifficulties = [];
   if (document.getElementsByClassName('difficulty').length > 0) {
     const diffContainer = document.getElementsByClassName('difficulty')[0];
-    clickedDifficulties = Array.from(diffContainer.getElementsByClassName(CLICKED))
-      .map(element => element.innerText);
+    clickedDifficulties = 
+      Array.from(diffContainer.getElementsByClassName(CLICKED))
+        .map((element) => element.innerText);
     if (clickedDifficulties.length === 0) {
       clickedDifficulties = ['easy', 'medium', 'hard'];
-    } 
+    }
   }
   const jsonDiffArray = JSON.stringify(clickedDifficulties);
 
