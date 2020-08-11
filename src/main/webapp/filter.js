@@ -35,20 +35,20 @@ function turnBlueWhenClicked() { //eslint-disable-line
 function sendClickedFiltersToServer() { //eslint-disable-line
   // Get clicked places
   const clickedPlacesArray = [];
-  let cityContainer = document.getElementsByClassName('city')[0];
-  let clickedPlaces = cityContainer.getElementsByClassName(CLICKED);
+  const cityContainer = document.getElementsByClassName('city')[0];
+  const clickedPlaces = cityContainer.getElementsByClassName(CLICKED);
   for (let i = 0; i < clickedPlaces.length; i++) {
     clickedPlacesArray[i] = clickedPlaces[i].innerText;
   }
   const jsonPlaceArray = JSON.stringify(clickedPlacesArray);
 
-  // Get clicked difficulty 
+  // Get clicked difficulty
   const clickedDiffArray = [];
-  let diffContainer = document.getElementsByClassName('difficulty')[0];
-  let clickedDifficulties = diffContainer.getElementsByClassName(CLICKED);
+  const diffContainer = document.getElementsByClassName('difficulty')[0];
+  const clickedDifficulties = diffContainer.getElementsByClassName(CLICKED);
   if (clickedDifficulties.length === 0) {
-    clickedDiffArray[0] = "Easy";
-    clickedDiffArray[1] = "Medium";
+    clickedDiffArray[0] = 'Easy';
+    clickedDiffArray[1] = 'Medium';
     clickedDiffArray[2] = "Hard";
   } else {
     for (let i = 0; i < clickedPlaces.length; i++) {
@@ -57,10 +57,11 @@ function sendClickedFiltersToServer() { //eslint-disable-line
   }
   const jsonDiffArray = JSON.stringify(clickedDiffArray);
 
-  // TODO: Get clicked num stops 
+  // TODO: Get clicked num stops
   // TODO: Get clicked tags
 
-  fetch('/generate-hunt?' + PLACE_ARRAY_URL_PARAM + '=' + jsonPlaceArray + "&" + DIFF_ARRAY_URL_PARAM + "=" + jsonDiffArray,
+  fetch('/generate-hunt?' + PLACE_ARRAY_URL_PARAM + '=' + jsonPlaceArray + '&' 
+    + DIFF_ARRAY_URL_PARAM + '=' + jsonDiffArray,
       {method: 'POST'}).then((response) => response.text())
       .then((message) => {
         // TODO: take out, replace with success or error message
