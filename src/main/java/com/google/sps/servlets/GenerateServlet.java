@@ -17,10 +17,11 @@ package com.google.sps.servlets;
 import com.google.gson.Gson;
 import com.google.sps.data.Destination;
 import java.io.IOException;
-import java.util.*;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -76,7 +77,7 @@ public class GenerateServlet extends HttpServlet {
     Set<Destination> filteredDestinations =
         allDestinations.stream()
             .filter(
-                destination -> 
+                destination ->
                     userPlaces.contains(destination.getCity()) 
                         && userDifficultyLevels.contains(destination.getDifficulty()))
             .collect(Collectors.toSet());

@@ -49,7 +49,7 @@ function sendClickedFiltersToServer() { //eslint-disable-line
   if (clickedDifficulties.length === 0) {
     clickedDiffArray[0] = 'Easy';
     clickedDiffArray[1] = 'Medium';
-    clickedDiffArray[2] = "Hard";
+    clickedDiffArray[2] = 'Hard';
   } else {
     for (let i = 0; i < clickedPlaces.length; i++) {
       clickedDiffArray[i] = clickedDifficulties[i].innerText;
@@ -60,9 +60,9 @@ function sendClickedFiltersToServer() { //eslint-disable-line
   // TODO: Get clicked num stops
   // TODO: Get clicked tags
 
-  fetch('/generate-hunt?' + PLACE_ARRAY_URL_PARAM + '=' + jsonPlaceArray + '&' 
-    + DIFF_ARRAY_URL_PARAM + '=' + jsonDiffArray,
-      {method: 'POST'}).then((response) => response.text())
+  fetch('/generate-hunt?' + PLACE_ARRAY_URL_PARAM + '=' + jsonPlaceArray + '&' +
+    DIFF_ARRAY_URL_PARAM + '=' + jsonDiffArray,
+  {method: 'POST'}).then((response) => response.text())
       .then((message) => {
         // TODO: take out, replace with success or error message
         console.log(message);
