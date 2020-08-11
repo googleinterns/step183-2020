@@ -71,7 +71,7 @@ public final class GenerateHuntTest {
     GenerateServlet generate = new GenerateServlet();
 
     Set<Destination> actual = generate.filter(allDestinations, userPlaces, userDiff);
-    
+
     // Should return first 3 destinations
     Set<Destination> expected = new HashSet();
     expected.add(goldenGate);
@@ -88,9 +88,9 @@ public final class GenerateHuntTest {
     HashSet<Destination.Obscurity> userDiff = new HashSet();
     userDiff.add(Destination.Obscurity.MEDIUM);
     GenerateServlet generate = new GenerateServlet();
-   
+
     Set<Destination> actual = generate.filter(allDestinations, userPlaces, userDiff);
-   
+
     // Should return only 2nd destination
     Set<Destination> expected = new HashSet();
     expected.add(teaGarden);
