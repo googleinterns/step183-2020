@@ -63,14 +63,14 @@ public class Destination {
 
   public static Obscurity stringToEnum(String difficulty) {
     Obscurity level = Obscurity.UNDEFINED;
-    switch (difficulty) {
-      case "Easy":
+    switch (difficulty.toLowerCase()) {
+      case "easy":
         level = Obscurity.EASY;
         break;
-      case "Medium":
+      case "medium":
         level = Obscurity.MEDIUM;
         break;
-      case "Hard":
+      case "hard":
         level = Obscurity.HARD;
         break;
     }

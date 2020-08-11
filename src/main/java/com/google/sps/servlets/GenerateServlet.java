@@ -33,9 +33,6 @@ public class GenerateServlet extends HttpServlet {
   private static final String PLACE_FILTERS = "user-places";
   private static final String DIFF_FILTERS = "user-diff";
 
-  String[] allPlaces = {"Paris", "New York City", "San Francisco", "London", "Sydney", "Venice"};
-  String[] allDifficulties = {"Easy", "Medium", "Hard"};
-
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -49,13 +46,17 @@ public class GenerateServlet extends HttpServlet {
 
     // Convert difficulty level strings to Destination.Obscurity
     HashSet<Destination.Obscurity> userDifficultyLevels = new HashSet();
-    for (String level : userDifficultyStrings) {
-      userDifficultyLevels.add(Destination.stringToEnum(level));
-    }
     if (userDifficultyStrings.size() == 0) {
-      userDifficultyLevels.add(Destination.stringToEnum("Easy"));
-      userDifficultyLevels.add(Destination.stringToEnum("Medium"));
-      userDifficultyLevels.add(Destination.stringToEnum("Hard"));
+      userDifficultyLevels.add(Destination.Obscurity.EASY);
+      userDifficultyLevels.add(Destination.Obscurity.MEDIUM);
+      userDifficultyLevels.add(Destination.Obscurity.HARD);
+    } else {
+      for (String level : userDifficultyStrings) {
+        Destination.Obscurity obscurity = Destination.stringToEnum(level);
+        if (obscurity != Destination.Obscurity.UNDEFINED) {
+          userDifficultyLevels.add(obscurity);
+        }
+      }
     }
 
     // Filter

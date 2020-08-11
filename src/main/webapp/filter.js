@@ -34,28 +34,26 @@ function turnBlueWhenClicked() { //eslint-disable-line
 **/
 function sendClickedFiltersToServer() { //eslint-disable-line
   // Get clicked places
-  const clickedPlacesArray = [];
-  const cityContainer = document.getElementsByClassName('city')[0];
-  const clickedPlaces = cityContainer.getElementsByClassName(CLICKED);
-  for (let i = 0; i < clickedPlaces.length; i++) {
-    clickedPlacesArray[i] = clickedPlaces[i].innerText;
+  let clickedPlaces = [];
+  if (document.getElementsByClassName('city').length > 0) {
+    const cityContainer = document.getElementsByClassName('city')[0];
+    clickedPlaces = Array.from(cityContainer.getElementsByClassName(CLICKED))
+      .map(element => element.innerText);
   }
-  const jsonPlaceArray = JSON.stringify(clickedPlacesArray);
+  const jsonPlaceArray = JSON.stringify(clickedPlaces);
+  
 
   // Get clicked difficulty
-  const clickedDiffArray = [];
-  const diffContainer = document.getElementsByClassName('difficulty')[0];
-  const clickedDifficulties = diffContainer.getElementsByClassName(CLICKED);
-  if (clickedDifficulties.length === 0) {
-    clickedDiffArray[0] = 'Easy';
-    clickedDiffArray[1] = 'Medium';
-    clickedDiffArray[2] = 'Hard';
-  } else {
-    for (let i = 0; i < clickedPlaces.length; i++) {
-      clickedDiffArray[i] = clickedDifficulties[i].innerText;
-    }
+  let clickedDifficulties = [];
+  if (document.getElementsByClassName('difficulty').length > 0) {
+    const diffContainer = document.getElementsByClassName('difficulty')[0];
+    clickedDifficulties = Array.from(diffContainer.getElementsByClassName(CLICKED))
+      .map(element => element.innerText);
+    if (clickedDifficulties.length === 0) {
+      clickedDifficulties = ['easy', 'medium', 'hard'];
+    } 
   }
-  const jsonDiffArray = JSON.stringify(clickedDiffArray);
+  const jsonDiffArray = JSON.stringify(clickedDifficulties);
 
   // TODO: Get clicked num stops
   // TODO: Get clicked tags
