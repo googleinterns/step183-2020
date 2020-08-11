@@ -43,6 +43,14 @@ class ScavengerHuntManager { //eslint-disable-line
   }
 
   /**
+   * @return {int} How much of the hunt the user has completed,
+   * as a percentage
+   */
+  getProgress() {
+    return (this.destIndex / this.huntArr.length) * 100;
+  }
+
+  /**
    * @return {boolean} Whether the user is on the last destination.
    */
   isAtLastStop() {
@@ -53,7 +61,7 @@ class ScavengerHuntManager { //eslint-disable-line
    * Get the specific destination.
    * @param {int} index Index of the destination
    * to be retrieved.
-   * @return {String} Specific destination.
+   * @return {Destination} Specific destination.
    */
   getDest(index) {
     return this.huntArr[index];

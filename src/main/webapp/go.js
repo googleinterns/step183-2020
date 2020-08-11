@@ -235,7 +235,7 @@ function startHunt() { //eslint-disable-line
  * Updates the hunt to the current destination that the user is on.
  */
 function updateToCurrentState() {
-  if (hunt.getDestIndex() <= -1) { // User has not pressed the start button.
+  if (hunt.hasNotStarted()) {
     toggleHintButton(/* hide = */ true);
   } else { // The user has started the hunt, and needs to solve the riddle.
     delayHintButton();
@@ -362,8 +362,7 @@ function proceed() { //eslint-disable-line
  */
 function updateProgressBar() {
   const bar = document.getElementById(PROGRESS_DISPLAY);
-  const newWidth = (hunt.getDestIndex() / hunt.getNumItems()) * 100;
-  bar.style.width = newWidth + '%';
+  bar.style.width = hunt.getProgress() + '%';
 }
 
 /**
