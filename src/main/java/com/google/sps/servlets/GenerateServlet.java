@@ -18,6 +18,7 @@ import com.google.gson.Gson;
 import com.google.sps.data.Destination;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -46,18 +47,12 @@ public class GenerateServlet extends HttpServlet {
 
     // Convert difficulty level strings to Destination.Obscurity
     HashSet<Destination.Obscurity> userDifficultyLevels = new HashSet();
-    if (userDifficultyStrings.size() == 0) {
-      userDifficultyLevels.add(Destination.Obscurity.EASY);
-      userDifficultyLevels.add(Destination.Obscurity.MEDIUM);
-      userDifficultyLevels.add(Destination.Obscurity.HARD);
-    } else {
       for (String level : userDifficultyStrings) {
         Destination.Obscurity obscurity = Destination.stringToEnum(level);
         if (obscurity != Destination.Obscurity.UNDEFINED) {
           userDifficultyLevels.add(obscurity);
         }
       }
-    }
 
     // Filter
     Set<Destination> filteredDestinations =
@@ -71,9 +66,9 @@ public class GenerateServlet extends HttpServlet {
 
   /* Return ArrayList<Destination> of filtered Destination objects. */
   public Set<Destination> filter(
-      ArrayList<Destination> allDestinations,
-      HashSet<String> userPlaces,
-      HashSet<Destination.Obscurity> userDifficultyLevels) {
+      List<Destination> allDestinations,
+      Set<String> userPlaces,
+      Set<Destination.Obscurity> userDifficultyLevels) {
     Set<Destination> filteredDestinations =
         allDestinations.stream()
             .filter(
