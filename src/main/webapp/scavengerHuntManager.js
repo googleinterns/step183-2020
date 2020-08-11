@@ -62,35 +62,35 @@ class ScavengerHuntManager { //eslint-disable-line
   /**
    * @return {String} name of the current destination.
    */
-  getName() {
+  getCurDestName() {
     return this.huntArr[this.destIndex].name;
   }
 
   /**
    * @return {String} description of the current destination.
    */
-  getDescription() {
+  getCurDestDescription() {
     return this.huntArr[this.destIndex].description;
   }
 
   /**
    * @return {String} puzzle for the current destination.
    */
-  getPuzzle() {
+  getCurDestPuzzle() {
     return this.huntArr[this.destIndex].puzzle;
   }
 
   /**
    * @return {Double} latitude for the current destination.
    */
-  getLat() {
+  getCurDestLat() {
     return this.huntArr[this.destIndex].lat;
   }
 
   /**
    * @return {Double} longitude for the current destination.
    */
-  getLng() {
+  getCurDestLng() {
     return this.huntArr[this.destIndex].lng;
   }
 
@@ -102,10 +102,19 @@ class ScavengerHuntManager { //eslint-disable-line
   }
 
   /**
-   * Start hunt by setting destIndex to 0.
+   * Start hunt by setting destIndex to 0 and starting the timer.
    */
   start() {
     this.destIndex = 0;
+    this.startTime = new Date();
+    setInterval(updateTimer, 1000);
+  }
+
+  /**
+   * @return {int} Time elapsed from the start of the hunt.
+   */
+  getTimeElapsed() {
+    return new Date() - this.startTime;
   }
 
   /**

@@ -49,7 +49,6 @@ const INVISIBLE_CLASS = 'invisible';
 // Global variables.
 let hunt;
 let map;
-let startTime;
 
 window.onload = function() {
   addScriptToHead();
@@ -61,7 +60,7 @@ window.onload = function() {
  * and hours since the user started the scavenger hunt.
  */
 function updateTimer() {
-  const difference = new Date() - startTime;
+  const difference = hunt.getTimeElapsed();
   const seconds = difference % (1000 * 60) / 1000;
   const minutes = difference % (1000 * 60 * 60) / (1000 * 60);
   const hours = difference % (1000 * 60 * 60 * 24) /
@@ -110,7 +109,7 @@ function getHunt() {
           cur.location.lng));
     }
     hunt = new ScavengerHuntManager(destIndex, 0, huntArr);
-    updateToCurrentState(destIndex);
+    updateToCurrentState();
   });
 }
 
@@ -203,16 +202,16 @@ function handleDestinationAnswer() { //eslint-disable-line
   }
   const userGuess = document.getElementById(GUESS_DISPLAY).value;
   const queryStr = GUESS_URL + '?user-input=' + userGuess +
-      '&answer=' + hunt.getName();
+      '&answer=' + hunt.getCurDestName();
   fetch(queryStr).then((response) => response.json()).then((correctGuess) => {
     if (correctGuess) {
       toggleProceedButton(false);
       toggleHintButton(true);
       updateMessage(SUBMIT_DISPLAY, CORRECT_MSSG);
-      updateMessage(RIDDLE_DISPLAY, hunt.getName() + ': ' +
-          hunt.getDescription());
-      addMarkerToMap(hunt.getLat(), hunt.getLng(),
-          hunt.getName());
+      updateMessage(RIDDLE_DISPLAY, hunt.getCurDestName() + ': ' +
+          hunt.getCurDestDescription());
+      addMarkerToMap(hunt.getCurDestLat(), hunt.getCurDestLng(),
+          hunt.getCurDestName());
     } else {
       updateMessage(SUBMIT_DISPLAY, WRONG_MSSG);
     }
@@ -226,34 +225,23 @@ function handleDestinationAnswer() { //eslint-disable-line
 function startHunt() { //eslint-disable-line
   hunt.start();
   sendIndexToServlet(0);
-  updateToCurrentState(0);
-  startTimer();
-}
-
-/**
- * Start the timer.
- */
-function startTimer() {
-  startTime = new Date();
-  setInterval(updateTimer, TIMER_INTERVAL_MS);
+  updateToCurrentState();
 }
 
 /**
  * Updates the hunt to the current destination that the user is on.
- * @param {int} index The index of the destination that the user needs
- * to find.
  */
-function updateToCurrentState(index) {
-  if (index <= -1) { // The user has not yet pressed the start button.
+function updateToCurrentState() {
+  if (hunt.getDestIndex() <= -1) { // The user has not yet pressed the start button.
     toggleHintButton(/* hide = */ true);
   } else { // The user has started the hunt, and needs to solve the riddle.
     delayHintButton();
     hideStartButton();
-    updateMessage(RIDDLE_DISPLAY, 'Riddle: ' + hunt.getPuzzle());
+    updateMessage(RIDDLE_DISPLAY, 'Riddle: ' + hunt.getCurDestPuzzle());
   }
   toggleProceedButton(/* hide = */ true);
   // Add all found destinations to the map as markers.
-  for (let i = 0; i < index; i++) {
+  for (let i = 0; i < hunt.getDestIndex(); i++) {
     addMarkerToMap(hunt.getDest(i).lat, hunt.getDest(i).lng,
         hunt.getDest(i).name);
   }
@@ -352,7 +340,7 @@ function proceed() { //eslint-disable-line
   hunt.destIndex = hunt.destIndex + 1;
   sendIndexToServlet(hunt.getDestIndex());
   if (hunt.getDestIndex() < hunt.getNumItems()) {
-    updateMessage(RIDDLE_DISPLAY, 'Riddle: ' + hunt.getPuzzle());
+    updateMessage(RIDDLE_DISPLAY, 'Riddle: ' + hunt.getCurDestPuzzle());
     delayHintButton();
   } else {
     updateRiddleToFinalMessage();
