@@ -40,7 +40,8 @@ const WRONG_MSSG = 'Wrong. Try again!';
 // Interval durations.
 const MAP_INTERVAL_MS = 10000; // ten seconds
 const HIDE_INTERVAL_MS = 5000; // five seconds
-const TIMER_INTERVAL_MS = 1000; // one second
+// one second
+const TIMER_INTERVAL_MS = 1000; // eslint-disable-line
 
 // Other constants.
 const INDEX_PARAM = 'new-index';
