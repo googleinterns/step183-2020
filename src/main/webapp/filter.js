@@ -46,9 +46,9 @@ function sendClickedFiltersToServer() { //eslint-disable-line
   let clickedDifficulties = [];
   if (document.getElementsByClassName('difficulty').length > 0) {
     const diffContainer = document.getElementsByClassName('difficulty')[0];
-    clickedDifficulties = 
+    clickedDifficulties =
       Array.from(diffContainer.getElementsByClassName(CLICKED))
-        .map((element) => element.innerText);
+          .map((element) => element.innerText);
     if (clickedDifficulties.length === 0) {
       clickedDifficulties = ['easy', 'medium', 'hard'];
     }

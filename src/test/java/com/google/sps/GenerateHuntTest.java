@@ -10,51 +10,50 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-
 @RunWith(JUnit4.class)
 public final class GenerateHuntTest {
   ArrayList<Destination> allDestinations = new ArrayList();
   Destination dest1 =
-    new Destination.Builder()
-        .withName("Golden Gate")
-        .withCity("San Francisco")
-        .withObscurity(Destination.Obscurity.EASY)
-        .build();
+      new Destination.Builder()
+          .withName("Golden Gate")
+          .withCity("San Francisco")
+          .withObscurity(Destination.Obscurity.EASY)
+          .build();
 
   Destination dest2 =
-    new Destination.Builder()
-        .withName("Tea Garden")
-        .withCity("San Francisco")
-        .withObscurity(Destination.Obscurity.MEDIUM)
-        .build();
+      new Destination.Builder()
+          .withName("Tea Garden")
+          .withCity("San Francisco")
+          .withObscurity(Destination.Obscurity.MEDIUM)
+          .build();
 
   Destination dest3 =
-    new Destination.Builder()
-        .withName("Orpheum Theater")
-        .withCity("San Francisco")
-        .withObscurity(Destination.Obscurity.HARD)
-        .build();
+      new Destination.Builder()
+          .withName("Orpheum Theater")
+          .withCity("San Francisco")
+          .withObscurity(Destination.Obscurity.HARD)
+          .build();
 
   Destination dest4 =
-    new Destination.Builder()
-        .withName("Louvre")
-        .withCity("Paris")
-        .withObscurity(Destination.Obscurity.EASY)
-        .build();
+      new Destination.Builder()
+          .withName("Louvre")
+          .withCity("Paris")
+          .withObscurity(Destination.Obscurity.EASY)
+          .build();
 
   Destination dest5 =
-    new Destination.Builder()
-        .withName("Eiffel Tower")
-        .withCity("Paris")
-        .withObscurity(Destination.Obscurity.MEDIUM)
-        .build();
+      new Destination.Builder()
+          .withName("Eiffel Tower")
+          .withCity("Paris")
+          .withObscurity(Destination.Obscurity.MEDIUM)
+          .build();
 
   Destination dest6 =
-    new Destination.Builder()
-        .withName("Arc de Triomphe")
-        .withCity("Paris")
-        .withObscurity(Destination.Obscurity.HARD)
-        .build();
+      new Destination.Builder()
+          .withName("Arc de Triomphe")
+          .withCity("Paris")
+          .withObscurity(Destination.Obscurity.HARD)
+          .build();
 
   @Before
   public void setUp() {
@@ -78,7 +77,6 @@ public final class GenerateHuntTest {
 
     GenerateServlet generate = new GenerateServlet();
     Set<Destination> actual = generate.filter(allDestinations, userPlaces, userDiff);
-    
     // Should return first 3 destinations
     Set<Destination> expected = new HashSet();
     expected.add(dest1);
@@ -97,7 +95,6 @@ public final class GenerateHuntTest {
 
     GenerateServlet generate = new GenerateServlet();
     Set<Destination> actual = generate.filter(allDestinations, userPlaces, userDiff);
-    
     // Should return only 2nd destination
     Set<Destination> expected = new HashSet();
     expected.add(dest2);
@@ -139,7 +136,6 @@ public final class GenerateHuntTest {
 
     GenerateServlet generate = new GenerateServlet();
     Set<Destination> actual = generate.filter(allDestinations, userPlaces, userDiff);
-    
     // Should return all Destinations
     Set<Destination> expected = new HashSet();
     expected.add(dest1);
