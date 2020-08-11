@@ -37,6 +37,7 @@ const WRONG_MSSG = 'Wrong. Try again!';
 // Other constants.
 const INDEX_PARAM = 'new-index';
 const INVISIBLE_CLASS = 'invisible';
+const HUNTID_PARAM = 'hunt_id';
 const REFRESH_TIME = 10000; // ten seconds
 
 // Global variables.
@@ -44,6 +45,7 @@ let destIndex; // Marks the destination that the user currently needs to find.
 let hintIndex = 0; // Marks the hint that the user will see next.
 const huntArr = []; // Stores scavenger hunt data retrieved from the server.
 let map;
+let huntID;
 
 window.onload = function() {
   addScriptToHead();
@@ -64,7 +66,8 @@ function addScriptToHead() {
  * to reflect the current state of the hunt.
  */
 function getHunt() {
-  fetch(DATA_URL).then((response) => response.json()).then((mssg) => {
+  huntID = window.location.params.get(HUNTID_PARAM);
+  fetch(DATA_URL + '?hunt_id=' + huntID).then((response) => response.json()).then((mssg) => {
     destIndex = mssg.index;
     for (let i = 0; i < mssg.items.length; i++) {
       const cur = mssg.items[i];
@@ -290,6 +293,7 @@ function updateRiddleToFinalMessage() {
 function sendIndexToServlet(index) {
   const params = new URLSearchParams();
   params.append(INDEX_PARAM, index);
+  params.append(HUNTID_PARAM, huntID);
   fetch(DATA_URL, {method: 'POST', body: params});
 }
 
