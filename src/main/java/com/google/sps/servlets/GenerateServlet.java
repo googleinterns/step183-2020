@@ -48,7 +48,7 @@ public class GenerateServlet extends HttpServlet {
     // Convert difficulty level strings to Destination.Obscurity
     HashSet<Destination.Obscurity> userDifficultyLevels = new HashSet();
     for (String level : userDifficultyStrings) {
-      Destination.Obscurity obscurity = Destination.stringToEnum(level);
+      Destination.Obscurity obscurity = Destination.stringToObscurity(level);
       if (obscurity != Destination.Obscurity.UNDEFINED) {
         userDifficultyLevels.add(obscurity);
       }

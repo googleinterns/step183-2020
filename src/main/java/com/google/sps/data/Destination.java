@@ -61,7 +61,7 @@ public class Destination {
     return this.city;
   }
 
-  public static Obscurity stringToEnum(String difficulty) {
+  public static Obscurity stringToObscurity(String difficulty) {
     Obscurity level = Obscurity.UNDEFINED;
     switch (difficulty.toLowerCase()) {
       case "easy":
