@@ -102,7 +102,6 @@ public class Destination {
     return item;
   }
 
-
   public static class Builder {
     private String name;
     private LatLng location;

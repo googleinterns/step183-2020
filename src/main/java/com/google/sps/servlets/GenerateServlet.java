@@ -67,13 +67,13 @@ public class GenerateServlet extends HttpServlet {
     Set<Destination> filteredDestinations =
         filter(allDestinations, userPlaces, userDifficultyLevels);
 
-    // Convert Destinations to Hunt Items, create Scavenger Hunt, store in Datastore 
+    // Convert Destinations to Hunt Items, create Scavenger Hunt, store in Datastore
     // TODO: Only return the amount of hunt items that the user wants
     ArrayList<HuntItem> huntItems = convertToHuntItems(filteredDestinations);
     ScavengerHunt scavHunt = new ScavengerHunt(huntItems, -1);
     writeToDataStore(scavHunt);
 
-    //Set response TODO: return scavenger hunt id / error message
+    // Set response TODO: return scavenger hunt id / error message
     response.setContentType("text/html;");
     response.getWriter().println(scavHunt);
   }
@@ -103,9 +103,9 @@ public class GenerateServlet extends HttpServlet {
 
   public ArrayList<HuntItem> convertToHuntItems(Set<Destination> allDestinations) {
     ArrayList<HuntItem> filteredHuntItems = new ArrayList();
-      for (Destination destination : allDestinations) {
-        HuntItem item = destination.convertToHuntItem();
-        filteredHuntItems.add(item);
+    for (Destination destination : allDestinations) {
+      HuntItem item = destination.convertToHuntItem();
+      filteredHuntItems.add(item);
     }
     return filteredHuntItems;
   }
@@ -113,17 +113,8 @@ public class GenerateServlet extends HttpServlet {
   /* Temporary function to create fake Destination objects. */
   public ArrayList<Destination> createFakeDestinations() {
     ArrayList<Destination> allDestinations = new ArrayList();
-    LatLng location = 
-        new LatLng.Builder()
-            .withLat(100.0)
-            .withLng(100.0)
-            .build();
-    
-    Riddle riddle = 
-        new Riddle.Builder()
-            .withPuzzle("puzzle")
-            .build();
-        
+    LatLng location = new LatLng.Builder().withLat(100.0).withLng(100.0).build();
+    Riddle riddle = new Riddle.Builder().withPuzzle("puzzle").build();
     String description = "description";
 
     Destination dest1 =
@@ -195,5 +186,4 @@ public class GenerateServlet extends HttpServlet {
 
     return allDestinations;
   }
-
 }
