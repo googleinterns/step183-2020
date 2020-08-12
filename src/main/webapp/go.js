@@ -34,7 +34,6 @@ const PROGRESS_DISPLAY = 'progress-bar';
 // Input IDs or parameters.
 const GUESS_INPUT = 'guess-input';
 const INDEX_PARAM = 'new-index';
-const HUNTID_PARAM = 'hunt_id';
 
 // Hard-coded messages to be displayed to the user.
 const PROCEED_FINAL_MSSG = 'Finish the Hunt';
@@ -113,7 +112,8 @@ function getHunt() {
   // in the form of: hunt_id=ScavengerHunt([ID number here])
   // Using index 1 because index 0 is the '?' character.
   huntID = window.location.search.substr(1);
-  fetch(DATA_URL + '?' + huntID).then((response) => response.json()).then((mssg) => {
+  const queryStr = DATA_URL + '?' + huntID;
+  fetch(queryStr).then((response) => response.json()).then((mssg) => {
     const destIndex = mssg.index;
     const huntArr = [];
     for (let i = 0; i < mssg.items.length; i++) {
