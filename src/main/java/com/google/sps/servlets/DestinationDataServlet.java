@@ -14,12 +14,14 @@
 
 package com.google.sps.servlets;
 
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
 import com.google.gson.Gson;
 import com.google.sps.data.Destination;
 import com.google.sps.data.LatLng;
 import com.google.sps.data.Riddle;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -30,7 +32,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/* Returns a destination created from user submitted information */
+/* Stores a destination in datastore */
 @WebServlet("/destination-data")
 public class DestinationDataServlet extends HttpServlet {
   private static final String NAME_PARAMETER = "name";
@@ -44,11 +46,16 @@ public class DestinationDataServlet extends HttpServlet {
   private static final String HINT3_PARAMETER = "hint3";
   private static final String OBSCURITY_PARAMETER = "obscurity";
   private static final String TAG_PARAMETER = "tag";
-  private static final String REDIRECT_URL = "/destination-data";
+  private static final String HOME_URL = "/index.html";
 
-  // Temporarily stores the destination created by the user
-  public List<Destination> destinations = new ArrayList<>();
+  private static final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
+  private static final Gson GSON = new Gson();
+
+  /*
+   * Creates a destination object from the request parameters retreieved from user submitted information.
+   * The destination object is then formatted into a JSON string and stored in datastore.
+   */
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String name = request.getParameter(NAME_PARAMETER);
@@ -92,21 +99,14 @@ public class DestinationDataServlet extends HttpServlet {
             .withObscurity(level)
             .build();
 
-    /* TODO: Store the data in datastore rather than locally */
-    destinations.add(destination);
-    /* TODO: redirect back index.html once the data is stored in datastore */
-    response.sendRedirect(REDIRECT_URL);
-  }
+    /* Takes the destination object and turns it into a JSON String to be stored in Datastore */
+    String jsonDestination = GSON.toJson(destination);
 
-  /* Retrieves the most recent destination created by the user, turns it into a JSON formatted string,
-   *and displays the JSON-ified String on /destination-data
-   */
-  @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    Gson gson = new Gson();
-    String json = gson.toJson(destinations.get(destinations.size() - 1));
-    response.setContentType("application/json;");
-    response.getWriter().println(json);
+    Entity destinationEntity = new Entity(Constants.DESTINATION_ENTITY);
+    destinationEntity.setProperty(Constants.DESTINATION_JSON, jsonDestination);
+    datastore.put(destinationEntity);
+
+    response.sendRedirect(HOME_URL);
   }
 
   private Set<Destination.Tag> convertTagsToEnum(List<String> tags) {
