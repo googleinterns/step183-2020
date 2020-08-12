@@ -7,6 +7,6 @@ public class Constants {
   public static final String DESTINATION_JSON = "destination_json";
   public static final String HUNT_ENTITY = "ScavengerHunt";
   // Name of property that stores JSON strings with scavenger hunt data
-  public static final String HUNT_VAL = "Value"; 
+  public static final String HUNT_VAL = "Value";
   public static final String HUNTID_PARAMETER = "hunt_id"; // URL param for ID of the scavenger hunt
 }

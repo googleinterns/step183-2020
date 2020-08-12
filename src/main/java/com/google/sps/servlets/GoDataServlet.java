@@ -22,8 +22,6 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
-import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.KeyFactory;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -77,18 +75,14 @@ public class GoDataServlet extends HttpServlet {
       return;
     }
 
-    Gson gson = new Gson();
-    ScavengerHunt hunt =
-        gson.fromJson((String) huntEntity.getProperty(Constants.HUNT_VAL), ScavengerHunt.class);
-
     response.setContentType(Constants.JSON_TYPE);
-    String json = gson.toJson(hunt);
+    String json = (String) huntEntity.getProperty(Constants.HUNT_VAL);
     response.getWriter().println(json);
   }
 
   /**
-   * Retrieves the scavenger hunt from Datastore using {@code huntID}, the ID corresponding to
-   * the scavenger hunt that should be retrieved.
+   * Retrieves the scavenger hunt from Datastore using {@code huntID}, the ID corresponding to the
+   * scavenger hunt that should be retrieved.
    */
   private Entity findScavengerHunt(String huntID) {
     Query huntQuery = new Query(Constants.HUNT_ENTITY);
