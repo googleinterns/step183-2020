@@ -29,7 +29,7 @@ const SUBMIT_DISPLAY = 'response-area';
 const MAP_DISPLAY = 'map-area';
 const MAP_MSSG_DISPLAY = 'map-message-area';
 const TIMER_DISPLAY = 'timer-area';
-const GUESS_DISPLAY = 'guess-input';
+const GUESS_INPUT = 'guess-input';
 const PROGRESS_DISPLAY = 'progress-bar';
 
 // Hard-coded messages to be displayed to the user.
@@ -41,6 +41,8 @@ const WRONG_MSSG = 'Wrong. Try again!';
 const MAP_INTERVAL_MS = 10000; // ten seconds
 const HIDE_INTERVAL_MS = 5000; // five seconds
 // one second
+// Disabled lint check because TIMER_INTERVAL_MS is used
+// in scavengerHuntManager.js.
 const TIMER_INTERVAL_MS = 1000; // eslint-disable-line
 
 // Other constants.
@@ -50,6 +52,7 @@ const INVISIBLE_CLASS = 'invisible';
 // Global variables.
 let hunt;
 let map;
+let hintClock;
 
 window.onload = function() {
   addScriptToHead();
@@ -203,8 +206,8 @@ function handleDestinationAnswer() { //eslint-disable-line
   if (hunt.hasNotStarted()) { // User has not yet started the hunt.
     return;
   }
-  const userGuess = document.getElementById(GUESS_DISPLAY).value;
-  const queryStr = GUESS_URL + '?user-input=' + userGuess +
+  const userGuess = document.getElementById(GUESS_INPUT).value;
+  const queryStr = GUESS_URL + '?' + GUESS_INPUT + '=' + userGuess +
       '&answer=' + hunt.getCurDestName();
   fetch(queryStr).then((response) => response.json()).then((correctGuess) => {
     if (correctGuess) {
@@ -215,6 +218,7 @@ function handleDestinationAnswer() { //eslint-disable-line
           hunt.getCurDestDescription());
       addMarkerToMap(hunt.getCurDestLat(), hunt.getCurDestLng(),
           hunt.getCurDestName());
+      clearTimeout(hintClock);
     } else {
       updateMessage(SUBMIT_DISPLAY, WRONG_MSSG);
     }
@@ -247,6 +251,7 @@ function updateToCurrentState() {
   for (let i = 0; i < hunt.getDestIndex(); i++) {
     addMarkerToMap(hunt.getDest(i).lat, hunt.getDest(i).lng,
         hunt.getDest(i).name);
+  hunt.restartTimer();
   }
 }
 
@@ -340,7 +345,7 @@ function sendIndexToServlet(index) {
  * Disable lint check because proceed() is called from go.html.
  */
 function proceed() { //eslint-disable-line
-  hunt.destIndex = hunt.destIndex + 1;
+  hunt.incrementDestIndex();
   sendIndexToServlet(hunt.getDestIndex());
   if (hunt.getDestIndex() < hunt.getNumItems()) {
     updateMessage(RIDDLE_DISPLAY, 'Riddle: ' + hunt.getCurDestPuzzle());
@@ -372,7 +377,7 @@ function updateProgressBar() {
  */
 function delayHintButton() {
   toggleHintButton(/* hide = */ true);
-  window.setTimeout(toggleHintButton, HIDE_INTERVAL_MS, false);
+  hintClock = window.setTimeout(toggleHintButton, HIDE_INTERVAL_MS, false);
 }
 
 /**

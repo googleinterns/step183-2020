@@ -23,14 +23,14 @@ import javax.servlet.http.HttpServletResponse;
 /** GuessServlet handles the user's guess for the destination they are trying to find. */
 @WebServlet("/guess-data")
 public class GuessServlet extends HttpServlet {
-  private static final String USER_PARAMETER = "user-input";
+  private static final String GUESS_PARAMETER = "guess-input";
   private static final String ANSWER_PARAMETER = "answer";
   private static final String TEXT_TYPE = "text/html";
 
   /** Determines if the user's guess matches the destination location. */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String userGuess = request.getParameter(USER_PARAMETER);
+    String userGuess = request.getParameter(GUESS_PARAMETER);
     String answer = request.getParameter(ANSWER_PARAMETER);
 
     // TODO: Use entity extraction to determine if this guess is correct

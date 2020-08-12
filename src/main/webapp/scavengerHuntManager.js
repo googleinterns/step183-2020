@@ -21,6 +21,15 @@ class ScavengerHuntManager { //eslint-disable-line
   }
 
   /**
+   * Increment destIndex.
+   */
+  incrementDestIndex() {
+    this.destIndex++;
+  }
+
+  /**
+   * Returns the next hint for the current destination,
+   * and increments hintIndex.
    * @return {String} Next hint that the user should see.
    */
   getNextHint() {
