@@ -251,7 +251,6 @@ function updateToCurrentState() {
   for (let i = 0; i < hunt.getDestIndex(); i++) {
     addMarkerToMap(hunt.getDest(i).lat, hunt.getDest(i).lng,
         hunt.getDest(i).name);
-  hunt.restartTimer();
   }
 }
 
