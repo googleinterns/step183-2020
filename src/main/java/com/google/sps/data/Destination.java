@@ -48,6 +48,35 @@ public class Destination {
 
   private Destination() {}
 
+  // Getter methods
+  public String getName() {
+    return this.name;
+  }
+
+  public Obscurity getDifficulty() {
+    return this.level;
+  }
+
+  public String getCity() {
+    return this.city;
+  }
+
+  public static Obscurity stringToObscurity(String difficulty) {
+    Obscurity level = Obscurity.UNDEFINED;
+    switch (difficulty.toLowerCase()) {
+      case "easy":
+        level = Obscurity.EASY;
+        break;
+      case "medium":
+        level = Obscurity.MEDIUM;
+        break;
+      case "hard":
+        level = Obscurity.HARD;
+        break;
+    }
+    return level;
+  }
+
   public static class Builder {
     private String name;
     private LatLng location;
