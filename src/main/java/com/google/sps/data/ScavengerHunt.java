@@ -13,7 +13,6 @@
 // limitations under the License.
 
 package com.google.sps.data;
-
 import java.util.ArrayList;
 
 // Represents a scavenger hunt.
@@ -25,5 +24,10 @@ public class ScavengerHunt {
   public ScavengerHunt(ArrayList<HuntItem> items, int index) {
     this.items = items;
     this.index = index;
+  }
+
+  public ScavengerHunt(ArrayList<HuntItem> items) {
+    this.items = items;
+    this.index = -1;
   }
 }

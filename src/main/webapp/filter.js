@@ -64,7 +64,7 @@ function sendClickedFiltersToServer() { //eslint-disable-line
       .then((message) => {
         // If success, redirect to scavenger hunt with ID
         // If failure, display on screen
-        if (message != 'Error\n') {
+        if (message.trim() != 'Error') {
           window.location = '/go.html?hunt_id=' + message;
         } else {
           if (document.getElementsByClassName('error-message').length > 0) {

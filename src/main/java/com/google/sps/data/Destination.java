@@ -70,7 +70,7 @@ public class Destination {
   }
 
   /* Return one Riddle. TODO: Make this a random riddle. */
-  public Riddle getRiddle() {
+  public Riddle getRandomRiddle() {
     return riddles.get(0);
   }
 
@@ -96,7 +96,7 @@ public class Destination {
             .withName(this.name)
             .atLocation(this.location)
             .withDescription(this.description)
-            .withRiddle(this.riddles.get(0))
+            .withRiddle(this.getRiddle())
             .build();
 
     return item;

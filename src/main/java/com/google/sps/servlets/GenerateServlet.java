@@ -64,18 +64,18 @@ public class GenerateServlet extends HttpServlet {
     }
 
     // Filter
+    // TODO: Only return the amount of hunt items that the user wants
     Set<Destination> filteredDestinations =
         filter(allDestinations, userPlaces, userDifficultyLevels);
 
     // Convert Destinations to Hunt Items, create Scavenger Hunt, store in Datastore
-    // TODO: Only return the amount of hunt items that the user wants
     ArrayList<HuntItem> huntItems = convertToHuntItems(filteredDestinations);
-    ScavengerHunt scavHunt = new ScavengerHunt(huntItems, -1);
+    ScavengerHunt scavHunt = new ScavengerHunt(huntItems);
     writeToDataStore(scavHunt);
 
     // Set response TODO: return scavenger hunt id / error message
     response.setContentType("text/html;");
-    response.getWriter().println(scavHunt);
+    response.getWriter().println(ERROR);
   }
 
   /* Return ArrayList<Destination> of filtered Destination objects. */
