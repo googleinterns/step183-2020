@@ -5,14 +5,16 @@
     <title>Destination Creation</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
     <link rel="stylesheet" href="destinationCreation.css"/>
+    <script src="destinationCreation.js"></script>
+    <script src="config.js"></script>
   </head>
-  <body>
+  <body onload="addScriptToHead()">
     <div>
       <h1>Create a Scavenger Hunt Destination</h1>
-    <div>
-      <input type="text" placeholder="Search.." name="search">
-      <button type="button"><i class="fa fa-search"></i></button>
-    </div>
+      <div>
+        <input type="text" placeholder="Search.." name="search" id="search">
+        <button type="button" onclick="searchForPlace()"><i class="fa fa-search"></i></button>
+      </div>
       <form action="/destination-data" method="post">
         <label for="name-input" class="required">Enter the name of the destination:</label><br>
         <input type="text" name="name" id="name-input" required>
@@ -58,6 +60,7 @@
         <br>
         <button type="submit">Submit</button>
       </form>
+      <div id="map"></div>
     </div>
   </body>
 </html>
