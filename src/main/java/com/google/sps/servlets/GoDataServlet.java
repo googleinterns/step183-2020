@@ -78,13 +78,14 @@ public class GoDataServlet extends HttpServlet {
     } catch (Exception e) {
     }
 
-    if (huntEntity == null) {
-      return;
-    }
-
     response.setContentType(Constants.JSON_TYPE);
-    String json = (String) huntEntity.getProperty(Constants.HUNT_VAL);
-    response.getWriter().println(json);
+    if (huntEntity == null) {
+      String errorMessage = "An error has occurred that prevents a scavenger hunt from being displayed.";
+      response.getWriter().println(errorMessage);
+    } else {
+      String json = (String) huntEntity.getProperty(Constants.HUNT_VAL);
+      response.getWriter().println(json);
+    }
   }
 
   /**
