@@ -77,14 +77,6 @@ public class GoDataServlet extends HttpServlet {
       huntEntity = findScavengerHunt(huntID);
     } catch (Exception e) {
     }
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-    
->>>>>>> 6a396dd... Change huntID to a long to retrieve an entity from Datastore more efficiently.
-=======
-
->>>>>>> 2e4abab... Pass lint check.
     if (huntEntity == null) {
       return;
     }
