@@ -110,6 +110,7 @@ function addScriptToHead() {
 function getHunt() {
   // ID of the scavenger hunt that the user is on,
   // in the form of: hunt_id=ScavengerHunt([ID number here])
+  // Using index 1 because index 0 is the '?' character.
   huntID = window.location.search.substr(1);
   const queryStr = DATA_URL + '?' + huntID;
   fetch(queryStr).then((response) => response.json()).then((mssg) => {
@@ -344,7 +345,9 @@ function sendIndexToServlet(index) {
   const params = new URLSearchParams();
   params.append(INDEX_PARAM, index);
   const pair = huntID.split('=');
-  params.append(pair[0], pair[1]);
+  if (pair.length >= 2) {
+    params.append(pair[0], pair[1]);
+  }
   fetch(DATA_URL, {method: 'POST', body: params});
 }
 

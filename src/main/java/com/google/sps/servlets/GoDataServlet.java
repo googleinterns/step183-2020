@@ -17,11 +17,15 @@ package com.google.sps.servlets;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.FetchOptions;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.gson.Gson;
 import com.google.sps.data.ScavengerHunt;
 import java.io.IOException;
+import java.util.ArrayList;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -42,9 +46,10 @@ public class GoDataServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     Gson gson = new Gson();
     String indexStr = request.getParameter(INDEX_PARAMETER);
-    String huntID = request.getParameter(Constants.HUNTID_PARAMETER);
+    String huntIDStr = request.getParameter(Constants.HUNTID_PARAMETER);
     try {
       int index = Integer.parseInt(indexStr);
+      long huntID = Long.parseLong(huntIDStr);
       Entity huntEntity = findScavengerHunt(huntID);
       if (huntEntity == null) {
         return;
@@ -69,8 +74,14 @@ public class GoDataServlet extends HttpServlet {
   /** Retrieves scavenger hunt data from Datastore, and sends to /go-data. */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String huntID = request.getParameter(Constants.HUNTID_PARAMETER);
-    Entity huntEntity = findScavengerHunt(huntID);
+    String huntIDStr = request.getParameter(Constants.HUNTID_PARAMETER);
+    Entity huntEntity = null;
+    try {
+      long huntID = Long.parseLong(huntIDStr);
+      huntEntity = findScavengerHunt(huntID);
+    } catch (Exception e) {
+    }
+    
     if (huntEntity == null) {
       return;
     }
@@ -84,14 +95,12 @@ public class GoDataServlet extends HttpServlet {
    * Retrieves the scavenger hunt from Datastore using {@code huntID}, the ID corresponding to the
    * scavenger hunt that should be retrieved.
    */
-  private Entity findScavengerHunt(String huntID) {
-    Query huntQuery = new Query(Constants.SCAVENGER_HUNT_ENTITY);
-    PreparedQuery huntResults = datastore.prepare(huntQuery);
-    for (Entity entity : huntResults.asIterable()) {
-      if (huntID.equals(entity.getKey().toString())) { // Found the correct scavenger hunt.
-        return entity;
-      }
+  private Entity findScavengerHunt(long huntID) {
+    Key key = KeyFactory.createKey(Constants.SCAVENGER_HUNT_ENTITY, huntID);
+    try {
+      return datastore.get(key);
+    } catch (Exception e) {
+      return null;
     }
-    return null;
   }
 }
