@@ -71,11 +71,11 @@ public class GenerateServlet extends HttpServlet {
     // Convert Destinations to Hunt Items, create Scavenger Hunt, store in Datastore
     ArrayList<HuntItem> huntItems = convertToHuntItems(filteredDestinations);
     ScavengerHunt scavHunt = new ScavengerHunt(huntItems);
-    writeToDataStore(scavHunt);
+    long huntId = writeToDataStore(scavHunt);
 
     // Set response TODO: return scavenger hunt id / error message
     response.setContentType("text/html;");
-    response.getWriter().println(ERROR);
+    response.getWriter().println(huntId);
   }
 
   /* Return ArrayList<Destination> of filtered Destination objects. */
@@ -104,11 +104,13 @@ public class GenerateServlet extends HttpServlet {
   }
 
   /* Store Scavenger Hunt object in Datastore. */
-  public void writeToDataStore(ScavengerHunt scavHunt) {
+  public long writeToDataStore(ScavengerHunt scavHunt) {
     String jsonScavHunt = new Gson().toJson(scavHunt);
     Entity scavHuntEntity = new Entity(Constants.SCAVENGER_HUNT_ENTITY);
     scavHuntEntity.setProperty(Constants.SCAVENGER_HUNT_ENTITY, jsonScavHunt);
     datastore.put(scavHuntEntity);
+
+    return scavHuntEntity.getKey().getId();
   }
 
   /* Temporary function to create fake Destination objects. */
