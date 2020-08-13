@@ -85,7 +85,7 @@ public class GoDataServlet extends HttpServlet {
    * scavenger hunt that should be retrieved.
    */
   private Entity findScavengerHunt(String huntID) {
-    Query huntQuery = new Query(Constants.HUNT_ENTITY);
+    Query huntQuery = new Query(Constants.SCAVENGER_HUNT_ENTITY);
     PreparedQuery huntResults = datastore.prepare(huntQuery);
     for (Entity entity : huntResults.asIterable()) {
       if (huntID.equals(entity.getKey().toString())) { // Found the correct scavenger hunt.
