@@ -77,7 +77,7 @@ public class GoDataServlet extends HttpServlet {
       huntEntity = findScavengerHunt(huntID);
     } catch (Exception e) {
     }
-    
+
     if (huntEntity == null) {
       return;
     }
