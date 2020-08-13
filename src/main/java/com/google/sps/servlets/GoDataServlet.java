@@ -41,8 +41,8 @@ public class GoDataServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     Gson gson = new Gson();
-    String huntIDStr = request.getParameter(Constants.HUNTID_PARAMETER);
     String indexStr = request.getParameter(INDEX_PARAMETER);
+    String huntIDStr = request.getParameter(Constants.HUNTID_PARAMETER);
     try {
       int index = Integer.parseInt(indexStr);
       long huntID = Long.parseLong(huntIDStr);
@@ -77,6 +77,7 @@ public class GoDataServlet extends HttpServlet {
       huntEntity = findScavengerHunt(huntID);
     } catch (Exception e) {
     }
+
     if (huntEntity == null) {
       return;
     }
