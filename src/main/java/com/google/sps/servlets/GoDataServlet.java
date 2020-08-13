@@ -31,7 +31,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/go-data")
 public class GoDataServlet extends HttpServlet {
   private static final String INDEX_PARAMETER = "new-index";
-  private statc final String ERROR_MSSG =
+  private static final String ERROR_MSSG =
       "An error has occurred that prevents a scavenger hunt from being displayed.";
   private static final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
