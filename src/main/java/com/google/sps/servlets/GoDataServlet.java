@@ -31,7 +31,8 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/go-data")
 public class GoDataServlet extends HttpServlet {
   private static final String INDEX_PARAMETER = "new-index";
-
+  private statc final String ERROR_MSSG =
+      "An error has occurred that prevents a scavenger hunt from being displayed.";
   private static final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
   /**
@@ -48,7 +49,8 @@ public class GoDataServlet extends HttpServlet {
       long huntID = Long.parseLong(huntIDStr);
       Entity huntEntity = findScavengerHunt(huntID);
       if (huntEntity == null) {
-        return;
+        response.setContentType(Constants.JSON_TYPE);
+        response.getWriter().println(ERROR_MSSG);
       }
 
       // Update index of scavenger hunt.
@@ -80,8 +82,7 @@ public class GoDataServlet extends HttpServlet {
 
     response.setContentType(Constants.JSON_TYPE);
     if (huntEntity == null) {
-      String errorMessage = "An error has occurred that prevents a scavenger hunt from being displayed.";
-      response.getWriter().println(errorMessage);
+      response.getWriter().println(ERROR_MSSG);
     } else {
       String json = (String) huntEntity.getProperty(Constants.HUNT_VAL);
       response.getWriter().println(json);
