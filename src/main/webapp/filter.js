@@ -63,12 +63,13 @@ function sendClickedFiltersToServer() { //eslint-disable-line
   {method: 'POST'}).then((response) => response.text())
       .then((message) => {
         // If success, redirect to scavenger hunt with ID
-        // If failure, display on screen 
-        if (message != "Error\n") {
+        // If failure, display on screen
+        if (message != 'Error\n') {
           window.location = '/go.html?hunt_id=' + message;
         } else {
           if (document.getElementsByClassName('error-message').length > 0) {
-            const errorDiv = document.getElementsByClassName('error-message')[0];
+            const errorDiv = 
+              document.getElementsByClassName('error-message')[0];
             errorDiv.classList.remove('hide');
           }
         }
