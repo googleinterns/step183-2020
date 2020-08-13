@@ -29,8 +29,12 @@ const SUBMIT_DISPLAY = 'response-area';
 const MAP_DISPLAY = 'map-area';
 const MAP_MSSG_DISPLAY = 'map-message-area';
 const TIMER_DISPLAY = 'timer-area';
-const GUESS_INPUT = 'guess-input';
 const PROGRESS_DISPLAY = 'progress-bar';
+
+// Input IDs or parameters.
+const GUESS_INPUT = 'guess-input';
+const INDEX_PARAM = 'new-index';
+const HUNTID_PARAM = 'hunt_id';
 
 // Hard-coded messages to be displayed to the user.
 const PROCEED_FINAL_MSSG = 'Finish the Hunt';
@@ -46,13 +50,13 @@ const HIDE_INTERVAL_MS = 5000; // five seconds
 const TIMER_INTERVAL_MS = 1000; // eslint-disable-line
 
 // Other constants.
-const INDEX_PARAM = 'new-index';
 const INVISIBLE_CLASS = 'invisible';
 
 // Global variables.
 let hunt;
 let map;
 let hintClock;
+let huntID;
 
 window.onload = function() {
   addScriptToHead();
@@ -105,7 +109,10 @@ function addScriptToHead() {
  * to reflect the current state of the hunt.
  */
 function getHunt() {
-  fetch(DATA_URL).then((response) => response.json()).then((mssg) => {
+  // ID of the scavenger hunt that the user is on,
+  // in the form of: hunt_id=ScavengerHunt([ID number here])
+  huntID = window.location.search.substr(1);
+  fetch(DATA_URL + '?' + huntID).then((response) => response.json()).then((mssg) => {
     const destIndex = mssg.index;
     const huntArr = [];
     for (let i = 0; i < mssg.items.length; i++) {
@@ -328,13 +335,16 @@ function updateRiddleToFinalMessage() {
 
 /**
  * Update the scavenger hunt data with the current destination that
- * the user is on.
+ * the user is on. Also sends back the ID of the scavenger hunt
+ * that the user is on.
  * @param {int} index Index of the current destination the user needs
  * to find.
  */
 function sendIndexToServlet(index) {
   const params = new URLSearchParams();
   params.append(INDEX_PARAM, index);
+  let pair = huntID.split('=');
+  params.append(pair[0], pair[1]);
   fetch(DATA_URL, {method: 'POST', body: params});
 }
 
