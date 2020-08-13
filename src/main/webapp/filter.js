@@ -62,8 +62,17 @@ function sendClickedFiltersToServer() { //eslint-disable-line
     DIFF_ARRAY_URL_PARAM + '=' + jsonDiffArray,
   {method: 'POST'}).then((response) => response.text())
       .then((message) => {
-        // TODO: take out, replace with success or error message
-        console.log(message);
+        // If success, redirect to scavenger hunt with ID
+        // If failure, display on screen
+        if (message.trim() != 'Error') {
+          window.location = '/go.html?hunt_id=' + message;
+        } else {
+          if (document.getElementsByClassName('error-message').length > 0) {
+            const errorDiv =
+              document.getElementsByClassName('error-message')[0];
+            errorDiv.classList.remove('hide');
+          }
+        }
       });
 }
 

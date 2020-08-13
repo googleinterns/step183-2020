@@ -61,6 +61,19 @@ public class Destination {
     return this.city;
   }
 
+  public String getDescription() {
+    return this.description;
+  }
+
+  public LatLng getLocation() {
+    return this.location;
+  }
+
+  /* Return one Riddle. TODO: Make this a random riddle. */
+  public Riddle getRandomRiddle() {
+    return riddles.get(0);
+  }
+
   public static Obscurity stringToObscurity(String difficulty) {
     Obscurity level = Obscurity.UNDEFINED;
     switch (difficulty.toLowerCase()) {
@@ -75,6 +88,18 @@ public class Destination {
         break;
     }
     return level;
+  }
+
+  public HuntItem convertToHuntItem() {
+    HuntItem item =
+        new HuntItem.Builder()
+            .withName(this.name)
+            .atLocation(this.location)
+            .withDescription(this.description)
+            .withRiddle(this.getRandomRiddle())
+            .build();
+
+    return item;
   }
 
   public static class Builder {

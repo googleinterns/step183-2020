@@ -115,7 +115,7 @@ public class GoDataServlet extends HttpServlet {
     items.add(firstHunt);
     items.add(secondHunt);
     items.add(thirdHunt);
-    ScavengerHunt hunt = new ScavengerHunt(items, index, "San Francisco");
+    ScavengerHunt hunt = new ScavengerHunt(items, index);
     return hunt;
   }
 }

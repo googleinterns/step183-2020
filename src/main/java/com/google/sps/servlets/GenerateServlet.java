@@ -14,8 +14,15 @@
 
 package com.google.sps.servlets;
 
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
 import com.google.gson.Gson;
 import com.google.sps.data.Destination;
+import com.google.sps.data.HuntItem;
+import com.google.sps.data.LatLng;
+import com.google.sps.data.Riddle;
+import com.google.sps.data.ScavengerHunt;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -33,6 +40,8 @@ public class GenerateServlet extends HttpServlet {
 
   private static final String PLACE_FILTERS = "user-places";
   private static final String DIFF_FILTERS = "user-diff";
+  private static final String ERROR = "Error";
+  private static final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -55,13 +64,18 @@ public class GenerateServlet extends HttpServlet {
     }
 
     // Filter
+    // TODO: Only return the amount of hunt items that the user wants
     Set<Destination> filteredDestinations =
         filter(allDestinations, userPlaces, userDifficultyLevels);
 
-    writeToDataStore(filteredDestinations);
+    // Convert Destinations to Hunt Items, create Scavenger Hunt, store in Datastore
+    ArrayList<HuntItem> huntItems = convertToHuntItems(filteredDestinations);
+    ScavengerHunt scavHunt = new ScavengerHunt(huntItems);
+    writeToDataStore(scavHunt);
 
+    // Set response TODO: return scavenger hunt id / error message
     response.setContentType("text/html;");
-    response.getWriter().println(filteredDestinations);
+    response.getWriter().println(ERROR);
   }
 
   /* Return ArrayList<Destination> of filtered Destination objects. */
@@ -79,19 +93,39 @@ public class GenerateServlet extends HttpServlet {
     return filteredDestinations;
   }
 
-  /* TODO: Create hunt item / scavenger hunt objects and store in DataStore. */
-  public void writeToDataStore(Set<Destination> filteredDestinations) {
-    System.out.println(filteredDestinations);
+  /* Convert all Destinations in set to Hunt Items. */
+  public ArrayList<HuntItem> convertToHuntItems(Set<Destination> allDestinations) {
+    ArrayList<HuntItem> filteredHuntItems = new ArrayList();
+    for (Destination destination : allDestinations) {
+      HuntItem item = destination.convertToHuntItem();
+      filteredHuntItems.add(item);
+    }
+    return filteredHuntItems;
+  }
+
+  /* Store Scavenger Hunt object in Datastore. */
+  public void writeToDataStore(ScavengerHunt scavHunt) {
+    String jsonScavHunt = new Gson().toJson(scavHunt);
+    Entity scavHuntEntity = new Entity(Constants.SCAVENGER_HUNT_ENTITY);
+    scavHuntEntity.setProperty(Constants.SCAVENGER_HUNT_ENTITY, jsonScavHunt);
+    datastore.put(scavHuntEntity);
   }
 
   /* Temporary function to create fake Destination objects. */
   public ArrayList<Destination> createFakeDestinations() {
     ArrayList<Destination> allDestinations = new ArrayList();
+    LatLng location = new LatLng.Builder().withLat(100.0).withLng(100.0).build();
+    Riddle riddle = new Riddle.Builder().withPuzzle("puzzle").build();
+    String description = "description";
+
     Destination dest1 =
         new Destination.Builder()
             .withName("Golden Gate")
             .withCity("San Francisco")
             .withObscurity(Destination.Obscurity.EASY)
+            .withLocation(location)
+            .withRiddle(riddle)
+            .withDescription(description)
             .build();
 
     Destination dest2 =
@@ -99,6 +133,9 @@ public class GenerateServlet extends HttpServlet {
             .withName("Tea Garden")
             .withCity("San Francisco")
             .withObscurity(Destination.Obscurity.MEDIUM)
+            .withLocation(location)
+            .withRiddle(riddle)
+            .withDescription(description)
             .build();
 
     Destination dest3 =
@@ -106,6 +143,9 @@ public class GenerateServlet extends HttpServlet {
             .withName("Orpheum Theater")
             .withCity("San Francisco")
             .withObscurity(Destination.Obscurity.HARD)
+            .withLocation(location)
+            .withRiddle(riddle)
+            .withDescription(description)
             .build();
 
     Destination dest4 =
@@ -113,6 +153,9 @@ public class GenerateServlet extends HttpServlet {
             .withName("Louvre")
             .withCity("Paris")
             .withObscurity(Destination.Obscurity.EASY)
+            .withLocation(location)
+            .withRiddle(riddle)
+            .withDescription(description)
             .build();
 
     Destination dest5 =
@@ -120,6 +163,9 @@ public class GenerateServlet extends HttpServlet {
             .withName("Eiffel Tower")
             .withCity("Paris")
             .withObscurity(Destination.Obscurity.MEDIUM)
+            .withLocation(location)
+            .withRiddle(riddle)
+            .withDescription(description)
             .build();
 
     Destination dest6 =
@@ -127,6 +173,9 @@ public class GenerateServlet extends HttpServlet {
             .withName("Arc de Triomphe")
             .withCity("Paris")
             .withObscurity(Destination.Obscurity.HARD)
+            .withLocation(location)
+            .withRiddle(riddle)
+            .withDescription(description)
             .build();
 
     allDestinations.add(dest1);
