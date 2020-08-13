@@ -17,11 +17,15 @@ package com.google.sps.servlets;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.FetchOptions;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.gson.Gson;
 import com.google.sps.data.ScavengerHunt;
 import java.io.IOException;
+import java.util.ArrayList;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -43,6 +47,10 @@ public class GoDataServlet extends HttpServlet {
     Gson gson = new Gson();
     String huntIDStr = request.getParameter(Constants.HUNTID_PARAMETER);
     String indexStr = request.getParameter(INDEX_PARAMETER);
+<<<<<<< HEAD
+=======
+    String huntIDStr = request.getParameter(Constants.HUNTID_PARAMETER);
+>>>>>>> 6a396dd... Change huntID to a long to retrieve an entity from Datastore more efficiently.
     try {
       int index = Integer.parseInt(indexStr);
       long huntID = Long.parseLong(huntIDStr);
@@ -77,6 +85,10 @@ public class GoDataServlet extends HttpServlet {
       huntEntity = findScavengerHunt(huntID);
     } catch (Exception e) {
     }
+<<<<<<< HEAD
+=======
+    
+>>>>>>> 6a396dd... Change huntID to a long to retrieve an entity from Datastore more efficiently.
     if (huntEntity == null) {
       return;
     }

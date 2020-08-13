@@ -344,7 +344,7 @@ function updateRiddleToFinalMessage() {
 function sendIndexToServlet(index) {
   const params = new URLSearchParams();
   params.append(INDEX_PARAM, index);
-  let pair = huntID.split('=');
+  const pair = huntID.split('=');
   if (pair.length >= 2) {
     params.append(pair[0], pair[1]);
   }
