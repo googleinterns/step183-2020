@@ -96,7 +96,7 @@ public class Destination {
             .withName(this.name)
             .atLocation(this.location)
             .withDescription(this.description)
-            .withRiddle(this.getRiddle())
+            .withRiddle(this.getRandomRiddle())
             .build();
 
     return item;
