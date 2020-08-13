@@ -93,14 +93,7 @@ public class GenerateServlet extends HttpServlet {
     return filteredDestinations;
   }
 
-  /* TODO: Create hunt item / scavenger hunt objects and store in DataStore. */
-  public void writeToDataStore(ScavengerHunt scavHunt) {
-    String jsonScavHunt = new Gson().toJson(scavHunt);
-    Entity scavHuntEntity = new Entity(Constants.SCAVENGER_HUNT);
-    scavHuntEntity.setProperty(Constants.SCAVENGER_HUNT, jsonScavHunt);
-    datastore.put(scavHuntEntity);
-  }
-
+  /* Convert all Destinations in set to Hunt Items. */
   public ArrayList<HuntItem> convertToHuntItems(Set<Destination> allDestinations) {
     ArrayList<HuntItem> filteredHuntItems = new ArrayList();
     for (Destination destination : allDestinations) {
@@ -108,6 +101,14 @@ public class GenerateServlet extends HttpServlet {
       filteredHuntItems.add(item);
     }
     return filteredHuntItems;
+  }
+
+  /* Store Scavenger Hunt object in Datastore. */
+  public void writeToDataStore(ScavengerHunt scavHunt) {
+    String jsonScavHunt = new Gson().toJson(scavHunt);
+    Entity scavHuntEntity = new Entity(Constants.SCAVENGER_HUNT_ENTITY);
+    scavHuntEntity.setProperty(Constants.SCAVENGER_HUNT_ENTITY, jsonScavHunt);
+    datastore.put(scavHuntEntity);
   }
 
   /* Temporary function to create fake Destination objects. */
