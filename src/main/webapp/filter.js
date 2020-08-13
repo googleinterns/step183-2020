@@ -68,7 +68,7 @@ function sendClickedFiltersToServer() { //eslint-disable-line
           window.location = '/go.html?hunt_id=' + message;
         } else {
           if (document.getElementsByClassName('error-message').length > 0) {
-            const errorDiv = 
+            const errorDiv =
               document.getElementsByClassName('error-message')[0];
             errorDiv.classList.remove('hide');
           }
