@@ -13,6 +13,7 @@
 // limitations under the License.
 
 package com.google.sps.data;
+
 import java.util.ArrayList;
 
 // Represents a scavenger hunt.
