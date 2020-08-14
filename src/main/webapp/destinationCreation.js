@@ -18,11 +18,11 @@
 function addScriptToHead() { // eslint-disable-line
   const newScript = document.createElement('script');
   newScript.src = 'https://maps.googleapis.com/maps/api/js?key=' + config.PLACES_KEY + '&libraries=places';
-  newScript.type = 'text/javascript';
   document.getElementsByTagName('head')[0].appendChild(newScript);
 }
 
 function searchForPlace() { // eslint-disable-line
+  // Coresponds to the location of the Googleplex building
   const mapCenter = new google.maps.LatLng(37.421949, -122.083972);
 
   const map = new google.maps.Map(document.getElementById('map'), {
