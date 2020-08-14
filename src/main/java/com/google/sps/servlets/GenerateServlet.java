@@ -17,11 +17,11 @@ package com.google.sps.servlets;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
 import com.google.gson.Gson;
 import com.google.sps.data.Destination;
 import com.google.sps.data.HuntItem;
-import com.google.sps.data.LatLng;
-import com.google.sps.data.Riddle;
 import com.google.sps.data.ScavengerHunt;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -51,8 +51,8 @@ public class GenerateServlet extends HttpServlet {
     HashSet<String> userDifficultyStrings =
         new Gson().fromJson(request.getParameter(DIFF_FILTERS), HashSet.class);
 
-    // Create fake destinations TODO: get destinations from datastore
-    ArrayList<Destination> allDestinations = createFakeDestinations();
+    // Get destinations from datastore
+    ArrayList<Destination> allDestinations = getDestinationsFromDatastore();
 
     // Convert difficulty level strings to Destination.Obscurity
     HashSet<Destination.Obscurity> userDifficultyLevels = new HashSet();
@@ -71,11 +71,26 @@ public class GenerateServlet extends HttpServlet {
     // Convert Destinations to Hunt Items, create Scavenger Hunt, store in Datastore
     ArrayList<HuntItem> huntItems = convertToHuntItems(filteredDestinations);
     ScavengerHunt scavHunt = new ScavengerHunt(huntItems);
-    writeToDataStore(scavHunt);
+    long huntId = writeToDataStore(scavHunt);
 
     // Set response TODO: return scavenger hunt id / error message
     response.setContentType("text/html;");
-    response.getWriter().println(ERROR);
+    response.getWriter().println(huntId);
+  }
+
+  /* Query datastore for Destination objects, convert then to Destination class, store in ArrayList. */
+  public ArrayList<Destination> getDestinationsFromDatastore() {
+    Query query = new Query(Constants.DESTINATION_ENTITY);
+    PreparedQuery results = datastore.prepare(query);
+
+    ArrayList<Destination> allDestinations = new ArrayList();
+    for (Entity dest : results.asIterable()) {
+      Destination destination =
+          new Gson()
+              .fromJson((String) dest.getProperty(Constants.DESTINATION_JSON), Destination.class);
+      allDestinations.add(destination);
+    }
+    return allDestinations;
   }
 
   /* Return ArrayList<Destination> of filtered Destination objects. */
@@ -103,88 +118,13 @@ public class GenerateServlet extends HttpServlet {
     return filteredHuntItems;
   }
 
-  /* Store Scavenger Hunt object in Datastore. */
-  public void writeToDataStore(ScavengerHunt scavHunt) {
+  /* Store Scavenger Hunt object in Datastore, return Id of created Hunt. */
+  public long writeToDataStore(ScavengerHunt scavHunt) {
     String jsonScavHunt = new Gson().toJson(scavHunt);
     Entity scavHuntEntity = new Entity(Constants.SCAVENGER_HUNT_ENTITY);
     scavHuntEntity.setProperty(Constants.SCAVENGER_HUNT_ENTITY, jsonScavHunt);
     datastore.put(scavHuntEntity);
-  }
 
-  /* Temporary function to create fake Destination objects. */
-  public ArrayList<Destination> createFakeDestinations() {
-    ArrayList<Destination> allDestinations = new ArrayList();
-    LatLng location = new LatLng.Builder().withLat(100.0).withLng(100.0).build();
-    Riddle riddle = new Riddle.Builder().withPuzzle("puzzle").build();
-    String description = "description";
-
-    Destination dest1 =
-        new Destination.Builder()
-            .withName("Golden Gate")
-            .withCity("San Francisco")
-            .withObscurity(Destination.Obscurity.EASY)
-            .withLocation(location)
-            .withRiddle(riddle)
-            .withDescription(description)
-            .build();
-
-    Destination dest2 =
-        new Destination.Builder()
-            .withName("Tea Garden")
-            .withCity("San Francisco")
-            .withObscurity(Destination.Obscurity.MEDIUM)
-            .withLocation(location)
-            .withRiddle(riddle)
-            .withDescription(description)
-            .build();
-
-    Destination dest3 =
-        new Destination.Builder()
-            .withName("Orpheum Theater")
-            .withCity("San Francisco")
-            .withObscurity(Destination.Obscurity.HARD)
-            .withLocation(location)
-            .withRiddle(riddle)
-            .withDescription(description)
-            .build();
-
-    Destination dest4 =
-        new Destination.Builder()
-            .withName("Louvre")
-            .withCity("Paris")
-            .withObscurity(Destination.Obscurity.EASY)
-            .withLocation(location)
-            .withRiddle(riddle)
-            .withDescription(description)
-            .build();
-
-    Destination dest5 =
-        new Destination.Builder()
-            .withName("Eiffel Tower")
-            .withCity("Paris")
-            .withObscurity(Destination.Obscurity.MEDIUM)
-            .withLocation(location)
-            .withRiddle(riddle)
-            .withDescription(description)
-            .build();
-
-    Destination dest6 =
-        new Destination.Builder()
-            .withName("Arc de Triomphe")
-            .withCity("Paris")
-            .withObscurity(Destination.Obscurity.HARD)
-            .withLocation(location)
-            .withRiddle(riddle)
-            .withDescription(description)
-            .build();
-
-    allDestinations.add(dest1);
-    allDestinations.add(dest2);
-    allDestinations.add(dest3);
-    allDestinations.add(dest4);
-    allDestinations.add(dest5);
-    allDestinations.add(dest6);
-
-    return allDestinations;
+    return scavHuntEntity.getKey().getId();
   }
 }
