@@ -41,7 +41,6 @@ function searchForPlace() { // eslint-disable-line
 
   placeService.findPlaceFromQuery(request, (results, status) => {
     if (status === google.maps.places.PlacesServiceStatus.OK) {
-
       results.forEach((item) => {
         // TODO: Create clickable divs for each item that is
         // returned from the query and fill in input fields with appropriate
