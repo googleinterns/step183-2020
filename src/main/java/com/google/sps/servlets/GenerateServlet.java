@@ -118,7 +118,7 @@ public class GenerateServlet extends HttpServlet {
     return filteredHuntItems;
   }
 
-  /* Store Scavenger Hunt object in Datastore. */
+  /* Store Scavenger Hunt object in Datastore, return Id of created Hunt. */
   public long writeToDataStore(ScavengerHunt scavHunt) {
     String jsonScavHunt = new Gson().toJson(scavHunt);
     Entity scavHuntEntity = new Entity(Constants.SCAVENGER_HUNT_ENTITY);
