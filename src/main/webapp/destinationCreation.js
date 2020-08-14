@@ -12,14 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-function addScriptToHead () {
-  const newScript = document.createElement("script");
+/*
+ * Adds a Script for the places library to the head of the destinationCreation.html
+ */
+function addScriptToHead() { // eslint-disable-line
+  const newScript = document.createElement('script');
   newScript.src = 'https://maps.googleapis.com/maps/api/js?key=' + config.PLACES_KEY + '&libraries=places';
   newScript.type = 'text/javascript';
   document.getElementsByTagName('head')[0].appendChild(newScript);
 }
 
-function searchForPlace () {
+function searchForPlace() { // eslint-disable-line
   const mapCenter = new google.maps.LatLng(37.421949,-122.083972);
 
   const map = new google.maps.Map(document.getElementById('map'), {
@@ -29,7 +32,7 @@ function searchForPlace () {
 
   const placeService = new google.maps.places.PlacesService(map);
 
-  let text = document.getElementById('search').value;
+  const text = document.getElementById('search').value;
 
   const request = {
     query: text,
