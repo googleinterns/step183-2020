@@ -101,3 +101,12 @@
   top: 1379px;
   width: 289px;
 }
+
+.error-message {
+  text-align: center;
+  font-size: 30px;
+}
+
+.hide {
+  display: none;
+}

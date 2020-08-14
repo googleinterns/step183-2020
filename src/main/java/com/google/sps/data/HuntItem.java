@@ -24,6 +24,10 @@ public class HuntItem {
 
   private HuntItem() {}
 
+  public String getName() {
+    return this.name;
+  }
+
   public static class Builder {
     private String name;
     private LatLng location;

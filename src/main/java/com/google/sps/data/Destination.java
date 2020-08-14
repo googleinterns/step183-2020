@@ -48,6 +48,60 @@ public class Destination {
 
   private Destination() {}
 
+  // Getter methods
+  public String getName() {
+    return this.name;
+  }
+
+  public Obscurity getDifficulty() {
+    return this.level;
+  }
+
+  public String getCity() {
+    return this.city;
+  }
+
+  public String getDescription() {
+    return this.description;
+  }
+
+  public LatLng getLocation() {
+    return this.location;
+  }
+
+  /* Return one Riddle. TODO: Make this a random riddle. */
+  public Riddle getRandomRiddle() {
+    return riddles.get(0);
+  }
+
+  public static Obscurity stringToObscurity(String difficulty) {
+    Obscurity level = Obscurity.UNDEFINED;
+    switch (difficulty.toLowerCase()) {
+      case "easy":
+        level = Obscurity.EASY;
+        break;
+      case "medium":
+        level = Obscurity.MEDIUM;
+        break;
+      case "hard":
+        level = Obscurity.HARD;
+        break;
+    }
+    return level;
+  }
+
+  public HuntItem convertToHuntItem() {
+    HuntItem item =
+        new HuntItem.Builder()
+            .withName(this.name)
+            .atLocation(this.location)
+            .withDescription(this.description)
+            .withRiddle(this.getRandomRiddle())
+            .build();
+
+    return item;
+  }
+
   public static class Builder {
     private String name;
     private LatLng location;
