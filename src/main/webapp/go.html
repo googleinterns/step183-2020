@@ -5,19 +5,26 @@
     <title>Scavenger Hunt</title>
     <link rel="stylesheet" href="go.css" />
     <script src="destination.js"></script>
+    <script src="scavengerHuntManager.js"></script>
     <script src="config.js"></script>
     <script src="go.js"></script>
   </head>
   <body>
     <div class="content">
+      <div class="progress-container">
+        <div id="progress-area">
+          <div id="progress-bar"></div>
+        </div>
+      </div>
       <div class="map-container">
         <div id="map-area"></div>
       </div>
       <div class="center-text" id="map-message-area"></div>
-      <form action="/guess-data" method="POST">
-        <input type="text" name="guess-input" size="50"/>
-        <input type="submit" id="submit-button"/>
-      </form>
+      <div class="center-text" id="timer-area"></div>
+      <div class="submit-block">
+        <input type="text" name="guess-input" id="guess-input" size="50"/>
+        <button class="button" id="submit-button" type="button" onclick="handleDestinationAnswer()">Submit</button>
+      </div>
       <div class="center-text" id="response-area"></div>
       <div class="text-block">
         <div class="center-block riddle-row" id="riddle-area"></div>
