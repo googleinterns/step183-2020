@@ -14,36 +14,54 @@
 
 package com.google.sps.servlets;
 
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.gson.Gson;
-import com.google.sps.data.HuntItem;
-import com.google.sps.data.LatLng;
-import com.google.sps.data.Riddle;
 import com.google.sps.data.ScavengerHunt;
 import java.io.IOException;
-import java.util.ArrayList;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Returns a fake scavenger hunt and updates the current index of the hunt. */
+/** Returns a scavenger hunt and updates the current index of the hunt. */
 @WebServlet("/go-data")
 public class GoDataServlet extends HttpServlet {
   private static final String INDEX_PARAMETER = "new-index";
-
-  // Keeps track of the current stage in the hunt that the user is on.
-  // Before the user begins the hunt, the index should be -1.
-  private int index = -1;
+  private static final String ERROR_MSSG =
+      "An error has occurred that prevents a scavenger hunt from being displayed.";
+  private static final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
   /**
    * Updates the index of the scavenger hunt (aka the destination that the user currently needs to
-   * find.
+   * find).
    */
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    Gson gson = new Gson();
     String indexStr = request.getParameter(INDEX_PARAMETER);
+    String huntIDStr = request.getParameter(Constants.HUNTID_PARAMETER);
     try {
-      index = Integer.parseInt(indexStr);
+      int index = Integer.parseInt(indexStr);
+      long huntID = Long.parseLong(huntIDStr);
+      Entity huntEntity = findScavengerHunt(huntID);
+      if (huntEntity == null) {
+        response.setContentType(Constants.JSON_TYPE);
+        response.getWriter().println(ERROR_MSSG);
+      }
+
+      // Update index of scavenger hunt.
+      ScavengerHunt hunt =
+          gson.fromJson((String) huntEntity.getProperty(Constants.HUNT_VAL), ScavengerHunt.class);
+      hunt.updateIndex(index);
+
+      // Convert hunt to JSON string and put into Datastore
+      String huntStr = gson.toJson(hunt);
+      huntEntity.setProperty(Constants.HUNT_VAL, huntStr);
+      datastore.put(huntEntity);
     } catch (Exception e) {
     }
 
@@ -51,71 +69,36 @@ public class GoDataServlet extends HttpServlet {
     response.sendRedirect(Constants.GO_URL);
   }
 
+  /** Retrieves scavenger hunt data from Datastore, and sends to /go-data. */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    ScavengerHunt hunt = buildScavengerHunt();
+    String huntIDStr = request.getParameter(Constants.HUNTID_PARAMETER);
+    Entity huntEntity = null;
+    try {
+      long huntID = Long.parseLong(huntIDStr);
+      huntEntity = findScavengerHunt(huntID);
+    } catch (Exception e) {
+    }
 
     response.setContentType(Constants.JSON_TYPE);
-    Gson gson = new Gson();
-    String json = gson.toJson(hunt);
-    response.getWriter().println(json);
+    if (huntEntity == null) {
+      response.getWriter().println(ERROR_MSSG);
+    } else {
+      String json = (String) huntEntity.getProperty(Constants.HUNT_VAL);
+      response.getWriter().println(json);
+    }
   }
 
-  private ScavengerHunt buildScavengerHunt() {
-    // Constructing the first HuntItem.
-    Riddle firstRiddle =
-        new Riddle.Builder()
-            .withPuzzle("I was constructed in 1933")
-            .withHint("I am at the periphery of SF")
-            .withHint("I am golden in color")
-            .build();
-    LatLng firstCoord = new LatLng.Builder().withLat(37.819).withLng(-122.479).build();
-    HuntItem firstHunt =
-        new HuntItem.Builder()
-            .withName("Golden Gate Bridge")
-            .atLocation(firstCoord)
-            .withDescription("A famous bridge in San Francisco")
-            .withRiddle(firstRiddle)
-            .build();
-
-    // Constructing the second HuntItem.
-    Riddle secondRiddle =
-        new Riddle.Builder()
-            .withPuzzle("A famous tower in Paris")
-            .withHint("I am very tall")
-            .withHint("I am a popular tourist destination")
-            .build();
-    LatLng secondCoord = new LatLng.Builder().withLat(48.858).withLng(2.295).build();
-    HuntItem secondHunt =
-        new HuntItem.Builder()
-            .withName("Eiffel Tower")
-            .atLocation(secondCoord)
-            .withDescription("A famous tower in Paris")
-            .withRiddle(secondRiddle)
-            .build();
-
-    // Constructing the third HuntItem.
-    Riddle thirdRiddle =
-        new Riddle.Builder()
-            .withPuzzle("I am often associated with America")
-            .withHint("I am a statue")
-            .withHint("I am very tall")
-            .build();
-    LatLng thirdCoord = new LatLng.Builder().withLat(40.689).withLng(-74.045).build();
-    HuntItem thirdHunt =
-        new HuntItem.Builder()
-            .withName("Statue of Liberty")
-            .atLocation(thirdCoord)
-            .withDescription("A statue in New York City")
-            .withRiddle(thirdRiddle)
-            .build();
-
-    // Constructing the scavenger hunt.
-    ArrayList<HuntItem> items = new ArrayList<HuntItem>();
-    items.add(firstHunt);
-    items.add(secondHunt);
-    items.add(thirdHunt);
-    ScavengerHunt hunt = new ScavengerHunt(items, index);
-    return hunt;
+  /**
+   * Retrieves the scavenger hunt from Datastore using {@code huntID}, the ID corresponding to the
+   * scavenger hunt that should be retrieved.
+   */
+  private Entity findScavengerHunt(long huntID) {
+    Key key = KeyFactory.createKey(Constants.SCAVENGER_HUNT_ENTITY, huntID);
+    try {
+      return datastore.get(key);
+    } catch (Exception e) {
+      return null;
+    }
   }
 }
