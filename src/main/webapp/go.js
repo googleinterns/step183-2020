@@ -34,6 +34,7 @@ const PROGRESS_DISPLAY = 'progress-bar';
 // Input IDs or parameters.
 const GUESS_INPUT = 'guess-input';
 const INDEX_PARAM = 'new-index';
+const HUNT_PARAM = 'hunt_id';
 
 // Hard-coded messages to be displayed to the user.
 const PROCEED_FINAL_MSSG = 'Finish the Hunt';
@@ -109,10 +110,9 @@ function addScriptToHead() {
  */
 function getHunt() {
   // ID of the scavenger hunt that the user is on,
-  // in the form of: hunt_id=ScavengerHunt([ID number here])
-  // Using index 1 because index 0 is the '?' character.
-  huntID = window.location.search.substr(1);
-  const queryStr = DATA_URL + '?' + huntID;
+  // in the form of: hunt_id=[ID number here]
+  huntID = new URLSearchParams(window.location.search).get(HUNT_PARAM);
+  const queryStr = DATA_URL + '?' + HUNT_PARAM + '=' + huntID;
   fetch(queryStr).then((response) => response.json()).then((mssg) => {
     const destIndex = mssg.index;
     const huntArr = [];
@@ -344,10 +344,7 @@ function updateRiddleToFinalMessage() {
 function sendIndexToServlet(index) {
   const params = new URLSearchParams();
   params.append(INDEX_PARAM, index);
-  const pair = huntID.split('=');
-  if (pair.length >= 2) {
-    params.append(pair[0], pair[1]);
-  }
+  params.append(HUNT_PARAM, huntID);
   fetch(DATA_URL, {method: 'POST', body: params});
 }
 
