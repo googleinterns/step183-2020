@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /*
- * Adds a Script for the places library to the head of the destinationCreation.html
+ * Adds a Script for the places api to the head of the destinationCreation.html
  */
 function addScriptToHead() { // eslint-disable-line
   const newScript = document.createElement('script');
@@ -23,11 +23,11 @@ function addScriptToHead() { // eslint-disable-line
 }
 
 function searchForPlace() { // eslint-disable-line
-  const mapCenter = new google.maps.LatLng(37.421949,-122.083972);
+  const mapCenter = new google.maps.LatLng(37.421949, -122.083972);
 
   const map = new google.maps.Map(document.getElementById('map'), {
     center: mapCenter,
-    zoom: 18
+    zoom: 18,
   });
 
   const placeService = new google.maps.places.PlacesService(map);
@@ -37,16 +37,17 @@ function searchForPlace() { // eslint-disable-line
   const request = {
     query: text,
     fields: ['name', 'geometry'],
-  }
+  };
 
   placeService.findPlaceFromQuery(request, (results, status) => {
     if (status === google.maps.places.PlacesServiceStatus.OK) {
 
       results.forEach((item) => {
-        // TODO: Create clickable divs for each item that is returned from the query and fill in input fields with appropriate information
-        // provided by the places object
-        console.log(item)
+        // TODO: Create clickable divs for each item that is
+        // returned from the query and fill in input fields with appropriate
+        // information provided by the places object
+        console.log(item);
       });
     }
-  })
+  });
 }
