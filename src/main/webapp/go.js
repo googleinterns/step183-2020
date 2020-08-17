@@ -222,7 +222,7 @@ function getHint() { //eslint-disable-line
  * either as a photo or a user review.
  */
 function autoGenerateHints() {
-  let request = {
+  const request = {
     query: hunt.getCurDestName(),
     fields: ['place_id'],
   };
@@ -260,11 +260,11 @@ function getNextAutoHint() {
  * Generate photos for the destination from the Places API.
  */
 function generatePhotos() {
-  let detailsRequest = {
+  const photosRequest = {
     placeId: hunt.getPlaceID(),
-    fields: ['photo']
+    fields: ['photo'],
   };
-  service.getDetails(detailsRequest,(place, status) => {
+  service.getDetails(photosRequest, (place, status) => {
     if (status == google.maps.places.PlacesServiceStatus.OK) {
       hunt.setPhotos(place.photos);
     }
@@ -276,7 +276,7 @@ function generatePhotos() {
  * Display the next photo hint that the user should see.
  */
 function displayNextPhoto() {
-  let curIndex = hunt.getPhotoIndex();
+  const curIndex = hunt.getPhotoIndex();
   if (curIndex < hunt.getPhotos().length) {
     updateMessage(HINT_DISPLAY, 'Photo of destination: ');
     updatePhoto(HINT_DISPLAY, hunt.getPhotos()[curIndex]);
@@ -288,11 +288,11 @@ function displayNextPhoto() {
  * Generate reviews for the destination from the Places API.
  */
 function generateReviews() {
-  let detailsRequest = {
+  const reviewsRequest = {
     placeId: hunt.getPlaceID(),
-    fields: ['review']
+    fields: ['review'],
   };
-  service.getDetails(detailsRequest, (place, status) => {
+  service.getDetails(reviewsRequest, (place, status) => {
     if (status == google.maps.places.PlacesServiceStatus.OK) {
       hunt.setReviews(place.reviews);
     }
@@ -304,7 +304,7 @@ function generateReviews() {
  * Display the next user review hint that the user should see.
  */
 function displayNextReview() {
-  let curIndex = hunt.getReviewIndex();
+  const curIndex = hunt.getReviewIndex();
   if (curIndex < hunt.getReviews().length) {
     updateMessage(HINT_DISPLAY, 'Review of destination: ');
     updateMessage(HINT_DISPLAY, hunt.getReviews()[curIndex].text);
