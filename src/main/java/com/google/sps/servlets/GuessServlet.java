@@ -15,6 +15,14 @@
 package com.google.sps.servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import com.google.cloud.language.v1.LanguageServiceClient;
+import com.google.cloud.language.v1.AnalyzeEntitiesRequest;
+import com.google.cloud.language.v1.AnalyzeEntitiesResponse;
+import com.google.cloud.language.v1.Document;
+import com.google.cloud.language.v1.Document.Type;
+import com.google.cloud.language.v1.Entity;
+import com.google.cloud.language.v1.EncodingType;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -33,11 +41,30 @@ public class GuessServlet extends HttpServlet {
     String userGuess = request.getParameter(GUESS_PARAMETER);
     String answer = request.getParameter(ANSWER_PARAMETER);
 
-    // TODO: Use entity extraction to determine if this guess is correct
-    // instead of forcing that the strings match exactly.
-    boolean result = userGuess.equals(answer);
+    ArrayList<String> userEntities = findEntities(userGuess);
+    ArrayList<String> answerEntities = findEntities(answer);
+
+    // User's guess is counted as correct if every entity in the answer
+    // is also present in the user's guess.
+    userEntities.retainAll(answerEntities);
+    boolean result = (userEntities.size() == answerEntities.size());
 
     response.setContentType(TEXT_TYPE);
     response.getWriter().println(result);
+  }
+
+  /** Extracts and returns entities from {@code word} using the Natural Language API. */
+  private ArrayList<String> findEntities(String word) throws IOException {
+    ArrayList<String> entities = new ArrayList<String>();
+
+    LanguageServiceClient service = LanguageServiceClient.create();
+    Document doc = Document.newBuilder().setContent(word.toLowerCase()).setType(Type.PLAIN_TEXT).build();
+    AnalyzeEntitiesRequest request = AnalyzeEntitiesRequest.newBuilder().setDocument(doc).setEncodingType(EncodingType.UTF16).build();
+    AnalyzeEntitiesResponse response = service.analyzeEntities(request);
+
+    for (Entity entity: response.getEntitiesList()) {
+      entities.add(entity.getName());
+    }
+    return entities;
   }
 }
