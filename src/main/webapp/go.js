@@ -16,6 +16,8 @@
 const HINT_BUTTON = 'hint-button';
 const START_BUTTON = 'start-button';
 const PROCEED_BUTTON = 'proceed-button';
+const CLEAR_BUTTON = 'clear-hint-button';
+const SUBMIT_BUTTON = 'submit-button';
 
 // URLs that data should be fetched from.
 const DATA_URL = '/go-data';
@@ -40,6 +42,9 @@ const HUNT_PARAM = 'hunt_id';
 const PROCEED_FINAL_MSSG = 'Finish the Hunt';
 const CORRECT_MSSG = 'Correct!';
 const WRONG_MSSG = 'Wrong. Try again!';
+const EXIT_MSSG = 'Do you want to exit this scavenger hunt?' +
+    ' If so, make sure to bookmark this URL so you can return' +
+    ' to this page later.';
 
 // Interval durations.
 const MAP_INTERVAL_MS = 10000; // ten seconds
@@ -57,6 +62,7 @@ let hunt;
 let map;
 let hintClock;
 let huntID;
+let service;
 
 window.onload = function() {
   addScriptToHead();
@@ -100,7 +106,7 @@ function standardizeTime(num) {
 function addScriptToHead() {
   const newScript = document.createElement('script');
   newScript.src = 'https://maps.googleapis.com/maps/api/js?key=' +
-      config.MAP_KEY + '&callback=createMap';
+      config.MAP_KEY + '&libraries=places&callback=createMap';
   document.getElementsByTagName('head')[0].appendChild(newScript);
 }
 
@@ -178,18 +184,18 @@ function updateGeolocation() {
 }
 
 /**
- * Show or hide the hint button.
+ * Show or hide the hint button (as well as the clear hint button).
  * @param {boolean} hide Whether the proceed button should be hidden or shown.
- * Disable lint check because this will later be called by
- * handleDestinationAnswer(), updateToCurrentState(), and proceed().
- *
  */
-function toggleHintButton(hide) { //eslint-disable-line
+function toggleHintButton(hide) {
   const hintButton = document.getElementById(HINT_BUTTON);
+  const clearButton = document.getElementById(CLEAR_BUTTON);
   if (hide) {
     hintButton.classList.add(INVISIBLE_CLASS);
+    clearButton.classList.add(INVISIBLE_CLASS);
   } else {
     hintButton.classList.remove(INVISIBLE_CLASS);
+    clearButton.classList.remove(INVISIBLE_CLASS);
   }
 }
 
@@ -200,8 +206,122 @@ function toggleHintButton(hide) { //eslint-disable-line
 function getHint() { //eslint-disable-line
   const nextHint = hunt.getNextHint();
   if (nextHint != '') {
-    updateMessage(HINT_DISPLAY, nextHint);
+    updateMessage(HINT_DISPLAY, 'Hint #' + (hunt.getHintIndex()) +
+        ': ' + nextHint);
+  } else {
+    if (hunt.getPlaceID() == -1) {
+      autoGenerateHints();
+    } else {
+      getNextAutoHint();
+    }
   }
+}
+
+/**
+ * Auto-generate hints using Places API, which take the form
+ * either as a photo or a user review.
+ */
+function autoGenerateHints() {
+  let request = {
+    query: hunt.getCurDestName(),
+    fields: ['place_id'],
+  };
+  service = new google.maps.places.PlacesService(map);
+  service.findPlaceFromQuery(request, function(results, status) {
+    if (status === google.maps.places.PlacesServiceStatus.OK) {
+      hunt.setPlaceID(results[0].place_id);
+      getNextAutoHint();
+    }
+  });
+}
+
+/**
+ * Randomly display either a photo or a user review
+ * from the destination.
+ */
+function getNextAutoHint() {
+  const random = Math.random();
+  if (random < 0.5) {
+    if (hunt.getPhotos().length == 0) {
+      generatePhotos();
+    } else {
+      displayNextPhoto();
+    }
+  } else {
+    if (hunt.getReviews().length == 0) {
+      generateReviews();
+    } else {
+      displayNextReview();
+    }
+  }
+}
+
+/**
+ * Generate photos for the destination from the Places API.
+ */
+function generatePhotos() {
+  let detailsRequest = {
+    placeId: hunt.getPlaceID(),
+    fields: ['photo']
+  };
+  service.getDetails(detailsRequest,(place, status) => {
+    if (status == google.maps.places.PlacesServiceStatus.OK) {
+      hunt.setPhotos(place.photos);
+    }
+    displayNextPhoto();
+  });
+}
+
+/**
+ * Display the next photo hint that the user should see.
+ */
+function displayNextPhoto() {
+  let curIndex = hunt.getPhotoIndex();
+  if (curIndex < hunt.getPhotos().length) {
+    updateMessage(HINT_DISPLAY, 'Photo of destination: ');
+    updatePhoto(HINT_DISPLAY, hunt.getPhotos()[curIndex]);
+    hunt.setPhotoIndex(curIndex + 1);
+  }
+}
+
+/**
+ * Generate reviews for the destination from the Places API.
+ */
+function generateReviews() {
+  let detailsRequest = {
+    placeId: hunt.getPlaceID(),
+    fields: ['review']
+  };
+  service.getDetails(detailsRequest, (place, status) => {
+    if (status == google.maps.places.PlacesServiceStatus.OK) {
+      hunt.setReviews(place.reviews);
+    }
+    displayNextReview();
+  });
+}
+
+/**
+ * Display the next user review hint that the user should see.
+ */
+function displayNextReview() {
+  let curIndex = hunt.getReviewIndex();
+  if (curIndex < hunt.getReviews().length) {
+    updateMessage(HINT_DISPLAY, 'Review of destination: ');
+    updateMessage(HINT_DISPLAY, hunt.getReviews()[curIndex].text);
+    hunt.setReviewIndex(curIndex + 1);
+  }
+}
+
+/**
+ * Update {code@ display} to specified {code@ photo}.
+ * @param {String} display ID of element to be updated
+ * @param {String} photo Photo that should be added to display.
+ */
+function updatePhoto(display, photo) {
+  const message = document.getElementById(display);
+  const newImage = document.createElement('img');
+  newImage.src = photo.getUrl({maxWidth: 400, maxHeight: 400});
+  message.appendChild(newImage);
 }
 
 /**
@@ -249,8 +369,10 @@ function startHunt() { //eslint-disable-line
 function updateToCurrentState() {
   if (hunt.hasNotStarted()) {
     toggleHintButton(/* hide = */ true);
+    toggleSubmitForm(/* hide = */ true);
   } else { // The user has started the hunt, and needs to solve the riddle.
     delayHintButton();
+    toggleSubmitForm(/* hide = */ false);
     hideStartButton();
     updateMessage(RIDDLE_DISPLAY, 'Riddle: ' + hunt.getCurDestPuzzle());
   }
@@ -259,6 +381,23 @@ function updateToCurrentState() {
   for (let i = 0; i < hunt.getDestIndex(); i++) {
     addMarkerToMap(hunt.getDest(i).lat, hunt.getDest(i).lng,
         hunt.getDest(i).name);
+  }
+}
+
+/**
+ * Show or hide the submit form where the user inputs their guess
+ * for the destination.
+ * @param {boolean} hide Whether the form should be hidden or shown.
+ */
+function toggleSubmitForm(hide) {
+  const guessBar = document.getElementById(GUESS_INPUT);
+  const guessButton = document.getElementById(SUBMIT_BUTTON);
+  if (hide) {
+    guessBar.classList.add(INVISIBLE_CLASS);
+    guessButton.classList.add(INVISIBLE_CLASS);
+  } else {
+    guessBar.classList.remove(INVISIBLE_CLASS);
+    guessButton.classList.remove(INVISIBLE_CLASS);
   }
 }
 
@@ -309,8 +448,7 @@ function updateMessage(display, text) {
   if (display == HINT_DISPLAY) {
   // Special case for HINT_DISPLAY to avoid clearing out its existing contents
   // because it may already contain previous hints.
-    message.appendChild(createLine('Hint #' + (hunt.getHintIndex()) +
-        ': ' + text));
+    message.appendChild(createLine(text));
   } else {
     message.innerHTML = '';
     message.appendChild(createLine(text));
@@ -323,7 +461,8 @@ function updateMessage(display, text) {
  */
 function updateRiddleToFinalMessage() {
   const newLine = document.createElement('div');
-  let message = '<p> Congrats! You\'ve visited the following locations:</p>';
+  let message = '<p></p>'; // Extra line for readability.
+  message += '<p> Congrats! You\'ve visited the following locations:</p>';
   for (let i = 0; i < hunt.getNumItems(); i++) {
     message += '<p>' + sanitize(hunt.getDest(i).name) + ': ' +
         sanitize(hunt.getDest(i).description) + '</p>';
@@ -359,15 +498,17 @@ function proceed() { //eslint-disable-line
   if (hunt.getDestIndex() < hunt.getNumItems()) {
     updateMessage(RIDDLE_DISPLAY, 'Riddle: ' + hunt.getCurDestPuzzle());
     delayHintButton();
+    toggleSubmitForm(/* hide = */ false);
   } else {
     updateRiddleToFinalMessage();
     toggleHintButton(/* hide = */ true);
+    toggleSubmitForm(/* hide = */ true);
   }
   updateProgressBar();
   toggleProceedButton(/* hide = */ true);
   deleteMessage(SUBMIT_DISPLAY);
   deleteMessage(HINT_DISPLAY);
-  hunt.setHintIndex(0);
+  hunt.resetForNextDest();
 }
 
 /**
@@ -414,7 +555,7 @@ function sanitize(unsafeContent) {
  * Disable lint check because exit() is called from go.html.
  */
 function exit() { //eslint-disable-line
-  if (confirm('Exit hunt?')) {
+  if (confirm(EXIT_MSSG)) {
     window.location.replace(HOME_URL);
   }
 }
