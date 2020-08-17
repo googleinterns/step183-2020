@@ -307,7 +307,7 @@ function displayNextReview() {
   const curIndex = hunt.getReviewIndex();
   if (curIndex < hunt.getReviews().length) {
     updateMessage(HINT_DISPLAY, 'Review of destination: ');
-    let cleanedReview = redactReview(hunt.getReviews()[curIndex].text);
+    const cleanedReview = redactReview(hunt.getReviews()[curIndex].text);
     updateMessage(HINT_DISPLAY, cleanedReview);
     hunt.setReviewIndex(curIndex + 1);
   }
@@ -319,7 +319,7 @@ function displayNextReview() {
  * @return {String} Redacted text
  */
 function redactReview(text) {
-  const re = new RegExp(hunt.getCurDestName(), "gi")
+  const re = new RegExp(hunt.getCurDestName(), 'gi');
   return text.replace(re, '[REDACTED]');
 }
 
