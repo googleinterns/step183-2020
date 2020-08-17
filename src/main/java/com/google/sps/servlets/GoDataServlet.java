@@ -82,7 +82,9 @@ public class GoDataServlet extends HttpServlet {
     } else {
       ScavengerHunt hunt =
           gson.fromJson((String) huntEntity.getProperty(Constants.HUNT_VAL), ScavengerHunt.class);
-      ScavengerHuntFull fullHunt = new ScavengerHuntFull(hunt, ((Long) huntEntity.getProperty(Constants.HUNT_INDEX)).intValue());
+      ScavengerHuntFull fullHunt =
+          new ScavengerHuntFull(
+              hunt, ((Long) huntEntity.getProperty(Constants.HUNT_INDEX)).intValue());
       String json = gson.toJson(fullHunt);
       response.getWriter().println(json);
     }
