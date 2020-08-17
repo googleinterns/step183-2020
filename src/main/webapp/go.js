@@ -116,8 +116,8 @@ function getHunt() {
   fetch(queryStr).then((response) => response.json()).then((mssg) => {
     const destIndex = mssg.index;
     const huntArr = [];
-    for (let i = 0; i < mssg.items.length; i++) {
-      const cur = mssg.items[i];
+    for (let i = 0; i < mssg.hunt.items.length; i++) {
+      const cur = mssg.hunt.items[i];
       huntArr.push(new Destination(cur.name, cur.description,
           cur.riddle.puzzle, cur.riddle.hints, cur.location.lat,
           cur.location.lng));

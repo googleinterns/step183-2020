@@ -20,6 +20,8 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.gson.Gson;
+import com.google.sps.data.ScavengerHunt;
+import com.google.sps.data.ScavengerHuntFull;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -50,11 +52,11 @@ public class GoDataServlet extends HttpServlet {
       if (huntEntity == null) {
         response.setContentType(Constants.JSON_TYPE);
         response.getWriter().println(ERROR_MSSG);
+      } else {
+        // Update index of scavenger hunt.
+        huntEntity.setProperty(Constants.HUNT_INDEX, index);
+        datastore.put(huntEntity);
       }
-
-      // Update index of scavenger hunt.
-      huntEntity.setProperty(Constants.HUNT_INDEX, index);
-      datastore.put(huntEntity);
     } catch (Exception e) {
     }
 
@@ -65,6 +67,7 @@ public class GoDataServlet extends HttpServlet {
   /** Retrieves scavenger hunt data from Datastore, and sends to /go-data. */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    Gson gson = new Gson();
     String huntIDStr = request.getParameter(Constants.HUNTID_PARAMETER);
     Entity huntEntity = null;
     try {
@@ -77,9 +80,11 @@ public class GoDataServlet extends HttpServlet {
     if (huntEntity == null) {
       response.getWriter().println(ERROR_MSSG);
     } else {
-      String jsonHunt = (String) huntEntity.getProperty(Constants.HUNT_VAL);
-      int curIndex = ((Long) huntEntity.getProperty(Constants.HUNT_INDEX)).intValue();
-      String json = jsonHunt.substring(0, jsonHunt.length() - 1) + ",\"index\":" + curIndex + "}";
+      ScavengerHunt hunt =
+          gson.fromJson((String) huntEntity.getProperty(Constants.HUNT_VAL), ScavengerHunt.class);
+      ScavengerHuntFull fullHunt =
+          new ScavengerHuntFull(hunt, ((Long) huntEntity.getProperty(Constants.HUNT_INDEX)).intValue());
+      String json = gson.toJson(fullHunt);
       response.getWriter().println(json);
     }
   }
