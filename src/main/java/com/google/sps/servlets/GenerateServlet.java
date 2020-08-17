@@ -123,6 +123,7 @@ public class GenerateServlet extends HttpServlet {
     String jsonScavHunt = new Gson().toJson(scavHunt);
     Entity scavHuntEntity = new Entity(Constants.SCAVENGER_HUNT_ENTITY);
     scavHuntEntity.setProperty(Constants.SCAVENGER_HUNT_ENTITY, jsonScavHunt);
+    scavHuntEntity.setProperty(Constants.HUNT_INDEX, -1);
     datastore.put(scavHuntEntity);
 
     return scavHuntEntity.getKey().getId();

@@ -19,15 +19,8 @@ import java.util.ArrayList;
 // Represents a scavenger hunt.
 public class ScavengerHunt {
   private ArrayList<HuntItem> items;
-  // For saved scavenger hunts: represents which destination the user is currently looking for.
-  private int index;
 
   public ScavengerHunt(ArrayList<HuntItem> items) {
     this.items = items;
-    this.index = -1;
-  }
-
-  public void updateIndex(int index) {
-    this.index = index;
   }
 }
