@@ -107,7 +107,7 @@ public class GenerateServlet extends HttpServlet {
           new Gson()
               .fromJson((String) dest.getProperty(Constants.DESTINATION_JSON), Destination.class);
       allDestinations.add(destination);
-    } 
+    }
     return allDestinations;
   }
 

@@ -77,7 +77,7 @@ function sendClickedFiltersToServer() { //eslint-disable-line
   // TODO: Get clicked tags
 
   fetch('/generate-hunt?' + PLACE_ARRAY_URL_PARAM + '=' + jsonPlaceArray + '&' +
-    DIFF_ARRAY_URL_PARAM + '=' + jsonDiffArray + '&' + 
+    DIFF_ARRAY_URL_PARAM + '=' + jsonDiffArray + '&' +
     NUM_STOPS_URL_PARAM + '=' + jsonNumPlaces,
   {method: 'POST'}).then((response) => response.text())
       .then((message) => {
