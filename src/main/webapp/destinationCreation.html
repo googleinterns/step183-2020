@@ -7,14 +7,16 @@
     <link rel="stylesheet" href="destinationCreation.css"/>
     <script src="config.js"></script>
     <script src="destinationCreation.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   </head>
   <body onload="addScriptToHead()">
     <div>
       <h1>Create a Scavenger Hunt Destination</h1>
-      <div>
+      <div class="searchBar">
         <input type="text" placeholder="Search.." name="search" id="search">
         <button type="button" onclick="searchForPlace()" class="fa fa-search"></button>
       </div>
+      <div class="search-results"></div>
       <form action="/destination-data" method="post">
         <label for="name-input" class="required">Enter the name of the destination:</label><br>
         <input type="text" name="name" id="name-input" required>
@@ -64,3 +66,8 @@
     </div>
   </body>
 </html>
+<script>
+$("#place").click(function() {
+  window.location = "http://google.com";
+});
+</script>

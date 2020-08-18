@@ -36,17 +36,28 @@ function searchForPlace() { // eslint-disable-line
 
   const request = {
     query: text,
-    fields: ['name', 'geometry'],
+    fields: ['name', 'geometry', 'place_id', 'icon', 'photos'],
   };
 
   placeService.findPlaceFromQuery(request, (results, status) => {
+    let newDiv;
     if (status === google.maps.places.PlacesServiceStatus.OK) {
-      results.forEach((item) => {
-        // TODO: Create clickable divs for each item that is
-        // returned from the query and fill in input fields with appropriate
-        // information provided by the places object
-        console.log(item);
+      results.forEach((place) => {
+        newDiv = document.createElement('div');
+        newDiv.style = 'cursor: pointer;';
+        newDiv.setAttribute('place-id', place.place_id);
+        newDiv.innerText = place.name;
+        newDiv.id = 'place';
+        document.getElementsByClassName('search-results')[0].appendChild(newDiv);
+        //newImg = document.createElement('img');
+        //newImg.src = place.photos[0].getUrl();
+        //document.getElementById(place.name)[0].appendChild(newImg);
+        console.log(place);
       });
     }
   });
+}
+
+function fillInValues() { // eslint-disable-line
+  console.log('Fill me in');
 }
