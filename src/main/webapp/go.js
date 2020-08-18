@@ -218,7 +218,7 @@ function getHint() { //eslint-disable-line
  */
 function getAutoHint() {
   // First time getting an auto hint for current destination.
-  if (hunt.getPlaceID() == -1) { 
+  if (hunt.getPlaceID() == -1) {
     generatePlaceID();
   } else {
     getNextAutoHint();
