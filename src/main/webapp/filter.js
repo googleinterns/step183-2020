@@ -3,7 +3,7 @@ const UNCLICKED = 'unclicked-filter';
 const CLICKED = 'clicked-filter';
 const PLACE_ARRAY_URL_PARAM = 'user-places';
 const DIFF_ARRAY_URL_PARAM = 'user-diff';
-const NUM_STOPS_URL_PARAM = 'user-num-stops'
+const NUM_STOPS_URL_PARAM = 'user-num-stops';
 
 /**
 * Swap between "clicked" and "unclicked" classes
@@ -58,17 +58,18 @@ function sendClickedFiltersToServer() { //eslint-disable-line
 
   // Get clicked num stops
   let clickedNumStops = [];
-  let numStops = "";
-  if (document.getElementsByClassName('numStops').length > 0) {
-    const numStopsContainer = document.getElementsByClassName('numStops')[0];
-    clickedNumStops = Array.from(numStopsContainer.getElementsByClassName(CLICKED))
+  let numStops = '';
+  if (document.getElementsByClassName('num-stops').length > 0) {
+    const numStopsContainer = document.getElementsByClassName('num-stops')[0];
+    clickedNumStops = 
+        Array.from(numStopsContainer.getElementsByClassName(CLICKED))
         .map((element) => element.innerText);
     if (clickedNumStops.length > 1) {
-        window.alert('Please choose only ONE number of stops.');
+       window.alert('Please choose only ONE number of stops.');
     } else if (clickedNumStops.length === 0) {
-        numStops = "Three";
+      numStops = 'Three';
     } else {
-        numStops = clickedNumStops[0];
+      numStops = clickedNumStops[0];
     }
   }
   const jsonNumPlaces = JSON.stringify(numStops);
@@ -76,7 +77,8 @@ function sendClickedFiltersToServer() { //eslint-disable-line
   // TODO: Get clicked tags
 
   fetch('/generate-hunt?' + PLACE_ARRAY_URL_PARAM + '=' + jsonPlaceArray + '&' +
-    DIFF_ARRAY_URL_PARAM + '=' + jsonDiffArray + '&' + NUM_STOPS_URL_PARAM + '=' + jsonNumPlaces,
+    DIFF_ARRAY_URL_PARAM + '=' + jsonDiffArray + '&' + 
+    NUM_STOPS_URL_PARAM + '=' + jsonNumPlaces,
   {method: 'POST'}).then((response) => response.text())
       .then((message) => {
         // If success, redirect to scavenger hunt with ID

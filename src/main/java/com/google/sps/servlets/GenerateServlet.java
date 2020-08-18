@@ -24,7 +24,9 @@ import com.google.sps.data.Destination;
 import com.google.sps.data.HuntItem;
 import com.google.sps.data.ScavengerHunt;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -33,8 +35,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Collections;
-import java.util.Arrays;
 
 /** Servlet that returns bucket list content */
 @WebServlet("/generate-hunt")
@@ -53,8 +53,7 @@ public class GenerateServlet extends HttpServlet {
         new Gson().fromJson(request.getParameter(PLACE_FILTERS), HashSet.class);
     HashSet<String> userDifficultyStrings =
         new Gson().fromJson(request.getParameter(DIFF_FILTERS), HashSet.class);
-    String numPlacesString = 
-        new Gson().fromJson(request.getParameter(NUM_PLACES), String.class);
+    String numPlacesString = new Gson().fromJson(request.getParameter(NUM_PLACES), String.class);
     int numPlaces = 3;
     if (numPlacesString == "Five") {
       numPlaces = 5;
@@ -81,7 +80,7 @@ public class GenerateServlet extends HttpServlet {
     if (filteredDestinations.size() >= numPlaces) {
       // Get numPlaces number of Destinations
       filteredDestinations = correctNumDests(filteredDestinations, numPlaces);
-     
+
       // Convert Destinations to Hunt Items, create Scavenger Hunt, store in Datastore
       ArrayList<HuntItem> huntItems = convertToHuntItems(filteredDestinations);
       ScavengerHunt scavHunt = new ScavengerHunt(huntItems);
@@ -92,7 +91,7 @@ public class GenerateServlet extends HttpServlet {
       response.setContentType("text/html;");
       response.getWriter().println(huntId);
     } else {
-      // If there are not enough destinations, return an error 
+      // If there are not enough destinations, return an error
       response.setContentType("text/html");
       response.getWriter().println(ERROR);
     }
