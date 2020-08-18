@@ -97,12 +97,12 @@ class ScavengerHuntManager { //eslint-disable-line
    * destination.
    */
   resetForNextDest() {
-    hunt.setHintIndex(0);
-    hunt.setPhotoIndex(0);
-    hunt.setReviewIndex(0);
-    hunt.setPhotos([]);
-    hunt.setReviews([]);
-    hunt.setPlaceID(-1);
+    this.setHintIndex(0);
+    this.setPhotoIndex(0);
+    this.setReviewIndex(0);
+    this.setPhotos([]);
+    this.setReviews([]);
+    this.setPlaceID(-1);
   }
 
   /**
