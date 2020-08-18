@@ -34,7 +34,38 @@ public class GuessServlet extends HttpServlet {
   private static final String GUESS_PARAMETER = "guess-input";
   private static final String ANSWER_PARAMETER = "answer";
   private static final String TEXT_TYPE = "text/html";
+  
+  private LanguageServiceClient getLanguageServiceClientInstance() {
+    returns LanguageServiceClient.create();
+  }
+  // In test, create a mock LanguageServiceClient, and replace this implementation with one
+  // that returns that mock object.
+  
+  // Or (recommended) ......
+  
+  private final LanguageServiceClient lang;
+  public GuessServlet() {
+    this.lang = LanguageServiceClient.create();
+  }
+  
+  public GuessServlet(LanguageServiceClient lang) {
+    this.lang = lang;
+  }
+  // In test, create a mock LanguageServiceClient, and construct the object-under-test via
+  // this constructor with the mock as the parameter.
 
+  // Or...
+  private List<String> getEntities(String word) {
+    Document doc =
+        Document.newBuilder().setContent(word.toLowerCase()).setType(Type.PLAIN_TEXT).build();
+    AnalyzeEntitiesRequest request =
+        AnalyzeEntitiesRequest.newBuilder()
+            .setDocument(doc)
+            .setEncodingType(EncodingType.UTF16)
+            .build();
+    AnalyzeEntitiesResponse response = lang.analyzeEntities(request);
+  }
+  
   /** Determines if the user's guess matches the destination location. */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -52,12 +83,20 @@ public class GuessServlet extends HttpServlet {
     response.setContentType(TEXT_TYPE);
     response.getWriter().println(result);
   }
+  
+  /*
+    private static class TestGuessServlet extends GuessServlet {
+      @Override ArrayList<String> findEntities(String word) throws IOException {
+        return new ArrayList(word.split(" "));
+      }
+    }
+  */
 
   /** Extracts and returns entities from {@code word} using the Natural Language API. */
   private ArrayList<String> findEntities(String word) throws IOException {
     ArrayList<String> entities = new ArrayList<String>();
 
-    LanguageServiceClient service = LanguageServiceClient.create();
+    // LanguageServiceClient service = getLanguageServiceClientInstance();
     Document doc =
         Document.newBuilder().setContent(word.toLowerCase()).setType(Type.PLAIN_TEXT).build();
     AnalyzeEntitiesRequest request =
@@ -65,7 +104,12 @@ public class GuessServlet extends HttpServlet {
             .setDocument(doc)
             .setEncodingType(EncodingType.UTF16)
             .build();
-    AnalyzeEntitiesResponse response = service.analyzeEntities(request);
+    AnalyzeEntitiesResponse response = lang.analyzeEntities(request);
+    // Mock version of LanguageServiceClient would be like:
+    // LanguageServiceClient mockService = Mockito.mock();
+    // List<Entity> mockEntitiesList =
+    // when(mockService.analyzeEntities(eq("Golden Gate")).thenReturn(mockGoldenGateEntitiesList);
+    // when(mockService.analyzeEntities("Eiffel Tower").thenReturn(mockEiffelEntitiesList);
 
     for (Entity entity : response.getEntitiesList()) {
       entities.add(entity.getName());
