@@ -61,11 +61,11 @@ function sendClickedFiltersToServer() { //eslint-disable-line
   let numStops = '';
   if (document.getElementsByClassName('num-stops').length > 0) {
     const numStopsContainer = document.getElementsByClassName('num-stops')[0];
-    clickedNumStops = 
+    clickedNumStops =
         Array.from(numStopsContainer.getElementsByClassName(CLICKED))
-        .map((element) => element.innerText);
+            .map((element) => element.innerText);
     if (clickedNumStops.length > 1) {
-       window.alert('Please choose only ONE number of stops.');
+      window.alert('Please choose only ONE number of stops.');
     } else if (clickedNumStops.length === 0) {
       numStops = 'Three';
     } else {

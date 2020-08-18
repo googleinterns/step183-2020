@@ -24,8 +24,8 @@ import com.google.sps.data.Destination;
 import com.google.sps.data.HuntItem;
 import com.google.sps.data.ScavengerHunt;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -58,7 +58,6 @@ public class GenerateServlet extends HttpServlet {
     if (numPlacesString == "Five") {
       numPlaces = 5;
     }
-
 
     // Get destinations from datastore
     ArrayList<Destination> allDestinations = getDestinationsFromDatastore();
@@ -95,7 +94,6 @@ public class GenerateServlet extends HttpServlet {
       response.setContentType("text/html");
       response.getWriter().println(ERROR);
     }
-    
   }
 
   /* Query datastore for Destination objects, convert then to Destination class, store in ArrayList. */
