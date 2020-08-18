@@ -209,19 +209,28 @@ function getHint() { //eslint-disable-line
     updateMessage(HINT_DISPLAY, 'Hint #' + (hunt.getHintIndex()) +
         ': ' + nextHint);
   } else {
-    if (hunt.getPlaceID() == -1) {
-      autoGenerateHints();
-    } else {
-      getNextAutoHint();
-    }
+    getAutoHint();
   }
 }
 
 /**
- * Auto-generate hints using Places API, which take the form
- * either as a photo or a user review.
+ * Provides the user with the next auto-generated hint.
  */
-function autoGenerateHints() {
+function getAutoHint() {
+  // First time getting an auto hint for current destination.
+  if (hunt.getPlaceID() == -1) { 
+    generatePlaceID();
+  } else {
+    getNextAutoHint();
+  }
+}
+
+/**
+ * Get the first auto-generated hint for the current destination.
+ * This involves first retrieving the place ID for the current
+ * destination, before getting a new hint.
+ */
+function generatePlaceID() {
   const request = {
     query: hunt.getCurDestName(),
     fields: ['place_id'],
@@ -236,18 +245,18 @@ function autoGenerateHints() {
 }
 
 /**
- * Randomly display either a photo or a user review
- * from the destination.
+ * Gets a new auto-generated hint, assuming that the place
+ * ID for the current destination has already been determined.
  */
 function getNextAutoHint() {
   const random = Math.random();
-  if (random < 0.5) {
+  if (random < 0.5) { // Get a hint in the form of a photo
     if (hunt.getPhotos().length == 0) {
       generatePhotos();
     } else {
       displayNextPhoto();
     }
-  } else {
+  } else { // Get a hint in the form of a user review
     if (hunt.getReviews().length == 0) {
       generateReviews();
     } else {
@@ -257,7 +266,9 @@ function getNextAutoHint() {
 }
 
 /**
- * Generate photos for the destination from the Places API.
+ * Generate array of photos for the current destination using
+ * the Places API, which will later be used to retrieve and
+ * display photos.
  */
 function generatePhotos() {
   const photosRequest = {
@@ -281,11 +292,13 @@ function displayNextPhoto() {
     updateMessage(HINT_DISPLAY, 'Photo of destination: ');
     updatePhoto(HINT_DISPLAY, hunt.getPhotos()[curIndex]);
     hunt.setPhotoIndex(curIndex + 1);
-  }
+  } // If there are no more photos to display, do nothing
 }
 
 /**
- * Generate reviews for the destination from the Places API.
+ * Generate array of reviews for the current destination using
+ * the Places API, which will later be used to retrieve and
+ * display reviews.
  */
 function generateReviews() {
   const reviewsRequest = {
@@ -310,7 +323,7 @@ function displayNextReview() {
     const cleanedReview = redactReview(hunt.getReviews()[curIndex].text);
     updateMessage(HINT_DISPLAY, cleanedReview);
     hunt.setReviewIndex(curIndex + 1);
-  }
+  } // If there are no more reviews to display, do nothing
 }
 
 /**
