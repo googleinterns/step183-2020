@@ -5,3 +5,13 @@
 .required::after {
   content: "*";
 }
+
+#place {
+  cursor: pointer;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-style: solid;
+  border-width: 2px;
+  border-color: grey;
+  width: 200px;
+}

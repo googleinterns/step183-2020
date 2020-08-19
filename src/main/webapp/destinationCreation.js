@@ -22,6 +22,7 @@ function addScriptToHead() { // eslint-disable-line
 }
 
 function searchForPlace() { // eslint-disable-line
+  document.getElementsByClassName('search-results').innerHtml = '';
   // Coresponds to the location of the Googleplex building
   const mapCenter = new google.maps.LatLng(37.421949, -122.083972);
 
@@ -44,20 +45,45 @@ function searchForPlace() { // eslint-disable-line
     if (status === google.maps.places.PlacesServiceStatus.OK) {
       results.forEach((place) => {
         newDiv = document.createElement('div');
-        newDiv.style = 'cursor: pointer;';
-        newDiv.setAttribute('place-id', place.place_id);
+        newDiv.setAttribute('data-place-id', place.place_id);
         newDiv.innerText = place.name;
         newDiv.id = 'place';
+        newDiv.onclick = fillInValues;
         document.getElementsByClassName('search-results')[0].appendChild(newDiv);
-        //newImg = document.createElement('img');
-        //newImg.src = place.photos[0].getUrl();
-        //document.getElementById(place.name)[0].appendChild(newImg);
-        console.log(place);
       });
     }
   });
 }
 
 function fillInValues() { // eslint-disable-line
-  console.log('Fill me in');
+  const place = this.dataset.placeId;
+  const nameField = document.getElementById('name-input');
+  const latField = document.getElementById('lat-input');
+  const lngField = document.getElementById('lng-input');
+  const mapCenter = new google.maps.LatLng(37.421949, -122.083972);
+  const map = new google.maps.Map(document.getElementById('map'), {
+    center: mapCenter,
+    zoom: 15,
+  });
+
+  const placeService = new google.maps.places.PlacesService(map);
+  const request = {
+    placeId: place,
+    fields: ['name', 'geometry']
+  };
+  let marker;
+  placeService.getDetails(request, (result, status) => {
+      if (status === google.maps.places.PlacesServiceStatus.OK) {
+        nameField.value = result.name;
+        latField.value = result.geometry.location.lat();
+        lngField.value = result.geometry.location.lng();
+        marker = new google.maps.Marker({
+            map,
+            position: result.geometry.location
+        });
+      }
+      if(!map.getBounds().contains(marker.getPosition())){
+        map.setCenter(marker.getPosition());
+      }
+  });
 }
