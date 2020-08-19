@@ -55,7 +55,7 @@ public class GenerateServlet extends HttpServlet {
         new Gson().fromJson(request.getParameter(DIFF_FILTERS), HashSet.class);
     String numPlacesString = new Gson().fromJson(request.getParameter(NUM_PLACES), String.class);
     int numPlaces = 3;
-    if (numPlacesString == "Five") {
+    if (numPlacesString.equals("Five")) {
       numPlaces = 5;
     }
 
