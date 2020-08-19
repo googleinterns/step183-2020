@@ -60,6 +60,7 @@ function fillInValues() { // eslint-disable-line
   const nameField = document.getElementById('name-input');
   const latField = document.getElementById('lat-input');
   const lngField = document.getElementById('lng-input');
+  const placeField = document.getElementById('placeId-input');
   const mapCenter = new google.maps.LatLng(37.421949, -122.083972);
   const map = new google.maps.Map(document.getElementById('map'), {
     center: mapCenter,
@@ -77,6 +78,7 @@ function fillInValues() { // eslint-disable-line
       nameField.value = result.name;
       latField.value = result.geometry.location.lat();
       lngField.value = result.geometry.location.lng();
+      placeField.value = place;
       marker = new google.maps.Marker({
         map,
         position: result.geometry.location,
