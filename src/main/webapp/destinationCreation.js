@@ -79,8 +79,8 @@ function fillInValues() { // eslint-disable-line
       lngField.value = result.geometry.location.lng();
       marker = new google.maps.Marker({
         map,
-        position: result.geometry.location
-        });
+        position: result.geometry.location,
+      });
     }
     if (!map.getBounds().contains(marker.getPosition())) {
       map.setCenter(marker.getPosition());
