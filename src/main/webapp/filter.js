@@ -57,21 +57,8 @@ function sendClickedFiltersToServer() { //eslint-disable-line
   const jsonDiffArray = JSON.stringify(clickedDifficulties);
 
   // Get clicked num stops
-  let clickedNumStops = [];
-  let numStops = '';
-  if (document.getElementsByClassName('num-stops').length > 0) {
-    const numStopsContainer = document.getElementsByClassName('num-stops')[0];
-    clickedNumStops =
-        Array.from(numStopsContainer.getElementsByClassName(CLICKED))
-            .map((element) => element.innerText);
-    if (clickedNumStops.length > 1) {
-      window.alert('Please choose only ONE number of stops.');
-    } else if (clickedNumStops.length === 0) {
-      numStops = 'Three';
-    } else {
-      numStops = clickedNumStops[0];
-    }
-  }
+  numStops = document.getElementById('num-stops').value;
+  console.log(numStops);
   const jsonNumPlaces = JSON.stringify(numStops);
 
   // TODO: Get clicked tags
