@@ -232,7 +232,7 @@ function generateInfo() { //eslint-disable-line
   const request = {
     location: midpoint,
     radius: '5000', // in meters
-    types: ['tourist_attraction']
+    types: ['tourist_attraction'],
   };
 
   service.nearbySearch(request, function(results, status) {
@@ -251,8 +251,8 @@ function generateInfo() { //eslint-disable-line
 function displayPlaceInfo(id) {
   const request = {
     placeId: id,
-    fields: ['name', 'photo']
-  }
+    fields: ['name', 'photo'],
+  };
   service.getDetails(request, (place, status) => {
     if (status == google.maps.places.PlacesServiceStatus.OK) {
       updateMessage(GENERATE_DISPLAY, place.name);
@@ -330,7 +330,7 @@ function generatePhotos() {
     if (status == google.maps.places.PlacesServiceStatus.OK) {
       hunt.setPhotos(place.photos);
       displayNextPhoto();
-    } else  {
+    } else {
       updateMessage(GENERATE_DISPLAY, NO_PLACE_INFO_MSSG);
     }
   });

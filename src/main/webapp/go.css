@@ -32,7 +32,9 @@ p {
   display: inline-block;
 }
 
-.riddle-row, .generate-row, .button-row {
+.riddle-row,
+.generate-row,
+.button-row {
   margin: 0 auto;
   position: relative;
 }
