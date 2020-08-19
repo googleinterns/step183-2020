@@ -41,15 +41,15 @@ function searchForPlace() { // eslint-disable-line
   };
 
   placeService.findPlaceFromQuery(request, (results, status) => {
-    let newDiv;
+    let div;
     if (status === google.maps.places.PlacesServiceStatus.OK) {
       results.forEach((place) => {
-        newDiv = document.createElement('div');
-        newDiv.setAttribute('data-place-id', place.place_id);
-        newDiv.innerText = place.name;
-        newDiv.id = 'place';
-        newDiv.onclick = fillInValues;
-        document.getElementsByClassName('search-results')[0].appendChild(newDiv);
+        div = document.createElement('div');
+        div.setAttribute('data-place-id', place.place_id);
+        div.innerText = place.name;
+        div.id = 'place';
+        div.onclick = fillInValues;
+        document.getElementsByClassName('search-results')[0].appendChild(div);
       });
     }
   });
@@ -69,21 +69,21 @@ function fillInValues() { // eslint-disable-line
   const placeService = new google.maps.places.PlacesService(map);
   const request = {
     placeId: place,
-    fields: ['name', 'geometry']
+    fields: ['name', 'geometry'],
   };
   let marker;
   placeService.getDetails(request, (result, status) => {
-      if (status === google.maps.places.PlacesServiceStatus.OK) {
-        nameField.value = result.name;
-        latField.value = result.geometry.location.lat();
-        lngField.value = result.geometry.location.lng();
-        marker = new google.maps.Marker({
-            map,
-            position: result.geometry.location
+    if (status === google.maps.places.PlacesServiceStatus.OK) {
+      nameField.value = result.name;
+      latField.value = result.geometry.location.lat();
+      lngField.value = result.geometry.location.lng();
+      marker = new google.maps.Marker({
+        map,
+        position: result.geometry.location
         });
-      }
-      if(!map.getBounds().contains(marker.getPosition())){
-        map.setCenter(marker.getPosition());
-      }
+    }
+    if (!map.getBounds().contains(marker.getPosition())) {
+      map.setCenter(marker.getPosition());
+    }
   });
 }

@@ -15,3 +15,8 @@
   border-color: grey;
   width: 200px;
 }
+
+#map {
+  height: 60px;
+  width: 400 px;
+}
