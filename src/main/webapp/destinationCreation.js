@@ -60,7 +60,7 @@ function fillInValues() { // eslint-disable-line
   const nameField = document.getElementById('name-input');
   const latField = document.getElementById('lat-input');
   const lngField = document.getElementById('lng-input');
-  const placeField = document.getElementById('place-Id-input');
+  const placeField = document.getElementById('place-input');
   const mapCenter = new google.maps.LatLng(37.421949, -122.083972);
   const map = new google.maps.Map(document.getElementById('map'), {
     center: mapCenter,
