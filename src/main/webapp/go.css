@@ -11,7 +11,7 @@
 }
 
 p {
-  font-size: 18px;
+  font-size: 14px;
 }
 
 .content {
@@ -28,7 +28,7 @@ p {
 }
 
 .riddle-row {
-  top: 20%;
+  top: 30%;
 }
 
 .button-row {
@@ -36,7 +36,10 @@ p {
 }
 
 .hint-row {
-  top: 70%;
+  border: 1px solid black;
+  margin: 10%;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 button,
@@ -71,14 +74,14 @@ button:hover a {
   -ms-transform: translate(-50%, -50%);
   background-color: #b47eb3;
   border-radius: 10px;
-  height: 50%;
+  bottom: 10px;
+  height: 40%;
   left: 50%;
-  margin-bottom: 20%;
+  margin-bottom: 0%;
   margin-top: 20%;
   padding-left: 100px;
-  padding-top: 50px;
-  position: absolute;
-  top: 50%;
+  padding-top: 300px;
+  position: relative;
   transform: translate(-50%, -50%);
   width: 70%;
 }
@@ -105,12 +108,17 @@ button:hover a {
 }
 
 #progress-area {
-  width: 70%;
   background-color: grey;
+  width: 70%;
 }
 
 #progress-bar {
-  width: 1%;
-  height: 30px;
   background-color: #e1f0c4;
+  height: 30px;
+  width: 1%;
+}
+
+#riddle-area p {
+  font-size: 22px;
+  font-weight: bold;
 }
