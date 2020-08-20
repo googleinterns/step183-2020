@@ -32,9 +32,12 @@ function addScriptToHead() { // eslint-disable-line
 }
 
 function searchForPlace() { // eslint-disable-line
-  let list = document.getElementById('place');
-  while (list.hasChildNodes()) {
-    list.removeChild(list.firstChild());
+  const element = document.querySelectorAll('#place');
+  if (element.length > 0){
+    let i;
+    for (i = 0; i < element.length; i++) {
+      removeElement(element[i].id);
+    }
   }
   // Coresponds to the location of the Googleplex building
   const mapCenter = new google.maps.LatLng(37.421949, -122.083972);
@@ -85,6 +88,11 @@ function fillInValues() { // eslint-disable-line
     fields: ['name', 'geometry'],
   };
   let marker;
+  const element = document.querySelectorAll('#place');
+  let i;
+  for (i = 0; i < element.length; i++) {
+    removeElement(element[i].id);
+  }
   placeService.getDetails(request, (result, status) => {
     if (status === google.maps.places.PlacesServiceStatus.OK) {
       nameField.value = result.name;
@@ -99,8 +107,10 @@ function fillInValues() { // eslint-disable-line
       map.setCenter(marker.getPosition());
     }
   });
-  let list = document.getElementById('place');
-  while (list.hasChildNodes()) {
-    list.removeChild(list.firstChild());
-  }
+  
+}
+
+function removeElement(elemid) {
+  let element = document.getElementById(elemid);
+  element.parentNode.removeChild(element);
 }
