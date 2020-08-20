@@ -32,7 +32,6 @@ function addScriptToHead() { // eslint-disable-line
 }
 
 function searchForPlace() { // eslint-disable-line
-document.getElementsByClassName(SEARCH_RESULTS).innerHtml = '';
   // Coresponds to the location of the Googleplex building
   const mapCenter = new google.maps.LatLng(37.421949, -122.083972);
 
