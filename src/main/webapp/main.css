@@ -1,0 +1,69 @@
+body,
+html {
+  height: 100%;
+}
+
+p {
+  font-size: 20px;
+}
+
+.content {
+  background-image: url("scavenger_hunt_background.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+  text-align: center;
+}
+
+.button-row {
+  display: inline-block;
+  margin: 20px auto;
+  position: relative;
+}
+
+.button {
+  background-color: #e1f0c4;
+  border-radius: 12px;
+  cursor: pointer;
+  display: inline-block;
+  margin: 4px 2px;
+  padding: 16px 32px;
+  text-align: center;
+  transition-duration: 0.4s;
+}
+
+a {
+  color: #413c58;
+  font-size: 20px;
+  text-decoration: none;
+}
+
+.button:hover {
+  background-color: #413c58;
+  color: white;
+}
+
+.button:hover a {
+  color: white;
+}
+
+.title-block,
+.description-block {
+  background-color: #b47eb3;
+  text-align: center;
+  margin: 20px auto;
+}
+
+.title-block {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.description-block {
+  width: 50%;
+  padding: 5%;
+}
