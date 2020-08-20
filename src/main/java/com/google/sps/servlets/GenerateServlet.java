@@ -56,7 +56,6 @@ public class GenerateServlet extends HttpServlet {
     String numPlacesString = new Gson().fromJson(request.getParameter(NUM_PLACES), String.class);
     int numPlaces = Integer.parseInt(numPlacesString);
 
-
     // Get destinations from datastore
     ArrayList<Destination> allDestinations = getDestinationsFromDatastore();
 
@@ -124,7 +123,10 @@ public class GenerateServlet extends HttpServlet {
     return filteredDestinations;
   }
 
-  /* Returns the filteredDestinations Set with the correct number of Destinations. */
+  /** 
+  * Returns the filteredDestinations Set with the correct number of Destinations. 
+  * Chooses a random subset of the filtered Destinations.
+  **/
   public Set<Destination> correctNumDests(Set<Destination> filteredDestinations, int numPlaces) {
     if (filteredDestinations.size() == numPlaces) {
       return filteredDestinations;
