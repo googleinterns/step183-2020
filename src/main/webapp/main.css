@@ -30,8 +30,8 @@ p {
   border-radius: 12px;
   cursor: pointer;
   display: inline-block;
-  margin: 4px 2px;
-  padding: 16px 32px;
+  margin: 4px 10px;
+  padding: 20px 40px;
   text-align: center;
   transition-duration: 0.4s;
 }
@@ -54,6 +54,7 @@ a {
 .title-block,
 .description-block {
   background-color: #b47eb3;
+  border-radius: 12px;
   text-align: center;
   margin: 20px auto;
 }
