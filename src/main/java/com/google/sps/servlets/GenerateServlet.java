@@ -123,10 +123,7 @@ public class GenerateServlet extends HttpServlet {
     return filteredDestinations;
   }
 
-  /** 
-  * Returns the filteredDestinations Set with the correct number of Destinations. Chooses a random
-  * subset of the filtered Destinations.
-  **/
+  /* Chooses a random subset of the filtered Destinations with size numPlaces. */
   public Set<Destination> correctNumDests(Set<Destination> filteredDestinations, int numPlaces) {
     if (filteredDestinations.size() == numPlaces) {
       return filteredDestinations;
