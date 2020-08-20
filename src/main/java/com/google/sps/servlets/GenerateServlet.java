@@ -56,7 +56,7 @@ public class GenerateServlet extends HttpServlet {
         new Gson().fromJson(request.getParameter(DIFF_FILTERS), HashSet.class);
     String numPlacesString = request.getParameter(NUM_PLACES);
     int numPlaces = Integer.parseInt(numPlacesString);
-    HashSet<String> userTagStrings = 
+    HashSet<String> userTagStrings =
        new Gson().fromJson(request.getParameter(TAG_FILTERS), HashSet.class);
 
     // Get destinations from datastore
@@ -131,7 +131,7 @@ public class GenerateServlet extends HttpServlet {
                 destination ->
                     userPlaces.contains(destination.getCity())
                         && userDifficultyLevels.contains(destination.getDifficulty())
-                            && (userTags.isEmpty() || destination.isIntersectingTags(userTags)))
+                          && (userTags.isEmpty() || destination.isIntersectingTags(userTags)))
             .collect(Collectors.toSet());
     return filteredDestinations;
   }

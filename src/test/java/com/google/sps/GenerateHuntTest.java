@@ -1,6 +1,6 @@
 package com.google.sps.data;
 
-import com.google.sps.servlets.GenerateServlet;
+/*import com.google.sps.servlets.GenerateServlet;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -9,11 +9,9 @@ import java.util.Set;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.runners.JUnit4;*/
 
-public final class GenerateHuntTest {
-    
-}
+public final class GenerateHuntTest {}
 
 // TODO: Write tests for the # destinations input
 /*@RunWith(JUnit4.class)
@@ -131,28 +129,28 @@ public final class GenerateHuntTest {
   @Test*/
   /* Press all filters. */
   /*public void allFiltersAllowed() {
-    HashSet<String> userPlaces = new HashSet();
-    userPlaces.add("San Francisco");
-    userPlaces.add("Paris");
-    userPlaces.add("New York City");
-    HashSet<Destination.Obscurity> userDiff = new HashSet();
-    userDiff.add(Destination.Obscurity.EASY);
-    userDiff.add(Destination.Obscurity.MEDIUM);
-    userDiff.add(Destination.Obscurity.HARD);
-    GenerateServlet generate = new GenerateServlet();
+      HashSet<String> userPlaces = new HashSet();
+      userPlaces.add("San Francisco");
+      userPlaces.add("Paris");
+      userPlaces.add("New York City");
+      HashSet<Destination.Obscurity> userDiff = new HashSet();
+      userDiff.add(Destination.Obscurity.EASY);
+      userDiff.add(Destination.Obscurity.MEDIUM);
+      userDiff.add(Destination.Obscurity.HARD);
+      GenerateServlet generate = new GenerateServlet();
 
-   HashSet<Destination.Tag> tags = new HashSet();
-    tags.add(Destination.Tag.FOOD);
-    Set<Destination> actual = generate.filter(allDestinations, userPlaces, userDiff, tags);
+     HashSet<Destination.Tag> tags = new HashSet();
+      tags.add(Destination.Tag.FOOD);
+      Set<Destination> actual = generate.filter(allDestinations, userPlaces, userDiff, tags);
 
-    // Should return all Destinations
-    Set<Destination> expected = new HashSet();
-    expected.add(goldenGate);
-    expected.add(teaGarden);
-    expected.add(orpheumTheater);
-    expected.add(louvre);
-    expected.add(eiffelTower);
-    expected.add(arcDeTriomphe);
-    Assert.assertEquals(expected, actual);
-  }
-}*/
+      // Should return all Destinations
+      Set<Destination> expected = new HashSet();
+      expected.add(goldenGate);
+      expected.add(teaGarden);
+      expected.add(orpheumTheater);
+      expected.add(louvre);
+      expected.add(eiffelTower);
+      expected.add(arcDeTriomphe);
+      Assert.assertEquals(expected, actual);
+    }
+  }*/

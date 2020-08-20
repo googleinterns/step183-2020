@@ -59,8 +59,8 @@ function sendClickedFiltersToServer() { //eslint-disable-line
 
   // Get clicked num stops
   numStops = document.getElementById('num-stops').value;
-  if (numStops === "") {
-    window.alert("Please enter a number of stops.");
+  if (numStops === '') {
+    window.alert('Please enter a number of stops.');
   }
 
   // Get clicked tags
@@ -75,7 +75,7 @@ function sendClickedFiltersToServer() { //eslint-disable-line
 
   fetch('/generate-hunt?' + PLACE_ARRAY_URL_PARAM + '=' + jsonPlaceArray + '&' +
     DIFF_ARRAY_URL_PARAM + '=' + jsonDiffArray + '&' +
-    NUM_STOPS_URL_PARAM + '=' + numStops + '&' + 
+    NUM_STOPS_URL_PARAM + '=' + numStops + '&' +
     TAG_URL_PARAM + '=' + jsonTagArray,
   {method: 'POST'}).then((response) => response.text())
       .then((message) => {

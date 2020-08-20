@@ -96,7 +96,7 @@ public class Destination {
 
   public static Tag stringToTag(String stringTag) {
     Tag tag = Tag.UNDEFINED;
-    switch(stringTag.toLowerCase()) {
+    switch (stringTag.toLowerCase()) {
       case "food": 
         tag = Tag.FOOD;
         break;
@@ -112,7 +112,7 @@ public class Destination {
       case "art":
         tag = Tag.ART;
         break;
-      case "family": 
+      case "family":
         tag = Tag.FAMILY;
         break;
     }
@@ -122,7 +122,7 @@ public class Destination {
   public Boolean isIntersectingTags(Set<Tag> userTags) {
     Set<Tag> currTags = this.getTags();
     currTags.retainAll(userTags);
-    
+
     if (currTags.isEmpty()) {
       return false;
     } else {
