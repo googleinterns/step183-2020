@@ -54,7 +54,7 @@ public class GenerateServlet extends HttpServlet {
     HashSet<String> userDifficultyStrings =
         new Gson().fromJson(request.getParameter(DIFF_FILTERS), HashSet.class);
     String numPlacesString = request.getParameter(NUM_PLACES);
-    int numPlaces = request.getParameter(NUM_PLACES);
+    int numPlaces = Integer.parseInt(numPlacesString);
 
     // Get destinations from datastore
     ArrayList<Destination> allDestinations = getDestinationsFromDatastore();

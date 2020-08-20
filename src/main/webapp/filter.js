@@ -58,7 +58,6 @@ function sendClickedFiltersToServer() { //eslint-disable-line
 
   // Get clicked num stops
   numStops = document.getElementById('num-stops').value;
- // const jsonNumPlaces = JSON.stringify(numStops);
 
   // TODO: Get clicked tags
 
