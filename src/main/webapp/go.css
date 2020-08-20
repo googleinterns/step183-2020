@@ -1,3 +1,8 @@
+body,
+html {
+  height: 100%;
+}
+
 .invisible {
   display: none;
 }
