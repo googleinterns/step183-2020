@@ -12,6 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// DIV IDs that should have text or a place div inserted into them
+const SEARCH_RESULTS = 'search-results';
+const NAME_INPUT = 'name-input';
+const LAT_INPUT = 'lat-input';
+const LNG_INPUT = 'lng-input';
+
+// DIV IDs that retieve information from the DOM
+const SEARCH = 'search';
+const MAP = 'map';
+
 /*
  * Adds a Script for the places api to the head of the destinationCreation.html
  */
@@ -22,22 +32,28 @@ function addScriptToHead() { // eslint-disable-line
 }
 
 function searchForPlace() { // eslint-disable-line
-  document.getElementsByClassName('search-results').innerHtml = '';
+  const element = document.querySelectorAll('#place');
+  if (element.length > 0) {
+    let i;
+    for (i = 0; i < element.length; i++) {
+      removeElement(element[i].id);
+    }
+  }
   // Coresponds to the location of the Googleplex building
   const mapCenter = new google.maps.LatLng(37.421949, -122.083972);
 
-  const map = new google.maps.Map(document.getElementById('map'), {
+  const map = new google.maps.Map(document.getElementById(MAP), {
     center: mapCenter,
     zoom: 18,
   });
 
   const placeService = new google.maps.places.PlacesService(map);
 
-  const text = document.getElementById('search').value;
+  const text = document.getElementById(SEARCH).value;
 
   const request = {
     query: text,
-    fields: ['name', 'geometry', 'place_id', 'icon', 'photos'],
+    fields: ['name', 'geometry', 'place_id'],
   };
 
   placeService.findPlaceFromQuery(request, (results, status) => {
@@ -49,7 +65,7 @@ function searchForPlace() { // eslint-disable-line
         div.innerText = place.name;
         div.id = 'place';
         div.onclick = fillInValues;
-        document.getElementsByClassName('search-results')[0].appendChild(div);
+        document.getElementsByClassName(SEARCH_RESULTS)[0].appendChild(div);
       });
     }
   });
@@ -62,7 +78,7 @@ function fillInValues() { // eslint-disable-line
   const lngField = document.getElementById('lng-input');
   const placeField = document.getElementById('place-input');
   const mapCenter = new google.maps.LatLng(37.421949, -122.083972);
-  const map = new google.maps.Map(document.getElementById('map'), {
+  const map = new google.maps.Map(document.getElementById(MAP), {
     center: mapCenter,
     zoom: 15,
   });
@@ -73,6 +89,11 @@ function fillInValues() { // eslint-disable-line
     fields: ['name', 'geometry'],
   };
   let marker;
+  const element = document.querySelectorAll('#place');
+  let i;
+  for (i = 0; i < element.length; i++) {
+    removeElement(element[i].id);
+  }
   placeService.getDetails(request, (result, status) => {
     if (status === google.maps.places.PlacesServiceStatus.OK) {
       nameField.value = result.name;
@@ -88,4 +109,10 @@ function fillInValues() { // eslint-disable-line
       map.setCenter(marker.getPosition());
     }
   });
+}
+
+// Removes a place div
+function removeElement(elemid) { // eslint-disable-line
+  const element = document.getElementById(elemid);
+  element.parentNode.removeChild(element);
 }
