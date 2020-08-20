@@ -1,22 +1,5 @@
-body,
-html {
-  height: 100%;
-}
-
 p {
   font-size: 20px;
-}
-
-.content {
-  background-image: url("scavenger_hunt_background.png");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  justify-content: center;
-  text-align: center;
 }
 
 .button-row {
@@ -49,6 +32,18 @@ a {
 
 .button:hover a {
   color: white;
+}
+
+.content {
+  background-image: url("scavenger_hunt_background.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+  text-align: center;
 }
 
 .title-block,
