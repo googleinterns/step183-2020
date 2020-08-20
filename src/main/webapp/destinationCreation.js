@@ -12,6 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// DIV IDs that should have text or a place div inserted into them
+const SEARCH_RESULTS = 'search-results';
+const NAME_INPUT = 'name-input';
+const LAT_INPUT = 'lat-input';
+const LNG_INPUT = 'lng-input';
+
+// DIV IDs that retieve information from the DOM
+const SEARCH = 'search';
+const MAP = 'map';
+
 /*
  * Adds a Script for the places api to the head of the destinationCreation.html
  */
@@ -22,18 +32,18 @@ function addScriptToHead() { // eslint-disable-line
 }
 
 function searchForPlace() { // eslint-disable-line
-  document.getElementsByClassName('search-results').innerHtml = '';
+document.getElementsByClassName(SEARCH_RESULTS).innerHtml = '';
   // Coresponds to the location of the Googleplex building
   const mapCenter = new google.maps.LatLng(37.421949, -122.083972);
 
-  const map = new google.maps.Map(document.getElementById('map'), {
+  const map = new google.maps.Map(document.getElementById(MAP), {
     center: mapCenter,
     zoom: 18,
   });
 
   const placeService = new google.maps.places.PlacesService(map);
 
-  const text = document.getElementById('search').value;
+  const text = document.getElementById(SEARCH).value;
 
   const request = {
     query: text,
@@ -49,7 +59,7 @@ function searchForPlace() { // eslint-disable-line
         div.innerText = place.name;
         div.id = 'place';
         div.onclick = fillInValues;
-        document.getElementsByClassName('search-results')[0].appendChild(div);
+        document.getElementsByClassName(SEARCH_RESULTS)[0].appendChild(div);
       });
     }
   });
@@ -57,11 +67,11 @@ function searchForPlace() { // eslint-disable-line
 
 function fillInValues() { // eslint-disable-line
   const place = this.dataset.placeId;
-  const nameField = document.getElementById('name-input');
-  const latField = document.getElementById('lat-input');
-  const lngField = document.getElementById('lng-input');
+  const nameField = document.getElementById(NAME_INPUT);
+  const latField = document.getElementById(LAT_INPUT);
+  const lngField = document.getElementById(LNG_INPUT);
   const mapCenter = new google.maps.LatLng(37.421949, -122.083972);
-  const map = new google.maps.Map(document.getElementById('map'), {
+  const map = new google.maps.Map(document.getElementById(MAP), {
     center: mapCenter,
     zoom: 15,
   });
