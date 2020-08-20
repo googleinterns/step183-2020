@@ -43,6 +43,7 @@ public class GenerateServlet extends HttpServlet {
   private static final String PLACE_FILTERS = "user-places";
   private static final String DIFF_FILTERS = "user-diff";
   private static final String NUM_PLACES = "user-num-stops";
+  private static final String TAG_FILTERS = "user-tags";
   private static final String ERROR = "Error";
   private static final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
@@ -55,6 +56,8 @@ public class GenerateServlet extends HttpServlet {
         new Gson().fromJson(request.getParameter(DIFF_FILTERS), HashSet.class);
     String numPlacesString = request.getParameter(NUM_PLACES);
     int numPlaces = Integer.parseInt(numPlacesString);
+    HashSet<String> userTagStrings = 
+       new Gson().fromJson(request.getParameter(TAG_FILTERS), HashSet.class);
 
     // Get destinations from datastore
     ArrayList<Destination> allDestinations = getDestinationsFromDatastore();
@@ -68,9 +71,18 @@ public class GenerateServlet extends HttpServlet {
       }
     }
 
+    // Convert tag strings to Destination.Tag
+    HashSet<Destination.Tag> userTags = new HashSet();
+    for (String stringTag : userTagStrings) {
+      Destination.Tag tag = Destination.stringToTag(stringTag);
+      if (tag != Destination.Tag.UNDEFINED) {
+        userTags.add(tag);
+      }
+    }
+
     // Filter
     Set<Destination> filteredDestinations =
-        filter(allDestinations, userPlaces, userDifficultyLevels);
+        filter(allDestinations, userPlaces, userDifficultyLevels, userTags);
 
     // If there are enough destinations to return, pick random ones to put in Hunt
     if (filteredDestinations.size() >= numPlaces) {
@@ -111,13 +123,15 @@ public class GenerateServlet extends HttpServlet {
   public Set<Destination> filter(
       List<Destination> allDestinations,
       Set<String> userPlaces,
-      Set<Destination.Obscurity> userDifficultyLevels) {
+      Set<Destination.Obscurity> userDifficultyLevels, 
+      Set<Destination.Tag> userTags) {
     Set<Destination> filteredDestinations =
         allDestinations.stream()
             .filter(
                 destination ->
                     userPlaces.contains(destination.getCity())
-                        && userDifficultyLevels.contains(destination.getDifficulty()))
+                        && userDifficultyLevels.contains(destination.getDifficulty())
+                            && (userTags.isEmpty() || destination.isIntersectingTags(userTags)))
             .collect(Collectors.toSet());
     return filteredDestinations;
   }

@@ -74,6 +74,10 @@ public class Destination {
     return riddles.get(0);
   }
 
+  public Set<Tag> getTags() {
+    return categories;
+  }
+
   public static Obscurity stringToObscurity(String difficulty) {
     Obscurity level = Obscurity.UNDEFINED;
     switch (difficulty.toLowerCase()) {
@@ -88,6 +92,42 @@ public class Destination {
         break;
     }
     return level;
+  }
+
+  public static Tag stringToTag(String stringTag) {
+    Tag tag = Tag.UNDEFINED;
+    switch(stringTag.toLowerCase()) {
+      case "food": 
+        tag = Tag.FOOD;
+        break;
+      case "tourist":
+        tag = Tag.TOURIST;
+        break;
+      case "sport":
+        tag = Tag.SPORT;
+        break;
+      case "historical":
+        tag = Tag.HISTORICAL;
+        break;
+      case "art":
+        tag = Tag.ART;
+        break;
+      case "family": 
+        tag = Tag.FAMILY;
+        break;
+    }
+    return tag;
+  }
+
+  public Boolean isIntersectingTags(Set<Tag> userTags) {
+    Set<Tag> currTags = this.getTags();
+    currTags.retainAll(userTags);
+    
+    if (currTags.isEmpty()) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
   public HuntItem convertToHuntItem() {
