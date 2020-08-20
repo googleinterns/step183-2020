@@ -33,7 +33,7 @@ function addScriptToHead() { // eslint-disable-line
 
 function searchForPlace() { // eslint-disable-line
   const element = document.querySelectorAll('#place');
-  if (element.length > 0){
+  if (element.length > 0) {
     let i;
     for (i = 0; i < element.length; i++) {
       removeElement(element[i].id);
@@ -107,10 +107,10 @@ function fillInValues() { // eslint-disable-line
       map.setCenter(marker.getPosition());
     }
   });
-  
 }
 
+// Removes a place div
 function removeElement(elemid) {
-  let element = document.getElementById(elemid);
+  const element = document.getElementById(elemid);
   element.parentNode.removeChild(element);
 }
