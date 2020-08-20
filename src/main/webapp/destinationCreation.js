@@ -73,9 +73,9 @@ function searchForPlace() { // eslint-disable-line
 
 function fillInValues() { // eslint-disable-line
   const place = this.dataset.placeId;
-  const nameField = document.getElementById('name-input');
-  const latField = document.getElementById('lat-input');
-  const lngField = document.getElementById('lng-input');
+  const nameField = document.getElementById(NAME_INPUT);
+  const latField = document.getElementById(LAT_INPUT);
+  const lngField = document.getElementById(LNG_INPUT);
   const placeField = document.getElementById('place-input');
   const mapCenter = new google.maps.LatLng(37.421949, -122.083972);
   const map = new google.maps.Map(document.getElementById(MAP), {
