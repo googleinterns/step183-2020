@@ -97,7 +97,7 @@ public class Destination {
   public static Tag stringToTag(String stringTag) {
     Tag tag = Tag.UNDEFINED;
     switch (stringTag.toLowerCase()) {
-      case "food": 
+      case "food":
         tag = Tag.FOOD;
         break;
       case "tourist":
