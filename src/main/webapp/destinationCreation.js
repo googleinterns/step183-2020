@@ -110,7 +110,7 @@ function fillInValues() { // eslint-disable-line
 }
 
 // Removes a place div
-function removeElement(elemid) {
+function removeElement(elemid) { // eslint-disable-line
   const element = document.getElementById(elemid);
   element.parentNode.removeChild(element);
 }
