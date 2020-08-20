@@ -32,6 +32,10 @@ function addScriptToHead() { // eslint-disable-line
 }
 
 function searchForPlace() { // eslint-disable-line
+  let list = document.getElementById('place');
+  while (list.hasChildNodes()) {
+    list.removeChild(list.firstChild());
+  }
   // Coresponds to the location of the Googleplex building
   const mapCenter = new google.maps.LatLng(37.421949, -122.083972);
 
@@ -46,7 +50,7 @@ function searchForPlace() { // eslint-disable-line
 
   const request = {
     query: text,
-    fields: ['name', 'geometry', 'place_id', 'icon', 'photos'],
+    fields: ['name', 'geometry', 'place_id'],
   };
 
   placeService.findPlaceFromQuery(request, (results, status) => {
@@ -95,4 +99,8 @@ function fillInValues() { // eslint-disable-line
       map.setCenter(marker.getPosition());
     }
   });
+  let list = document.getElementById('place');
+  while (list.hasChildNodes()) {
+    list.removeChild(list.firstChild());
+  }
 }
