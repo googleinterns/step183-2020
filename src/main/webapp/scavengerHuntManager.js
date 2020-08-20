@@ -18,6 +18,11 @@ class ScavengerHuntManager { //eslint-disable-line
     this.destIndex = destIndex;
     this.hintIndex = hintIndex;
     this.huntArr = huntArr;
+    this.photoIndex = 0;
+    this.reviewIndex = 0;
+    this.placeID = -1;
+    this.photos = [];
+    this.reviews = [];
   }
 
   /**
@@ -42,6 +47,62 @@ class ScavengerHuntManager { //eslint-disable-line
       }
     }
     return '';
+  }
+
+  /**
+   * @param {array} newPhotos Array that photos should be modified to.
+   */
+  setPhotos(newPhotos) {
+    this.photos = newPhotos;
+  }
+
+  /**
+   * @return {array} Photos corresponding to current destination.
+   */
+  getPhotos() {
+    return this.photos;
+  }
+
+  /**
+   * @param {array} newReviews Array that reviews should be modified to.
+   */
+  setReviews(newReviews) {
+    this.reviews = newReviews;
+  }
+
+  /**
+   * @return {array} Reviews corresponding to current destination.
+   */
+  getReviews() {
+    return this.reviews;
+  }
+
+  /**
+   * @return {int} Place ID corresponding to current destination.
+   */
+  getPlaceID() {
+    return this.placeID;
+  }
+
+  /**
+   * @param {int} newID Place ID of the current destination.
+   */
+  setPlaceID(newID) {
+    this.placeID = newID;
+  }
+
+  /**
+   * Reset all destination-specific fields to their default state.
+   * This method is called when the user moves on to a new
+   * destination.
+   */
+  resetForNextDest() {
+    this.setHintIndex(0);
+    this.setPhotoIndex(0);
+    this.setReviewIndex(0);
+    this.setPhotos([]);
+    this.setReviews([]);
+    this.setPlaceID(-1);
   }
 
   /**
@@ -146,6 +207,34 @@ class ScavengerHuntManager { //eslint-disable-line
    */
   setHintIndex(newIndex) {
     this.hintIndex = newIndex;
+  }
+
+  /**
+   * @return {int} Index of the photo hint the user will receive.
+   */
+  getPhotoIndex() {
+    return this.photoIndex;
+  }
+
+  /**
+   * @param {int} newIndex Value photoIndex should be modified to.
+   */
+  setPhotoIndex(newIndex) {
+    this.photoIndex = newIndex;
+  }
+
+  /**
+   * @return {int} Index of the review hint the user will receive.
+   */
+  getReviewIndex() {
+    return this.reviewIndex;
+  }
+
+  /**
+   * @param {int} newIndex Value reviewIndex should be modified to.
+   */
+  setReviewIndex(newIndex) {
+    this.reviewIndex = newIndex;
   }
 
   /**
