@@ -53,8 +53,8 @@ public class GenerateServlet extends HttpServlet {
         new Gson().fromJson(request.getParameter(PLACE_FILTERS), HashSet.class);
     HashSet<String> userDifficultyStrings =
         new Gson().fromJson(request.getParameter(DIFF_FILTERS), HashSet.class);
-    String numPlacesString = new Gson().fromJson(request.getParameter(NUM_PLACES), String.class);
-    int numPlaces = Integer.parseInt(numPlacesString);
+    String numPlacesString = request.getParameter(NUM_PLACES);
+    int numPlaces = request.getParameter(NUM_PLACES);
 
     // Get destinations from datastore
     ArrayList<Destination> allDestinations = getDestinationsFromDatastore();
@@ -81,7 +81,6 @@ public class GenerateServlet extends HttpServlet {
       ArrayList<HuntItem> huntItems = convertToHuntItems(filteredDestinations);
       ScavengerHunt scavHunt = new ScavengerHunt(huntItems);
       long huntId = writeToDataStore(scavHunt);
-      System.out.println(huntId);
 
       // Set response: scavenger hunt id
       response.setContentType("text/html;");

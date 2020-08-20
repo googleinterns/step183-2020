@@ -58,14 +58,13 @@ function sendClickedFiltersToServer() { //eslint-disable-line
 
   // Get clicked num stops
   numStops = document.getElementById('num-stops').value;
-  console.log(numStops);
-  const jsonNumPlaces = JSON.stringify(numStops);
+ // const jsonNumPlaces = JSON.stringify(numStops);
 
   // TODO: Get clicked tags
 
   fetch('/generate-hunt?' + PLACE_ARRAY_URL_PARAM + '=' + jsonPlaceArray + '&' +
     DIFF_ARRAY_URL_PARAM + '=' + jsonDiffArray + '&' +
-    NUM_STOPS_URL_PARAM + '=' + jsonNumPlaces,
+    NUM_STOPS_URL_PARAM + '=' + numStops,
   {method: 'POST'}).then((response) => response.text())
       .then((message) => {
         // If success, redirect to scavenger hunt with ID
