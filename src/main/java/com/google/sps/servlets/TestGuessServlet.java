@@ -21,7 +21,7 @@ import javax.servlet.annotation.WebServlet;
 @WebServlet("/test-guess-data")
 public class TestGuessServlet extends GuessServlet {
   @Override
-  public ArrayList<String> findEntities(String word) throws IOException {
+  ArrayList<String> findEntities(String word) throws IOException {
     ArrayList<String> entities = new ArrayList<String>();
     String[] arr = word.toLowerCase().split(" ");
     for (String i : arr) {
