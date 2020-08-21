@@ -104,8 +104,8 @@ function fillInValues() { // eslint-disable-line
 }
 
 
-/*
- * Removes all place div
+/**
+ * Removes all  place divs
  */
 function removeElements(elemcls) {
   const element = document.querySelectorAll(elemcls);
