@@ -8,16 +8,18 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
     <link rel="stylesheet" href="common-style.css" />
     <link rel="stylesheet" href="destinationCreation.css"/>
+    <link rel="stylesheet" href="destination.css"/>
     <script src="config.js"></script>
     <script src="destinationCreation.js"></script>
   </head>
   <body onload="addScriptToHead()">
     <div>
       <h1>Create a Scavenger Hunt Destination</h1>
-      <div>
+      <div class="search-bar">
         <input type="text" placeholder="Search.." name="search" id="search">
         <button type="button" onclick="searchForPlace()" class="fa fa-search"></button>
       </div>
+      <div id="search-results"></div>
       <form action="/destination-data" method="post">
         <label for="name-input" class="required">Enter the name of the destination:</label><br>
         <input type="text" name="name" id="name-input" required>
@@ -61,6 +63,7 @@
         <input type="radio" name="obscurity" id="hard-input" value="hard" required>
         <label for="hard-input">Hard</label>
         <br>
+        <input type="hidden" name="placeId" id="place-input">
         <button type="submit">Submit</button>
       </form>
       <div id="map"></div>

@@ -12,6 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// DIV IDs that should have text or a place div inserted into them
+const SEARCH_RESULTS = 'search-results';
+const NAME_INPUT = 'name-input';
+const LAT_INPUT = 'lat-input';
+const LNG_INPUT = 'lng-input';
+const PLACE_INPUT = 'place-input';
+
+// DIV IDs that retrieve information from the DOM
+const SEARCH = 'search';
+const MAP = 'map';
+
+// Class name constants
+const PLACE_CLASS = '.place';
+
 /*
  * Adds a Script for the places api to the head of the destinationCreation.html
  */
@@ -22,31 +36,81 @@ function addScriptToHead() { // eslint-disable-line
 }
 
 function searchForPlace() { // eslint-disable-line
+  const element = document.querySelectorAll(PLACE_CLASS);
+  if (element.length > 0) {
+    removeElements(PLACE_CLASS);
+  }
   // Coresponds to the location of the Googleplex building
   const mapCenter = new google.maps.LatLng(37.421949, -122.083972);
 
-  const map = new google.maps.Map(document.getElementById('map'), {
+  const map = new google.maps.Map(document.getElementById(MAP), {
     center: mapCenter,
-    zoom: 18,
+    zoom: 15,
   });
 
   const placeService = new google.maps.places.PlacesService(map);
 
-  const text = document.getElementById('search').value;
+  const text = document.getElementById(SEARCH).value;
 
   const request = {
     query: text,
-    fields: ['name', 'geometry'],
+    fields: ['name', 'geometry', 'place_id'],
   };
 
   placeService.findPlaceFromQuery(request, (results, status) => {
+    let div;
     if (status === google.maps.places.PlacesServiceStatus.OK) {
-      results.forEach((item) => {
-        // TODO: Create clickable divs for each item that is
-        // returned from the query and fill in input fields with appropriate
-        // information provided by the places object
-        console.log(item);
+      results.forEach((place) => {
+        div = document.createElement('div');
+        div.setAttribute('data-place-id', place.place_id);
+        div.setAttribute('data-lat', place.geometry.location.lat());
+        div.setAttribute('data-lng', place.geometry.location.lng());
+        div.innerText = place.name;
+        div.classList.add('place');
+        div.onclick = fillInValues;
+        document.getElementById(SEARCH_RESULTS).appendChild(div);
       });
+    } else {
+      div = document.createElement('div');
+      div.innerText = 'Sorry no results were found';
+      div.classList.add('place');
+      document.getElementById(SEARCH_RESULTS).appendChild(div);
     }
   });
+}
+
+function fillInValues() { // eslint-disable-line
+  const place = this.dataset.placeId;
+  const lat = this.dataset.lat;
+  const lng = this.dataset.lng;
+  const nameField = document.getElementById(NAME_INPUT);
+  const latField = document.getElementById(LAT_INPUT);
+  const lngField = document.getElementById(LNG_INPUT);
+  const placeField = document.getElementById(PLACE_INPUT);
+  nameField.value = this.innerText;
+  latField.value = lat;
+  lngField.value = lng;
+  placeField.value = place;
+  const mapCenter = new google.maps.LatLng(lat, lng);
+  const map = new google.maps.Map(document.getElementById(MAP), {
+    center: mapCenter,
+    zoom: 15,
+  });
+  removeElements(PLACE_CLASS);
+  const marker = new google.maps.Marker({ //eslint-disable-line
+    map,
+    position: mapCenter,
+  });
+}
+
+
+/**
+ * Removes all  place divs
+ * @param {String} elemcls name of the class to be queried
+ */
+function removeElements(elemcls) {
+  const element = document.querySelectorAll(elemcls);
+  for (let i = 0; i < element.length; i++) {
+    element[i].remove();
+  }
 }
