@@ -82,52 +82,40 @@ public class Destination {
     Obscurity level = Obscurity.UNDEFINED;
     switch (difficulty.toLowerCase()) {
       case "easy":
-        level = Obscurity.EASY;
-        break;
+        return Obscurity.EASY;
       case "medium":
-        level = Obscurity.MEDIUM;
-        break;
+        return Obscurity.MEDIUM;
       case "hard":
-        level = Obscurity.HARD;
-        break;
+        return Obscurity.HARD;
+      default: 
+        return Obscurity.UNDEFINED;
     }
-    return level;
   }
 
   public static Tag stringToTag(String stringTag) {
-    Tag tag = Tag.UNDEFINED;
     switch (stringTag.toLowerCase()) {
       case "food":
-        tag = Tag.FOOD;
-        break;
+        return Tag.FOOD;
       case "tourist":
-        tag = Tag.TOURIST;
-        break;
+        return Tag.TOURIST;
       case "sport":
-        tag = Tag.SPORT;
-        break;
+        return Tag.SPORT;
       case "historical":
-        tag = Tag.HISTORICAL;
-        break;
+        return Tag.HISTORICAL;
       case "art":
-        tag = Tag.ART;
-        break;
+        return Tag.ART;
       case "family":
-        tag = Tag.FAMILY;
-        break;
+        return Tag.FAMILY;
+      default: 
+        return Tag.UNDEFINED;
     }
-    return tag;
   }
 
   public Boolean isIntersectingTags(Set<Tag> userTags) {
-    Set<Tag> currTags = this.getTags();
+    Set<Tag> currTags = new HashSet<Tag>(this.getTags());
     currTags.retainAll(userTags);
-
-    if (currTags.isEmpty()) {
-      return false;
-    } else {
-      return true;
-    }
+    
+    return !currTags.isEmpty();
   }
 
   public HuntItem convertToHuntItem() {
