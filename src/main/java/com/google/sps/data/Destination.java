@@ -114,7 +114,7 @@ public class Destination {
   public Boolean isIntersectingTags(Set<Tag> userTags) {
     Set<Tag> currTags = new HashSet<Tag>(this.getTags());
     currTags.retainAll(userTags);
-    
+
     return !currTags.isEmpty();
   }
 
