@@ -92,7 +92,7 @@ function fillInValues() { // eslint-disable-line
     zoom: 15,
   });
   removeElement(PLACE_CLASS);
-  let marker = new google.maps.Marker({
+  const marker = new google.maps.Marker({ //eslint-disable-line
     map,
     position: mapCenter,
   });
