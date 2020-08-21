@@ -72,7 +72,7 @@ function searchForPlace() { // eslint-disable-line
       });
     } else {
       div = document.createElement('div');
-      div.innerText = "Sorry no results were found";
+      div.innerText = 'Sorry no results were found';
       div.classList.add('place');
       document.getElementById(SEARCH_RESULTS).appendChild(div);
     }
@@ -103,8 +103,11 @@ function fillInValues() { // eslint-disable-line
   });
 }
 
-// Removes a place div
-function removeElements(elemcls) { 
+
+/*
+ * Removes all place div
+ */
+function removeElements(elemcls) {
   const element = document.querySelectorAll(elemcls);
   for (let i = 0; i < element.length; i++) {
     element[i].remove();
