@@ -17,10 +17,14 @@ const SEARCH_RESULTS = 'search-results';
 const NAME_INPUT = 'name-input';
 const LAT_INPUT = 'lat-input';
 const LNG_INPUT = 'lng-input';
+const PLACE_INPUT = 'place-input';
 
 // DIV IDs that retieve information from the DOM
 const SEARCH = 'search';
 const MAP = 'map';
+
+// Class name constants
+const PLACE_CLASS = '.place';
 
 /*
  * Adds a Script for the places api to the head of the destinationCreation.html
@@ -32,16 +36,16 @@ function addScriptToHead() { // eslint-disable-line
 }
 
 function searchForPlace() { // eslint-disable-line
-  const element = document.querySelectorAll('.place');
+  const element = document.querySelectorAll(PLACE_CLASS);
   if (element.length > 0) {
-    removeElement('.place');
+    removeElement(PLACE_CLASS);
   }
   // Coresponds to the location of the Googleplex building
   const mapCenter = new google.maps.LatLng(37.421949, -122.083972);
 
   const map = new google.maps.Map(document.getElementById(MAP), {
     center: mapCenter,
-    zoom: 18,
+    zoom: 15,
   });
 
   const placeService = new google.maps.places.PlacesService(map);
@@ -59,6 +63,8 @@ function searchForPlace() { // eslint-disable-line
       results.forEach((place) => {
         div = document.createElement('div');
         div.setAttribute('data-place-id', place.place_id);
+        div.setAttribute('data-lat', place.geometry.location.lat());
+        div.setAttribute('data-lng', place.geometry.location.lng());
         div.innerText = place.name;
         div.classList.add('place');
         div.onclick = fillInValues;
@@ -70,44 +76,32 @@ function searchForPlace() { // eslint-disable-line
 
 function fillInValues() { // eslint-disable-line
   const place = this.dataset.placeId;
+  const lat = this.dataset.lat;
+  const lng = this.dataset.lng;
   const nameField = document.getElementById(NAME_INPUT);
   const latField = document.getElementById(LAT_INPUT);
   const lngField = document.getElementById(LNG_INPUT);
-  const placeField = document.getElementById('place-input');
-  const mapCenter = new google.maps.LatLng(37.421949, -122.083972);
+  const placeField = document.getElementById(PLACE_INPUT);
+  nameField.value = this.innerText;
+  latField.value = lat;
+  lngField.value = lng;
+  placeField.value = place;
+  const mapCenter = new google.maps.LatLng(lat, lng);
   const map = new google.maps.Map(document.getElementById(MAP), {
     center: mapCenter,
     zoom: 15,
   });
-
-  const placeService = new google.maps.places.PlacesService(map);
-  const request = {
-    placeId: place,
-    fields: ['name', 'geometry'],
-  };
-  let marker;
-  removeElement('.place');
-  placeService.getDetails(request, (result, status) => {
-    if (status === google.maps.places.PlacesServiceStatus.OK) {
-      nameField.value = result.name;
-      latField.value = result.geometry.location.lat();
-      lngField.value = result.geometry.location.lng();
-      placeField.value = place;
-      marker = new google.maps.Marker({
-        map,
-        position: result.geometry.location,
-      });
-    }
-    if (!map.getBounds().contains(marker.getPosition())) {
-      map.setCenter(marker.getPosition());
-    }
+  removeElement(PLACE_CLASS);
+  let marker = new google.maps.Marker({
+    map,
+    position: mapCenter,
   });
 }
 
 // Removes a place div
 function removeElement(elemcls) { // eslint-disable-line
   const element = document.querySelectorAll(elemcls);
-  for (let i = 0; i < element.length; i++){
+  for (let i = 0; i < element.length; i++) {
     element[i].remove();
   }
 }
