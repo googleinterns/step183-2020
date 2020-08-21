@@ -16,12 +16,18 @@ import org.junit.runners.JUnit4;
 public final class GenerateHuntTest {
   Set<Destination.Tag> goldenGateSet = new HashSet<>(Arrays.asList(Destination.Tag.HISTORICAL));
   Set<Destination.Tag> teaGardenSet = new HashSet<>(Arrays.asList(Destination.Tag.FOOD));
-  Set<Destination.Tag> orpheumTheaterSet = new HashSet<>(Arrays.asList(Destination.Tag.HISTORICAL, Destination.Tag.ART));
-  Set<Destination.Tag> fishermansWharfSet = new HashSet<>(Arrays.asList(Destination.Tag.FOOD, Destination.Tag.TOURIST));
+  Set<Destination.Tag> orpheumTheaterSet = 
+      new HashSet<>(Arrays.asList(Destination.Tag.HISTORICAL, Destination.Tag.ART));
+  Set<Destination.Tag> fishermansWharfSet = 
+      new HashSet<>(Arrays.asList(Destination.Tag.FOOD, Destination.Tag.TOURIST));
   Set<Destination.Tag> coitTowerSet = new HashSet<>(Arrays.asList(Destination.Tag.TOURIST));
-  Set<Destination.Tag> louvreSet = new HashSet<>(Arrays.asList(Destination.Tag.HISTORICAL, Destination.Tag.ART, Destination.Tag.TOURIST));
-  Set<Destination.Tag> eiffelTowerSet = new HashSet<>(Arrays.asList(Destination.Tag.HISTORICAL, Destination.Tag.FAMILY, Destination.Tag.TOURIST));
-  Set<Destination.Tag> arcDeTriompheSet = new HashSet<>(Arrays.asList(Destination.Tag.HISTORICAL, Destination.Tag.TOURIST));
+  Set<Destination.Tag> louvreSet = 
+      new HashSet<>(Arrays.asList(Destination.Tag.HISTORICAL, Destination.Tag.ART, Destination.Tag.TOURIST));
+  Set<Destination.Tag> eiffelTowerSet = 
+      new HashSet<>(Arrays.asList(
+          Destination.Tag.HISTORICAL, Destination.Tag.FAMILY, Destination.Tag.TOURIST));
+  Set<Destination.Tag> arcDeTriompheSet = 
+      new HashSet<>(Arrays.asList(Destination.Tag.HISTORICAL, Destination.Tag.TOURIST));
   Set<Destination.Tag> cathedralSet = new HashSet<>(Arrays.asList(Destination.Tag.HISTORICAL));
 
   Destination goldenGate =
@@ -48,7 +54,7 @@ public final class GenerateHuntTest {
           .withTags(orpheumTheaterSet)
           .build();
 
-  Destination coitTower = 
+  Destination coitTower =
       new Destination.Builder()
           .withName("COIT Tower")
           .withCity("San Francisco")
@@ -56,7 +62,7 @@ public final class GenerateHuntTest {
           .withTags(coitTowerSet)
           .build();
 
-  Destination fishermansWharf = 
+  Destination fishermansWharf =
       new Destination.Builder()
           .withName("Fisherman's Wharf")
           .withCity("San Francisco")
@@ -88,7 +94,7 @@ public final class GenerateHuntTest {
           .withTags(arcDeTriompheSet)
           .build();
 
-  Destination cathedral = 
+  Destination cathedral =
       new Destination.Builder()
           .withName("Cathedral")
           .withCity("Paris")
@@ -97,10 +103,19 @@ public final class GenerateHuntTest {
           .build();
 
   List<Destination> arrayDest =
-      Arrays.asList(goldenGate, teaGarden, orpheumTheater, coitTower, fishermansWharf, louvre, eiffelTower, arcDeTriomphe, cathedral);
+      Arrays.asList(
+        goldenGate, 
+        teaGarden, 
+        orpheumTheater, 
+        coitTower, 
+        fishermansWharf, 
+        louvre, 
+        eiffelTower, 
+        arcDeTriomphe, 
+        cathedral);
   List<Destination> allDestinations = Collections.unmodifiableList(arrayDest);
 
-   @Test
+  @Test
   /* SF, all difficulties. */
   public void SanFrancisco() {
     HashSet<String> userPlaces = new HashSet();
@@ -115,7 +130,7 @@ public final class GenerateHuntTest {
 
     Set<Destination> actual = generate.filter(allDestinations, userPlaces, userDiff, userTags);
 
-    // Should return destinations golden gate, orpheum theater, tea garden, coit tower, fishermans wharf
+    // Should return golden gate, orpheum theater, tea garden, coit tower, fishermans wharf
     Set<Destination> expected = new HashSet();
     expected.add(goldenGate);
     expected.add(teaGarden);
@@ -126,7 +141,7 @@ public final class GenerateHuntTest {
   }
 
   @Test
-  /* SF, medium difficulty. */ 
+  /* SF, medium difficulty. */
   public void SanFranciscoMedium() {
     HashSet<String> userPlaces = new HashSet();
     userPlaces.add("San Francisco");
