@@ -16,9 +16,11 @@ package com.google.sps.servlets;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import javax.servlet.annotation.WebServlet;
 
-@WebServlet("/test-guess-data")
+/**
+ * Customized implementation to be used for unit testing. Removes the language API 
+ * dependency so that the doGet method can be tested in isolation.
+ */
 public class TestGuessServlet extends GuessServlet {
   @Override
   ArrayList<String> findEntities(String word) throws IOException {
