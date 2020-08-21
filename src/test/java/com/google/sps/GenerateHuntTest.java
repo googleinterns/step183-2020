@@ -1,6 +1,6 @@
 package com.google.sps.data;
 
-/*import com.google.sps.servlets.GenerateServlet;
+import com.google.sps.servlets.GenerateServlet;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -9,18 +9,27 @@ import java.util.Set;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;*/
-
-public final class GenerateHuntTest {}
+import org.junit.runners.JUnit4;
 
 // TODO: Write tests for the # destinations input
-/*@RunWith(JUnit4.class)
+@RunWith(JUnit4.class)
 public final class GenerateHuntTest {
+  Set<Destination.Tag> goldenGateSet = new HashSet<>(Arrays.asList(Destination.Tag.HISTORICAL));
+  Set<Destination.Tag> teaGardenSet = new HashSet<>(Arrays.asList(Destination.Tag.FOOD));
+  Set<Destination.Tag> orpheumTheaterSet = new HashSet<>(Arrays.asList(Destination.Tag.HISTORICAL, Destination.Tag.ART));
+  Set<Destination.Tag> fishermansWharfSet = new HashSet<>(Arrays.asList(Destination.Tag.FOOD, Destination.Tag.TOURIST));
+  Set<Destination.Tag> coitTowerSet = new HashSet<>(Arrays.asList(Destination.Tag.TOURIST));
+  Set<Destination.Tag> louvreSet = new HashSet<>(Arrays.asList(Destination.Tag.HISTORICAL, Destination.Tag.ART, Destination.Tag.TOURIST));
+  Set<Destination.Tag> eiffelTowerSet = new HashSet<>(Arrays.asList(Destination.Tag.HISTORICAL, Destination.Tag.FAMILY, Destination.Tag.TOURIST));
+  Set<Destination.Tag> arcDeTriompheSet = new HashSet<>(Arrays.asList(Destination.Tag.HISTORICAL, Destination.Tag.TOURIST));
+  Set<Destination.Tag> cathedralSet = new HashSet<>(Arrays.asList(Destination.Tag.HISTORICAL));
+
   Destination goldenGate =
       new Destination.Builder()
           .withName("Golden Gate")
           .withCity("San Francisco")
           .withObscurity(Destination.Obscurity.EASY)
+          .withTags(goldenGateSet)
           .build();
 
   Destination teaGarden =
@@ -28,6 +37,7 @@ public final class GenerateHuntTest {
           .withName("Tea Garden")
           .withCity("San Francisco")
           .withObscurity(Destination.Obscurity.MEDIUM)
+          .withTags(teaGardenSet)
           .build();
 
   Destination orpheumTheater =
@@ -35,6 +45,23 @@ public final class GenerateHuntTest {
           .withName("Orpheum Theater")
           .withCity("San Francisco")
           .withObscurity(Destination.Obscurity.HARD)
+          .withTags(orpheumTheaterSet)
+          .build();
+
+  Destination coitTower = 
+      new Destination.Builder()
+          .withName("COIT Tower")
+          .withCity("San Francisco")
+          .withObscurity(Destination.Obscurity.EASY)
+          .withTags(coitTowerSet)
+          .build();
+
+  Destination fishermansWharf = 
+      new Destination.Builder()
+          .withName("Fisherman's Wharf")
+          .withCity("San Francisco")
+          .withObscurity(Destination.Obscurity.MEDIUM)
+          .withTags(fishermansWharfSet)
           .build();
 
   Destination louvre =
@@ -42,6 +69,7 @@ public final class GenerateHuntTest {
           .withName("Louvre")
           .withCity("Paris")
           .withObscurity(Destination.Obscurity.EASY)
+          .withTags(louvreSet)
           .build();
 
   Destination eiffelTower =
@@ -49,6 +77,7 @@ public final class GenerateHuntTest {
           .withName("Eiffel Tower")
           .withCity("Paris")
           .withObscurity(Destination.Obscurity.MEDIUM)
+          .withTags(eiffelTowerSet)
           .build();
 
   Destination arcDeTriomphe =
@@ -56,79 +85,92 @@ public final class GenerateHuntTest {
           .withName("Arc de Triomphe")
           .withCity("Paris")
           .withObscurity(Destination.Obscurity.HARD)
+          .withTags(arcDeTriompheSet)
+          .build();
+
+  Destination cathedral = 
+      new Destination.Builder()
+          .withName("Cathedral")
+          .withCity("Paris")
+          .withObscurity(Destination.Obscurity.EASY)
+          .withTags(cathedralSet)
           .build();
 
   List<Destination> arrayDest =
-      Arrays.asList(goldenGate, teaGarden, orpheumTheater, louvre, eiffelTower, arcDeTriomphe);
-  List<Destination> allDestinations = Collections.unmodifiableList(arrayDest);*/
+      Arrays.asList(goldenGate, teaGarden, orpheumTheater, coitTower, fishermansWharf, louvre, eiffelTower, arcDeTriomphe, cathedral);
+  List<Destination> allDestinations = Collections.unmodifiableList(arrayDest);
 
- // @Test
-  /* Get all objects with San Francisco as the place, and all difficulties. */
-  /*public void SanFrancisco() {
+   @Test
+  /* SF, all difficulties. */
+  public void SanFrancisco() {
     HashSet<String> userPlaces = new HashSet();
     userPlaces.add("San Francisco");
     HashSet<Destination.Obscurity> userDiff = new HashSet();
     userDiff.add(Destination.Obscurity.EASY);
     userDiff.add(Destination.Obscurity.MEDIUM);
     userDiff.add(Destination.Obscurity.HARD);
+    // No tags
+    HashSet<Destination.Tag> userTags = new HashSet();
     GenerateServlet generate = new GenerateServlet();
 
-    HashSet<Destination.Tag> tags = new HashSet();
-    tags.add(Destination.Tag.FOOD);
+    Set<Destination> actual = generate.filter(allDestinations, userPlaces, userDiff, userTags);
 
-    Set<Destination> actual = generate.filter(allDestinations, userPlaces, userDiff, tags);
-
-    // Should return first 3 destinations
+    // Should return destinations golden gate, orpheum theater, tea garden, coit tower, fishermans wharf
     Set<Destination> expected = new HashSet();
     expected.add(goldenGate);
     expected.add(teaGarden);
     expected.add(orpheumTheater);
+    expected.add(coitTower);
+    expected.add(fishermansWharf);
     Assert.assertEquals(expected, actual);
   }
 
-  @Test*/
-  /* Get all objects with San Francisco as the place and medium difficulty. */
-  /*public void SanFranciscoMedium() {
+  @Test
+  /* SF, medium difficulty. */ 
+  public void SanFranciscoMedium() {
     HashSet<String> userPlaces = new HashSet();
     userPlaces.add("San Francisco");
     HashSet<Destination.Obscurity> userDiff = new HashSet();
     userDiff.add(Destination.Obscurity.MEDIUM);
+    // No tags
+    HashSet<Destination.Tag> tags = new HashSet();
     GenerateServlet generate = new GenerateServlet();
-
-   HashSet<Destination.Tag> tags = new HashSet();
-    tags.add(Destination.Tag.FOOD);
+    
     Set<Destination> actual = generate.filter(allDestinations, userPlaces, userDiff, tags);
 
-    // Should return only 2nd destination
+    // Should return tea garden, fishermans wharf
     Set<Destination> expected = new HashSet();
     expected.add(teaGarden);
+    expected.add(fishermansWharf);
     Assert.assertEquals(expected, actual);
   }
 
-  @Test*/
-  /* Get all objects in SF and Paris, that are easy difficulty. */
-  /*public void SanFranciscoParisEasy() {
+  @Test
+  /* SF and Paris, easy difficulty. */
+  public void SanFranciscoParisEasy() {
     HashSet<String> userPlaces = new HashSet();
     userPlaces.add("San Francisco");
     userPlaces.add("Paris");
     HashSet<Destination.Obscurity> userDiff = new HashSet();
     userDiff.add(Destination.Obscurity.EASY);
+    // No tags
+    HashSet<Destination.Tag> tags = new HashSet();
     GenerateServlet generate = new GenerateServlet();
-
-   HashSet<Destination.Tag> tags = new HashSet();
-    tags.add(Destination.Tag.FOOD);
+    
     Set<Destination> actual = generate.filter(allDestinations, userPlaces, userDiff, tags);
 
-    // Should return objects 1 and 4
+    // Should return golden gate, coit tower, louvre, cathedral
     Set<Destination> expected = new HashSet();
     expected.add(goldenGate);
+    expected.add(coitTower);
     expected.add(louvre);
+    expected.add(cathedral);
     Assert.assertEquals(expected, actual);
   }
 
-  @Test*/
-  /* Press all filters. */
-  /*public void allFiltersAllowed() {
+  @Test
+  /* All places and difficulties. */
+  public void allFiltersAllowed() {
       HashSet<String> userPlaces = new HashSet();
       userPlaces.add("San Francisco");
       userPlaces.add("Paris");
@@ -137,10 +179,10 @@ public final class GenerateHuntTest {
       userDiff.add(Destination.Obscurity.EASY);
       userDiff.add(Destination.Obscurity.MEDIUM);
       userDiff.add(Destination.Obscurity.HARD);
+      // No tags
+      HashSet<Destination.Tag> tags = new HashSet();
       GenerateServlet generate = new GenerateServlet();
-
-     HashSet<Destination.Tag> tags = new HashSet();
-      tags.add(Destination.Tag.FOOD);
+      
       Set<Destination> actual = generate.filter(allDestinations, userPlaces, userDiff, tags);
 
       // Should return all Destinations
@@ -148,9 +190,128 @@ public final class GenerateHuntTest {
       expected.add(goldenGate);
       expected.add(teaGarden);
       expected.add(orpheumTheater);
+      expected.add(coitTower);
+      expected.add(fishermansWharf);
       expected.add(louvre);
       expected.add(eiffelTower);
       expected.add(arcDeTriomphe);
+      expected.add(cathedral);
       Assert.assertEquals(expected, actual);
     }
-  }*/
+
+  
+  @Test
+  /* SF, easy difficulty, and Tag Tourist. */
+  public void sanFranciscoEasyTourist() {
+    HashSet<String> userPlaces = new HashSet();
+    userPlaces.add("San Francisco");
+    HashSet<Destination.Obscurity> userDiff = new HashSet();
+    userDiff.add(Destination.Obscurity.EASY);
+    HashSet<Destination.Tag> userTags = new HashSet();
+    userTags.add(Destination.Tag.TOURIST);
+    GenerateServlet generate = new GenerateServlet();
+    
+    Set<Destination> actual = generate.filter(allDestinations, userPlaces, userDiff, userTags);
+
+    // Should return coit tower
+    Set<Destination> expected = new HashSet();
+    expected.add(coitTower);
+    Assert.assertEquals(expected, actual);
+  }
+
+  @Test
+  /* SF, no difficulty, Tag Historical. */
+  public void sanFranciscoHistorical() {
+    HashSet<String> userPlaces = new HashSet();
+    userPlaces.add("San Francisco");
+    HashSet<Destination.Obscurity> userDiff = new HashSet();
+    userDiff.add(Destination.Obscurity.EASY);
+    userDiff.add(Destination.Obscurity.MEDIUM);
+    userDiff.add(Destination.Obscurity.HARD);
+    HashSet<Destination.Tag> userTags = new HashSet();
+    userTags.add(Destination.Tag.HISTORICAL);
+    GenerateServlet generate = new GenerateServlet();
+    
+    Set<Destination> actual = generate.filter(allDestinations, userPlaces, userDiff, userTags);
+
+    // Should return golden gate, orpheum theater
+    Set<Destination> expected = new HashSet();
+    expected.add(goldenGate);
+    expected.add(orpheumTheater);
+    Assert.assertEquals(expected, actual);
+
+  }
+
+  @Test 
+  /* Paris, easy difficulty, Tag Family. */
+  public void parisEasyFamily() {
+    HashSet<String> userPlaces = new HashSet();
+    userPlaces.add("Paris");
+    HashSet<Destination.Obscurity> userDiff = new HashSet();
+    userDiff.add(Destination.Obscurity.EASY);
+    HashSet<Destination.Tag> userTags = new HashSet();
+    userTags.add(Destination.Tag.FAMILY);
+    GenerateServlet generate = new GenerateServlet();
+    
+    Set<Destination> actual = generate.filter(allDestinations, userPlaces, userDiff, userTags);
+
+    // Should return nothing
+    Set<Destination> expected = new HashSet();
+    Assert.assertEquals(expected, actual);
+  }
+
+  /* Sf, no difficulty, Tag Historical and Food. */
+  public void multipleTags() {
+    HashSet<String> userPlaces = new HashSet();
+    userPlaces.add("San Francisco");
+    HashSet<Destination.Obscurity> userDiff = new HashSet();
+    userDiff.add(Destination.Obscurity.EASY);
+    userDiff.add(Destination.Obscurity.MEDIUM);
+    userDiff.add(Destination.Obscurity.HARD);
+    HashSet<Destination.Tag> userTags = new HashSet();
+    userTags.add(Destination.Tag.HISTORICAL);
+    userTags.add(Destination.Tag.FOOD);
+    GenerateServlet generate = new GenerateServlet();
+    
+    Set<Destination> actual = generate.filter(allDestinations, userPlaces, userDiff, userTags);
+
+    // Should return golden gate, tea garden, orpheum theater, fishermans wharf
+    Set<Destination> expected = new HashSet();
+    expected.add(goldenGate);
+    expected.add(teaGarden);
+    expected.add(orpheumTheater);
+    expected.add(fishermansWharf);
+    Assert.assertEquals(expected, actual);
+
+  }
+
+  @Test
+  /* All places, tags, and difficulties. */
+  public void sanFranciscoAllTags() {
+    HashSet<String> userPlaces = new HashSet();
+    userPlaces.add("San Francisco");
+    HashSet<Destination.Obscurity> userDiff = new HashSet();
+    userDiff.add(Destination.Obscurity.EASY);
+    userDiff.add(Destination.Obscurity.MEDIUM);
+    userDiff.add(Destination.Obscurity.HARD);
+    HashSet<Destination.Tag> userTags = new HashSet();
+    userTags.add(Destination.Tag.FOOD);
+    userTags.add(Destination.Tag.HISTORICAL);
+    userTags.add(Destination.Tag.ART);
+    userTags.add(Destination.Tag.FAMILY);
+    userTags.add(Destination.Tag.TOURIST);
+    userTags.add(Destination.Tag.SPORT);
+    GenerateServlet generate = new GenerateServlet();
+    
+    Set<Destination> actual = generate.filter(allDestinations, userPlaces, userDiff, userTags);
+
+    // Should return golden gate, tea garden, orpheum, coit tower, fishermans wharf
+    Set<Destination> expected = new HashSet();
+    expected.add(goldenGate);
+    expected.add(teaGarden);
+    expected.add(orpheumTheater);
+    expected.add(coitTower);
+    expected.add(fishermansWharf);
+    Assert.assertEquals(expected, actual);
+  }
+}
