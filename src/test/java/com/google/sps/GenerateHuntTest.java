@@ -16,17 +16,19 @@ import org.junit.runners.JUnit4;
 public final class GenerateHuntTest {
   Set<Destination.Tag> goldenGateSet = new HashSet<>(Arrays.asList(Destination.Tag.HISTORICAL));
   Set<Destination.Tag> teaGardenSet = new HashSet<>(Arrays.asList(Destination.Tag.FOOD));
-  Set<Destination.Tag> orpheumTheaterSet = 
+  Set<Destination.Tag> orpheumTheaterSet =
       new HashSet<>(Arrays.asList(Destination.Tag.HISTORICAL, Destination.Tag.ART));
-  Set<Destination.Tag> fishermansWharfSet = 
+  Set<Destination.Tag> fishermansWharfSet =
       new HashSet<>(Arrays.asList(Destination.Tag.FOOD, Destination.Tag.TOURIST));
   Set<Destination.Tag> coitTowerSet = new HashSet<>(Arrays.asList(Destination.Tag.TOURIST));
-  Set<Destination.Tag> louvreSet = 
-      new HashSet<>(Arrays.asList(Destination.Tag.HISTORICAL, Destination.Tag.ART, Destination.Tag.TOURIST));
-  Set<Destination.Tag> eiffelTowerSet = 
-      new HashSet<>(Arrays.asList(
-          Destination.Tag.HISTORICAL, Destination.Tag.FAMILY, Destination.Tag.TOURIST));
-  Set<Destination.Tag> arcDeTriompheSet = 
+  Set<Destination.Tag> louvreSet =
+      new HashSet<>(
+          Arrays.asList(Destination.Tag.HISTORICAL, Destination.Tag.ART, Destination.Tag.TOURIST));
+  Set<Destination.Tag> eiffelTowerSet =
+      new HashSet<>(
+          Arrays.asList(
+              Destination.Tag.HISTORICAL, Destination.Tag.FAMILY, Destination.Tag.TOURIST));
+  Set<Destination.Tag> arcDeTriompheSet =
       new HashSet<>(Arrays.asList(Destination.Tag.HISTORICAL, Destination.Tag.TOURIST));
   Set<Destination.Tag> cathedralSet = new HashSet<>(Arrays.asList(Destination.Tag.HISTORICAL));
 
@@ -104,15 +106,15 @@ public final class GenerateHuntTest {
 
   List<Destination> arrayDest =
       Arrays.asList(
-        goldenGate, 
-        teaGarden, 
-        orpheumTheater, 
-        coitTower, 
-        fishermansWharf, 
-        louvre, 
-        eiffelTower, 
-        arcDeTriomphe, 
-        cathedral);
+          goldenGate,
+          teaGarden,
+          orpheumTheater,
+          coitTower,
+          fishermansWharf,
+          louvre,
+          eiffelTower,
+          arcDeTriomphe,
+          cathedral);
   List<Destination> allDestinations = Collections.unmodifiableList(arrayDest);
 
   @Test
@@ -150,7 +152,7 @@ public final class GenerateHuntTest {
     // No tags
     HashSet<Destination.Tag> userTags = new HashSet();
     GenerateServlet generate = new GenerateServlet();
-    
+
     Set<Destination> actual = generate.filter(allDestinations, userPlaces, userDiff, userTags);
 
     // Should return tea garden, fishermans wharf
@@ -171,7 +173,7 @@ public final class GenerateHuntTest {
     // No tags
     HashSet<Destination.Tag> userTags = new HashSet();
     GenerateServlet generate = new GenerateServlet();
-    
+
     Set<Destination> actual = generate.filter(allDestinations, userPlaces, userDiff, userTags);
 
     // Should return golden gate, coit tower, louvre, cathedral
@@ -197,7 +199,7 @@ public final class GenerateHuntTest {
     // No tags
     HashSet<Destination.Tag> userTags = new HashSet();
     GenerateServlet generate = new GenerateServlet();
-      
+
     Set<Destination> actual = generate.filter(allDestinations, userPlaces, userDiff, userTags);
 
     // Should return all Destinations
@@ -224,7 +226,7 @@ public final class GenerateHuntTest {
     HashSet<Destination.Tag> userTags = new HashSet();
     userTags.add(Destination.Tag.TOURIST);
     GenerateServlet generate = new GenerateServlet();
-    
+
     Set<Destination> actual = generate.filter(allDestinations, userPlaces, userDiff, userTags);
 
     // Should return coit tower
@@ -245,7 +247,7 @@ public final class GenerateHuntTest {
     HashSet<Destination.Tag> userTags = new HashSet();
     userTags.add(Destination.Tag.HISTORICAL);
     GenerateServlet generate = new GenerateServlet();
-    
+
     Set<Destination> actual = generate.filter(allDestinations, userPlaces, userDiff, userTags);
 
     // Should return golden gate, orpheum theater
@@ -253,7 +255,6 @@ public final class GenerateHuntTest {
     expected.add(goldenGate);
     expected.add(orpheumTheater);
     Assert.assertEquals(expected, actual);
-
   }
 
   @Test 
@@ -266,7 +267,7 @@ public final class GenerateHuntTest {
     HashSet<Destination.Tag> userTags = new HashSet();
     userTags.add(Destination.Tag.FAMILY);
     GenerateServlet generate = new GenerateServlet();
-    
+
     Set<Destination> actual = generate.filter(allDestinations, userPlaces, userDiff, userTags);
 
     // Should return nothing
@@ -286,7 +287,7 @@ public final class GenerateHuntTest {
     userTags.add(Destination.Tag.HISTORICAL);
     userTags.add(Destination.Tag.FOOD);
     GenerateServlet generate = new GenerateServlet();
-    
+
     Set<Destination> actual = generate.filter(allDestinations, userPlaces, userDiff, userTags);
 
     // Should return golden gate, tea garden, orpheum theater, fishermans wharf
@@ -296,7 +297,6 @@ public final class GenerateHuntTest {
     expected.add(orpheumTheater);
     expected.add(fishermansWharf);
     Assert.assertEquals(expected, actual);
-
   }
 
   @Test
@@ -316,7 +316,7 @@ public final class GenerateHuntTest {
     userTags.add(Destination.Tag.TOURIST);
     userTags.add(Destination.Tag.SPORT);
     GenerateServlet generate = new GenerateServlet();
-    
+
     Set<Destination> actual = generate.filter(allDestinations, userPlaces, userDiff, userTags);
 
     // Should return golden gate, tea garden, orpheum, coit tower, fishermans wharf
@@ -333,7 +333,7 @@ public final class GenerateHuntTest {
   /* Get 3 random destinations. */
   public void threeDests() {
     GenerateServlet generate = new GenerateServlet();
-    
+
     Set<Destination> allDestinationsSet = new HashSet<Destination>(allDestinations);
     Set<Destination> actualSet = generate.correctNumDests(allDestinationsSet, 3);
 
@@ -346,7 +346,7 @@ public final class GenerateHuntTest {
   /* 5 random destinations. */
   public void fiveDests() {
     GenerateServlet generate = new GenerateServlet();
-    
+
     Set<Destination> allDestinationsSet = new HashSet<Destination>(allDestinations);
     Set<Destination> actualSet = generate.correctNumDests(allDestinationsSet, 5);
 
@@ -359,7 +359,7 @@ public final class GenerateHuntTest {
   /* 0 random destinations. */
   public void noDests() {
     GenerateServlet generate = new GenerateServlet();
-    
+
     Set<Destination> allDestinationsSet = new HashSet<Destination>(allDestinations);
     Set<Destination> actualSet = generate.correctNumDests(allDestinationsSet, 0);
 
