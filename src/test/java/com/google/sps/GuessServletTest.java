@@ -26,24 +26,26 @@ public final class GuessServletTest {
   private static final String ANSWER_PARAMETER = "answer";
 
   private TestGuessServlet servlet;
+  private StringWriter stringWriter;
 
   @Before
   public void setUp() throws IOException {
     MockitoAnnotations.initMocks(this);
     servlet = new TestGuessServlet();
+
+    stringWriter = new StringWriter();
+    PrintWriter writer = new PrintWriter(stringWriter);
+    Mockito.when(response.getWriter()).thenReturn(writer);
   }
 
-  private void setMockRequestParameters(HttpServletRequest request, String guess, String answer) {
+  private void setMockRequestParameters(String guess, String answer) {
     doReturn(guess).when(request).getParameter(GUESS_PARAMETER);
     doReturn(answer).when(request).getParameter(ANSWER_PARAMETER);
   }
 
   @Test
   public void BasicPositive() throws IOException {
-    StringWriter stringWriter = new StringWriter();
-    PrintWriter writer = new PrintWriter(stringWriter);
-    Mockito.when(response.getWriter()).thenReturn(writer);
-    setMockRequestParameters(request, "Golden Gate Bridge", "Golden Gate Bridge");
+    setMockRequestParameters("Golden Gate Bridge", "Golden Gate Bridge");
 
     servlet.doGet(request, response);
 
@@ -52,10 +54,7 @@ public final class GuessServletTest {
 
   @Test
   public void BasicNegative() throws IOException {
-    StringWriter stringWriter = new StringWriter();
-    PrintWriter writer = new PrintWriter(stringWriter);
-    Mockito.when(response.getWriter()).thenReturn(writer);
-    setMockRequestParameters(request, "Golden Gate Bridge", "Eiffel Tower");
+    setMockRequestParameters("Golden Gate Bridge", "Eiffel Tower");
 
     servlet.doGet(request, response);
 
@@ -64,12 +63,9 @@ public final class GuessServletTest {
 
   @Test
   public void ExtraWordInGuess() throws IOException {
-    StringWriter stringWriter = new StringWriter();
-    PrintWriter writer = new PrintWriter(stringWriter);
-    Mockito.when(response.getWriter()).thenReturn(writer);
     String userGuess = "The Golden Gate Bridge";
     String answer = "Golden Gate Bridge";
-    setMockRequestParameters(request, userGuess, answer);
+    setMockRequestParameters(userGuess, answer);
 
     servlet.doGet(request, response);
 
@@ -78,12 +74,9 @@ public final class GuessServletTest {
 
   @Test
   public void MissingWordInGuess() throws IOException {
-    StringWriter stringWriter = new StringWriter();
-    PrintWriter writer = new PrintWriter(stringWriter);
-    Mockito.when(response.getWriter()).thenReturn(writer);
     String userGuess = "Golden Bridge";
     String answer = "Golden Gate Bridge";
-    setMockRequestParameters(request, userGuess, answer);
+    setMockRequestParameters(userGuess, answer);
 
     servlet.doGet(request, response);
 
@@ -92,12 +85,9 @@ public final class GuessServletTest {
 
   @Test
   public void UserGuessInLowerCase() throws IOException {
-    StringWriter stringWriter = new StringWriter();
-    PrintWriter writer = new PrintWriter(stringWriter);
-    Mockito.when(response.getWriter()).thenReturn(writer);
     String userGuess = "golden gate bridge";
     String answer = "Golden Gate Bridge";
-    setMockRequestParameters(request, userGuess, answer);
+    setMockRequestParameters(userGuess, answer);
 
     servlet.doGet(request, response);
 
@@ -106,12 +96,9 @@ public final class GuessServletTest {
 
   @Test
   public void UserGuessInUpperCase() throws IOException {
-    StringWriter stringWriter = new StringWriter();
-    PrintWriter writer = new PrintWriter(stringWriter);
-    Mockito.when(response.getWriter()).thenReturn(writer);
     String userGuess = "GOLDEN GATE BRIDGE";
     String answer = "Golden Gate Bridge";
-    setMockRequestParameters(request, userGuess, answer);
+    setMockRequestParameters(userGuess, answer);
 
     servlet.doGet(request, response);
 
