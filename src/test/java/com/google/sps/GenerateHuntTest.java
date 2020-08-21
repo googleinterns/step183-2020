@@ -257,7 +257,7 @@ public final class GenerateHuntTest {
     Assert.assertEquals(expected, actual);
   }
 
-  @Test 
+  @Test
   /* Paris, easy difficulty, Tag Family. */
   public void parisEasyFamily() {
     HashSet<String> userPlaces = new HashSet();
@@ -275,6 +275,7 @@ public final class GenerateHuntTest {
     Assert.assertEquals(expected, actual);
   }
 
+  @Test
   /* Sf, no difficulty, Tag Historical and Food. */
   public void multipleTags() {
     HashSet<String> userPlaces = new HashSet();
@@ -329,7 +330,7 @@ public final class GenerateHuntTest {
     Assert.assertEquals(expected, actual);
   }
 
-  @Test 
+  @Test
   /* Get 3 random destinations. */
   public void threeDests() {
     GenerateServlet generate = new GenerateServlet();
@@ -342,7 +343,7 @@ public final class GenerateHuntTest {
     Assert.assertEquals(expected, actual);
   }
 
-  @Test 
+  @Test
   /* 5 random destinations. */
   public void fiveDests() {
     GenerateServlet generate = new GenerateServlet();
