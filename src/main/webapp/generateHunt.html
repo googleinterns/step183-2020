@@ -35,12 +35,15 @@
         </div>
       </div>
       <div class="category">
-        <div class="category-label"># of Stops</div>
-        <div class="filter-container">
-          <div class="filter unclicked-filter">Three</div>
-          <div class="filter unclicked-filter">Five</div>
+        <div class="category-label"># of Stops
+          <div class="category-subtitle">Enter a number between 1 and 10.</div>
+        </div>
+        <div class="filter-container num-stops">
+          <input type="number" id="num-stops" class="filter unclicked-filter" min="1" max="10" placeholder="3"></input>
         </div>
       </div>
+      <br>
+      <br>
       <div class="category">
         <div class="category-label">Other Filters</div>
         <div class="filter-container">
