@@ -220,9 +220,9 @@ function getHint() { //eslint-disable-line
 /**
  * Generates a place_id near the midpoint between the user's
  * position and the destination.
- * Disable lint check because generateInfo() is called from go.html.
+ * Disable lint check because displayNearbyPlace() is called from go.html.
  */
-function generateInfo() { //eslint-disable-line
+function displayNearbyPlace() { //eslint-disable-line
   // Midpoint coordinates between the user's current position and
   // the current destination.
   const midpoint = new google.maps.LatLng(
@@ -236,7 +236,8 @@ function generateInfo() { //eslint-disable-line
   };
 
   service.nearbySearch(request, function(results, status) {
-    if (status === google.maps.places.PlacesServiceStatus.OK) {
+    if (status === google.maps.places.PlacesServiceStatus.OK
+        && results.length > 0) {
       displayPlaceInfo(results[0].place_id);
     } else {
       updateMessage(GENERATE_DISPLAY, NO_PLACEID_MSSG);
@@ -254,7 +255,8 @@ function displayPlaceInfo(id) {
     fields: ['name', 'photo'],
   };
   service.getDetails(request, (place, status) => {
-    if (status == google.maps.places.PlacesServiceStatus.OK) {
+    if (status == google.maps.places.PlacesServiceStatus.OK
+        && place.photos.length > 0) {
       updateMessage(GENERATE_DISPLAY, place.name);
       updatePhoto(GENERATE_DISPLAY, place.photos[0]);
     } else {
