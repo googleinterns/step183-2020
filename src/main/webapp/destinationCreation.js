@@ -19,7 +19,7 @@ const LAT_INPUT = 'lat-input';
 const LNG_INPUT = 'lng-input';
 const PLACE_INPUT = 'place-input';
 
-// DIV IDs that retieve information from the DOM
+// DIV IDs that retrieve information from the DOM
 const SEARCH = 'search';
 const MAP = 'map';
 
@@ -38,7 +38,7 @@ function addScriptToHead() { // eslint-disable-line
 function searchForPlace() { // eslint-disable-line
   const element = document.querySelectorAll(PLACE_CLASS);
   if (element.length > 0) {
-    removeElement(PLACE_CLASS);
+    removeElements(PLACE_CLASS);
   }
   // Coresponds to the location of the Googleplex building
   const mapCenter = new google.maps.LatLng(37.421949, -122.083972);
@@ -68,8 +68,13 @@ function searchForPlace() { // eslint-disable-line
         div.innerText = place.name;
         div.classList.add('place');
         div.onclick = fillInValues;
-        document.getElementsByClassName(SEARCH_RESULTS)[0].appendChild(div);
+        document.getElementById(SEARCH_RESULTS).appendChild(div);
       });
+    } else {
+      div = document.createElement('div');
+      div.innerText = "Sorry no results were found";
+      div.classList.add('place');
+      document.getElementById(SEARCH_RESULTS).appendChild(div);
     }
   });
 }
@@ -91,7 +96,7 @@ function fillInValues() { // eslint-disable-line
     center: mapCenter,
     zoom: 15,
   });
-  removeElement(PLACE_CLASS);
+  removeElements(PLACE_CLASS);
   const marker = new google.maps.Marker({ //eslint-disable-line
     map,
     position: mapCenter,
@@ -99,7 +104,7 @@ function fillInValues() { // eslint-disable-line
 }
 
 // Removes a place div
-function removeElement(elemcls) { // eslint-disable-line
+function removeElements(elemcls) { 
   const element = document.querySelectorAll(elemcls);
   for (let i = 0; i < element.length; i++) {
     element[i].remove();
