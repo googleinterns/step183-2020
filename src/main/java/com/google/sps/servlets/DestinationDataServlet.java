@@ -46,6 +46,7 @@ public class DestinationDataServlet extends HttpServlet {
   private static final String HINT3_PARAMETER = "hint3";
   private static final String OBSCURITY_PARAMETER = "obscurity";
   private static final String TAG_PARAMETER = "tag";
+  private static final String PLACEID_PARAMETER = "placeId";
   private static final String HOME_URL = "/index.html";
 
   private static final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
@@ -88,6 +89,8 @@ public class DestinationDataServlet extends HttpServlet {
             .collect(Collectors.toList());
     Set<Destination.Tag> checkedTags = convertTagsToEnum(tags);
 
+    String placeId = request.getParameter(PLACEID_PARAMETER);
+
     Destination destination =
         new Destination.Builder()
             .withName(name)
@@ -97,6 +100,7 @@ public class DestinationDataServlet extends HttpServlet {
             .withRiddle(riddle)
             .withTags(checkedTags)
             .withObscurity(level)
+            .withPlaceId(placeId)
             .build();
 
     /* Takes the destination object and turns it into a JSON String to be stored in Datastore */
