@@ -236,8 +236,8 @@ function displayNearbyPlace() { //eslint-disable-line
   };
 
   service.nearbySearch(request, function(results, status) {
-    if (status === google.maps.places.PlacesServiceStatus.OK
-        && results.length > 0) {
+    if (status === google.maps.places.PlacesServiceStatus.OK &&
+        results.length > 0) {
       displayPlaceInfo(results[0].place_id);
     } else {
       updateMessage(GENERATE_DISPLAY, NO_PLACEID_MSSG);
@@ -255,8 +255,8 @@ function displayPlaceInfo(id) {
     fields: ['name', 'photo'],
   };
   service.getDetails(request, (place, status) => {
-    if (status == google.maps.places.PlacesServiceStatus.OK
-        && place.photos.length > 0) {
+    if (status == google.maps.places.PlacesServiceStatus.OK &&
+        place.photos.length > 0) {
       updateMessage(GENERATE_DISPLAY, place.name);
       updatePhoto(GENERATE_DISPLAY, place.photos[0]);
     } else {
