@@ -3,6 +3,7 @@ const UNCLICKED = 'unclicked-filter';
 const CLICKED = 'clicked-filter';
 const PLACE_ARRAY_URL_PARAM = 'user-places';
 const DIFF_ARRAY_URL_PARAM = 'user-diff';
+const NUM_STOPS_URL_PARAM = 'user-num-stops';
 
 /**
 * Swap between "clicked" and "unclicked" classes
@@ -55,11 +56,14 @@ function sendClickedFiltersToServer() { //eslint-disable-line
   }
   const jsonDiffArray = JSON.stringify(clickedDifficulties);
 
-  // TODO: Get clicked num stops
+  // Get clicked num stops
+  numStops = document.getElementById('num-stops').value;
+
   // TODO: Get clicked tags
 
   fetch('/generate-hunt?' + PLACE_ARRAY_URL_PARAM + '=' + jsonPlaceArray + '&' +
-    DIFF_ARRAY_URL_PARAM + '=' + jsonDiffArray,
+    DIFF_ARRAY_URL_PARAM + '=' + jsonDiffArray + '&' +
+    NUM_STOPS_URL_PARAM + '=' + numStops,
   {method: 'POST'}).then((response) => response.text())
       .then((message) => {
         // If success, redirect to scavenger hunt with ID

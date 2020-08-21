@@ -25,6 +25,8 @@ import com.google.sps.data.HuntItem;
 import com.google.sps.data.ScavengerHunt;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -40,6 +42,7 @@ public class GenerateServlet extends HttpServlet {
 
   private static final String PLACE_FILTERS = "user-places";
   private static final String DIFF_FILTERS = "user-diff";
+  private static final String NUM_PLACES = "user-num-stops";
   private static final String ERROR = "Error";
   private static final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
@@ -50,6 +53,8 @@ public class GenerateServlet extends HttpServlet {
         new Gson().fromJson(request.getParameter(PLACE_FILTERS), HashSet.class);
     HashSet<String> userDifficultyStrings =
         new Gson().fromJson(request.getParameter(DIFF_FILTERS), HashSet.class);
+    String numPlacesString = request.getParameter(NUM_PLACES);
+    int numPlaces = Integer.parseInt(numPlacesString);
 
     // Get destinations from datastore
     ArrayList<Destination> allDestinations = getDestinationsFromDatastore();
@@ -64,18 +69,27 @@ public class GenerateServlet extends HttpServlet {
     }
 
     // Filter
-    // TODO: Only return the amount of hunt items that the user wants
     Set<Destination> filteredDestinations =
         filter(allDestinations, userPlaces, userDifficultyLevels);
 
-    // Convert Destinations to Hunt Items, create Scavenger Hunt, store in Datastore
-    ArrayList<HuntItem> huntItems = convertToHuntItems(filteredDestinations);
-    ScavengerHunt scavHunt = new ScavengerHunt(huntItems);
-    long huntId = writeToDataStore(scavHunt);
+    // If there are enough destinations to return, pick random ones to put in Hunt
+    if (filteredDestinations.size() >= numPlaces) {
+      // Get numPlaces number of Destinations
+      filteredDestinations = correctNumDests(filteredDestinations, numPlaces);
 
-    // Set response TODO: return scavenger hunt id / error message
-    response.setContentType("text/html;");
-    response.getWriter().println(huntId);
+      // Convert Destinations to Hunt Items, create Scavenger Hunt, store in Datastore
+      ArrayList<HuntItem> huntItems = convertToHuntItems(filteredDestinations);
+      ScavengerHunt scavHunt = new ScavengerHunt(huntItems);
+      long huntId = writeToDataStore(scavHunt);
+
+      // Set response: scavenger hunt id
+      response.setContentType("text/html;");
+      response.getWriter().println(huntId);
+    } else {
+      // If there are not enough destinations, return an error
+      response.setContentType("text/html");
+      response.getWriter().println(ERROR);
+    }
   }
 
   /* Query datastore for Destination objects, convert then to Destination class, store in ArrayList. */
@@ -93,7 +107,7 @@ public class GenerateServlet extends HttpServlet {
     return allDestinations;
   }
 
-  /* Return ArrayList<Destination> of filtered Destination objects. */
+  /* Return all Destination objects that match the filters. */
   public Set<Destination> filter(
       List<Destination> allDestinations,
       Set<String> userPlaces,
@@ -106,6 +120,24 @@ public class GenerateServlet extends HttpServlet {
                         && userDifficultyLevels.contains(destination.getDifficulty()))
             .collect(Collectors.toSet());
     return filteredDestinations;
+  }
+
+  /* Chooses a random subset of the filtered Destinations with size numPlaces. */
+  public Set<Destination> correctNumDests(Set<Destination> filteredDestinations, int numPlaces) {
+    if (filteredDestinations.size() == numPlaces) {
+      return filteredDestinations;
+    }
+    Set<Destination> newFilteredDests = new HashSet<Destination>();
+    List<Destination> filteredList = new ArrayList<Destination>(filteredDestinations);
+    Integer[] indexArr = new Integer[filteredDestinations.size()];
+    for (int i = 0; i < indexArr.length; i++) {
+      indexArr[i] = i;
+    }
+    Collections.shuffle(Arrays.asList(indexArr));
+    for (int i = 0; i < numPlaces; i++) {
+      newFilteredDests.add(filteredList.get(indexArr[i]));
+    }
+    return newFilteredDests;
   }
 
   /* Convert all Destinations in set to Hunt Items. */
