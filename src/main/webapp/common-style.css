@@ -24,8 +24,10 @@ a {
 .button {
   background-color: #4f759b;
   border-radius: 12px;
+  color: white;
   cursor: pointer;
   display: inline-block;
+  font-family: 'Raleway', sans-serif;
   margin: 4px 10px;
   padding: 20px 40px;
   text-align: center;
