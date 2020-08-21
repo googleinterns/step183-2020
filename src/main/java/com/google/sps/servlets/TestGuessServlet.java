@@ -18,8 +18,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * Customized implementation to be used for unit testing. Removes the language API 
- * dependency so that the doGet method can be tested in isolation.
+ * Customized implementation to be used for unit testing. Removes the language API dependency so
+ * that the doGet method can be tested in isolation.
  */
 public class TestGuessServlet extends GuessServlet {
   @Override
