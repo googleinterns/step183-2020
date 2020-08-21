@@ -106,6 +106,7 @@ function fillInValues() { // eslint-disable-line
 
 /**
  * Removes all  place divs
+ * @param {String} elemcls name of the class to be queried
  */
 function removeElements(elemcls) {
   const element = document.querySelectorAll(elemcls);
