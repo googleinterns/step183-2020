@@ -1,4 +1,4 @@
-package com.google.sps.data;
+package com.google.sps;
 
 import static org.mockito.Mockito.doReturn;
 
@@ -43,8 +43,8 @@ public final class GuessServletTest {
     StringWriter stringWriter = new StringWriter();
     PrintWriter writer = new PrintWriter(stringWriter);
     Mockito.when(response.getWriter()).thenReturn(writer);
-
     setMockRequestParameters(request, "Golden Gate Bridge", "Golden Gate Bridge");
+
     servlet.doGet(request, response);
 
     Assert.assertEquals(stringWriter.toString(), "true\n");
@@ -55,8 +55,8 @@ public final class GuessServletTest {
     StringWriter stringWriter = new StringWriter();
     PrintWriter writer = new PrintWriter(stringWriter);
     Mockito.when(response.getWriter()).thenReturn(writer);
-
     setMockRequestParameters(request, "Golden Gate Bridge", "Eiffel Tower");
+
     servlet.doGet(request, response);
 
     Assert.assertEquals(stringWriter.toString(), "false\n");
@@ -67,11 +67,10 @@ public final class GuessServletTest {
     StringWriter stringWriter = new StringWriter();
     PrintWriter writer = new PrintWriter(stringWriter);
     Mockito.when(response.getWriter()).thenReturn(writer);
-
     String userGuess = "The Golden Gate Bridge";
     String answer = "Golden Gate Bridge";
-
     setMockRequestParameters(request, userGuess, answer);
+
     servlet.doGet(request, response);
 
     Assert.assertEquals(stringWriter.toString(), "true\n");
@@ -82,11 +81,10 @@ public final class GuessServletTest {
     StringWriter stringWriter = new StringWriter();
     PrintWriter writer = new PrintWriter(stringWriter);
     Mockito.when(response.getWriter()).thenReturn(writer);
-
     String userGuess = "Golden Bridge";
     String answer = "Golden Gate Bridge";
-
     setMockRequestParameters(request, userGuess, answer);
+
     servlet.doGet(request, response);
 
     Assert.assertEquals(stringWriter.toString(), "false\n");
@@ -97,11 +95,10 @@ public final class GuessServletTest {
     StringWriter stringWriter = new StringWriter();
     PrintWriter writer = new PrintWriter(stringWriter);
     Mockito.when(response.getWriter()).thenReturn(writer);
-
     String userGuess = "golden gate bridge";
     String answer = "Golden Gate Bridge";
-
     setMockRequestParameters(request, userGuess, answer);
+
     servlet.doGet(request, response);
 
     Assert.assertEquals(stringWriter.toString(), "true\n");
@@ -112,11 +109,10 @@ public final class GuessServletTest {
     StringWriter stringWriter = new StringWriter();
     PrintWriter writer = new PrintWriter(stringWriter);
     Mockito.when(response.getWriter()).thenReturn(writer);
-
     String userGuess = "GOLDEN GATE BRIDGE";
     String answer = "Golden Gate Bridge";
-
     setMockRequestParameters(request, userGuess, answer);
+
     servlet.doGet(request, response);
 
     Assert.assertEquals(stringWriter.toString(), "true\n");
