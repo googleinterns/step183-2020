@@ -87,7 +87,7 @@ public class Destination {
         return Obscurity.MEDIUM;
       case "hard":
         return Obscurity.HARD;
-      default: 
+      default:
         return Obscurity.UNDEFINED;
     }
   }
@@ -106,7 +106,7 @@ public class Destination {
         return Tag.ART;
       case "family":
         return Tag.FAMILY;
-      default: 
+      default:
         return Tag.UNDEFINED;
     }
   }
