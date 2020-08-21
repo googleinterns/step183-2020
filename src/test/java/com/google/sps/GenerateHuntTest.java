@@ -133,10 +133,10 @@ public final class GenerateHuntTest {
     HashSet<Destination.Obscurity> userDiff = new HashSet();
     userDiff.add(Destination.Obscurity.MEDIUM);
     // No tags
-    HashSet<Destination.Tag> tags = new HashSet();
+    HashSet<Destination.Tag> userTags = new HashSet();
     GenerateServlet generate = new GenerateServlet();
     
-    Set<Destination> actual = generate.filter(allDestinations, userPlaces, userDiff, tags);
+    Set<Destination> actual = generate.filter(allDestinations, userPlaces, userDiff, userTags);
 
     // Should return tea garden, fishermans wharf
     Set<Destination> expected = new HashSet();
@@ -154,10 +154,10 @@ public final class GenerateHuntTest {
     HashSet<Destination.Obscurity> userDiff = new HashSet();
     userDiff.add(Destination.Obscurity.EASY);
     // No tags
-    HashSet<Destination.Tag> tags = new HashSet();
+    HashSet<Destination.Tag> userTags = new HashSet();
     GenerateServlet generate = new GenerateServlet();
     
-    Set<Destination> actual = generate.filter(allDestinations, userPlaces, userDiff, tags);
+    Set<Destination> actual = generate.filter(allDestinations, userPlaces, userDiff, userTags);
 
     // Should return golden gate, coit tower, louvre, cathedral
     Set<Destination> expected = new HashSet();
@@ -171,35 +171,34 @@ public final class GenerateHuntTest {
   @Test
   /* All places and difficulties. */
   public void allFiltersAllowed() {
-      HashSet<String> userPlaces = new HashSet();
-      userPlaces.add("San Francisco");
-      userPlaces.add("Paris");
-      userPlaces.add("New York City");
-      HashSet<Destination.Obscurity> userDiff = new HashSet();
-      userDiff.add(Destination.Obscurity.EASY);
-      userDiff.add(Destination.Obscurity.MEDIUM);
-      userDiff.add(Destination.Obscurity.HARD);
-      // No tags
-      HashSet<Destination.Tag> tags = new HashSet();
-      GenerateServlet generate = new GenerateServlet();
+    HashSet<String> userPlaces = new HashSet();
+    userPlaces.add("San Francisco");
+    userPlaces.add("Paris");
+    userPlaces.add("New York City");
+    HashSet<Destination.Obscurity> userDiff = new HashSet();
+    userDiff.add(Destination.Obscurity.EASY);
+    userDiff.add(Destination.Obscurity.MEDIUM);
+    userDiff.add(Destination.Obscurity.HARD);
+    // No tags
+    HashSet<Destination.Tag> userTags = new HashSet();
+    GenerateServlet generate = new GenerateServlet();
       
-      Set<Destination> actual = generate.filter(allDestinations, userPlaces, userDiff, tags);
+    Set<Destination> actual = generate.filter(allDestinations, userPlaces, userDiff, userTags);
 
-      // Should return all Destinations
-      Set<Destination> expected = new HashSet();
-      expected.add(goldenGate);
-      expected.add(teaGarden);
-      expected.add(orpheumTheater);
-      expected.add(coitTower);
-      expected.add(fishermansWharf);
-      expected.add(louvre);
-      expected.add(eiffelTower);
-      expected.add(arcDeTriomphe);
-      expected.add(cathedral);
-      Assert.assertEquals(expected, actual);
-    }
+    // Should return all Destinations
+    Set<Destination> expected = new HashSet();
+    expected.add(goldenGate);
+    expected.add(teaGarden);
+    expected.add(orpheumTheater);
+    expected.add(coitTower);
+    expected.add(fishermansWharf);
+    expected.add(louvre);
+    expected.add(eiffelTower);
+    expected.add(arcDeTriomphe);
+    expected.add(cathedral);
+    Assert.assertEquals(expected, actual);
+  }
 
-  
   @Test
   /* SF, easy difficulty, and Tag Tourist. */
   public void sanFranciscoEasyTourist() {
@@ -312,6 +311,45 @@ public final class GenerateHuntTest {
     expected.add(orpheumTheater);
     expected.add(coitTower);
     expected.add(fishermansWharf);
+    Assert.assertEquals(expected, actual);
+  }
+
+  @Test 
+  /* Get 3 random destinations. */
+  public void threeDests() {
+    GenerateServlet generate = new GenerateServlet();
+    
+    Set<Destination> allDestinationsSet = new HashSet<Destination>(allDestinations);
+    Set<Destination> actualSet = generate.correctNumDests(allDestinationsSet, 3);
+
+    int actual = actualSet.size();
+    int expected = 3;
+    Assert.assertEquals(expected, actual);
+  }
+
+  @Test 
+  /* 5 random destinations. */
+  public void fiveDests() {
+    GenerateServlet generate = new GenerateServlet();
+    
+    Set<Destination> allDestinationsSet = new HashSet<Destination>(allDestinations);
+    Set<Destination> actualSet = generate.correctNumDests(allDestinationsSet, 5);
+
+    int actual = actualSet.size();
+    int expected = 5;
+    Assert.assertEquals(expected, actual);
+  }
+
+  @Test
+  /* 0 random destinations. */
+  public void noDests() {
+    GenerateServlet generate = new GenerateServlet();
+    
+    Set<Destination> allDestinationsSet = new HashSet<Destination>(allDestinations);
+    Set<Destination> actualSet = generate.correctNumDests(allDestinationsSet, 0);
+
+    int actual = actualSet.size();
+    int expected = 0;
     Assert.assertEquals(expected, actual);
   }
 }
