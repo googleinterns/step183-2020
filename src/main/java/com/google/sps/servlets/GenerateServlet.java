@@ -131,7 +131,7 @@ public class GenerateServlet extends HttpServlet {
                 destination ->
                     userPlaces.contains(destination.getCity())
                         && userDifficultyLevels.contains(destination.getDifficulty())
-                        && (userTags.isEmpty() || destination.isIntersectingTags(userTags)))
+                        && (userTags.isEmpty() || destination.hasAtLeastOneCommonTag(userTags)))
             .collect(Collectors.toSet());
     return filteredDestinations;
   }

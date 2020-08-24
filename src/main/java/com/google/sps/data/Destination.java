@@ -79,7 +79,6 @@ public class Destination {
   }
 
   public static Obscurity stringToObscurity(String difficulty) {
-    Obscurity level = Obscurity.UNDEFINED;
     switch (difficulty.toLowerCase()) {
       case "easy":
         return Obscurity.EASY;
@@ -111,7 +110,7 @@ public class Destination {
     }
   }
 
-  public Boolean isIntersectingTags(Set<Tag> userTags) {
+  public Boolean hasAtLeastOneCommonTag(Set<Tag> userTags) {
     Set<Tag> currTags = new HashSet<Tag>(this.getTags());
     currTags.retainAll(userTags);
 
