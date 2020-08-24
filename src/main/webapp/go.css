@@ -1,126 +1,97 @@
-body,
-html {
-  height: 100%;
-}
- 
 h1 {
   color: white;
   font-size: 80px;
 }
- 
+
+.title-block,
+.map-container,
+#submit-container,
+.hint-row,
+.text-block {
+  background-color: #5d5179;
+  border: 2px solid white;
+  border-radius: 12px;
+  margin: 20px auto;
+}
+
 .title-block {
-  background-color: #5d5179;
-  border: 2px solid white;
-  border-radius: 12px;
-  margin: 20px auto;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding: 0px 20px 0px;
   text-align: center;
 }
- 
+
 .map-container {
-  background-color: #5d5179;
-  border: 2px solid white;
-  border-radius: 12px;
-  margin: 20px auto;
-  padding-bottom: 30px;
-  padding-top: 30px;
-  padding-left: 30px;
-  padding-right: 30px;
+  padding: 30px;
   text-align: center;
 }
- 
+
 #submit-container {
-  background-color: #5d5179;
-  border: 2px solid white;
-  border-radius: 12px;
-  margin: 20px auto;
-  padding-bottom: 10px;
-  padding-top: 10px;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding: 10px;
   text-align: center;
 }
- 
+
+.hint-row {
+  padding: 10px;
+  width: 60%;
+}
+
+.hint-row p {
+  font-size: 20px;
+}
+
+.text-block {
+  text-align: center;
+  padding: 20px;
+  width: 60%;
+}
+
 .invisible {
   display: none;
 }
- 
+
 .content,
-.progress-container,
 .submit-block {
   display: flex;
   justify-content: center;
 }
- 
+
 button {
   font-size: 20px;
 }
- 
+
 p {
   font-size: 15px;
   color: white;
 }
- 
+
 .content {
   flex-direction: column;
 }
- 
+
 .submit-block {
   flex-direction: row;
-  margin-bottom: 20px;
   padding-top: 10px;
 }
- 
+
 .center-text {
   color: white;
   text-align: center;
 }
- 
+
 .button-row {
   display: inline-block;
 }
- 
+
 .riddle-row,
 .generate-row,
 .button-row {
   margin: 0 auto;
   position: relative;
 }
- 
+
 .generate-row p {
   font-size: 22px;
 }
- 
-.hint-row {
-  background-color: #5d5179;
-  border: 2px solid white;
-  border-radius: 12px;
-  margin: auto;
-  padding-left: 10px;
-  padding-right: 10px;
-  width: 60%;
-}
- 
-.hint-row p {
-  font-size: 20px;
-}
 
-.text-block {
-  background-color: #5d5179;
-  border: 2px solid white;
-  border-radius: 12px;
-  margin: auto;
-  text-align: center;
-  padding-top: 10px;
-  padding-bottom: 20px;
-  width: 60%;
-}
- 
-.position-block {
-  position: relative;
-}
- 
 .footer {
   bottom: 30px;
   left: 0;
@@ -128,24 +99,23 @@ p {
   text-align: center;
   width: 100%;
 }
- 
+
 #map-area {
   border: thin solid black;
   height: 500px;
   width: 500px;
 }
- 
+
 #progress-area {
   background-color: #dcccbb;
-  width: 90%;
 }
- 
+
 #progress-bar {
   background-color: #b80c09;
   height: 30px;
   width: 1%;
 }
- 
+
 #riddle-area p {
   font-size: 25px;
   font-weight: bold;
