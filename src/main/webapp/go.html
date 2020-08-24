@@ -33,15 +33,19 @@
       </div>
       <div class="center-text" id="response-area"></div>
       <div class="text-block">
-        <div class="center-block riddle-row" id="riddle-area"></div>
-        <div class="center-block button-row">
+        <div class="position-block">
+        <div class="riddle-row" id="riddle-area"></div>
+        <div class="button-row">
           <button class="button" id="start-button" type="button" onclick="startHunt()">Start Hunt</button>
-          <button class="button" id="hint-button" type="button" onclick="getHint()">Get a Hint</button>
+          <button class="button" id="hint-button" type="button" onclick="getHint()">Get Hint</button>
           <button class="button" id="proceed-button" type="button" onclick="proceed()">Proceed to Next Destination</button>
           <button class="button" id="clear-hint-button" type="button" onclick="deleteMessage(HINT_DISPLAY)">Clear Hints</button>
+          <button class="button" id="generate-button" type="button" onclick="displayNearbyPlace()">Destinations Nearby</button>
+        </div>
+        <div class="generate-row" id="generate-area"></div>
         </div>
       </div>
-      <div class="center-block hint-row" id="hint-area"></div>
+      <div class="hint-row" id="hint-area"></div>
       <div class="footer">
         <button class="button" type="button" onclick="exit()">Exit</button>
       </div>
