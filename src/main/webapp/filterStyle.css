@@ -5,7 +5,7 @@
 }
 
 .header {
-  background: #5D5179;
+  background: #5d5179;
   border: 1px solid white;
   border-radius: 15px;
   color: white;
@@ -87,11 +87,11 @@
 }
 
 .unclicked-filter {
-  background-color: #5D5179;
+  background-color: #5d5179;
 }
 
 .clicked-filter {
-  background-color: #571F4E;
+  background-color: #571f4e;
 }
 
 .go-button {
