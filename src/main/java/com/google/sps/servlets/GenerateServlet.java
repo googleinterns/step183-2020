@@ -22,8 +22,8 @@ import com.google.appengine.api.datastore.Query;
 import com.google.gson.Gson;
 import com.google.sps.data.Destination;
 import com.google.sps.data.HuntItem;
-import com.google.sps.data.ScavengerHunt;
 import com.google.sps.data.LatLng;
+import com.google.sps.data.ScavengerHunt;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -164,7 +164,7 @@ public class GenerateServlet extends HttpServlet {
       Double lng = location.getLng();
       sortDests.put(lng, destination);
     }
-    
+
     ArrayList<HuntItem> filteredHuntItems = new ArrayList();
     for (Destination destination : sortDests.values()) {
       HuntItem item = destination.convertToHuntItem();
