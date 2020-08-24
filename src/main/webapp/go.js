@@ -18,6 +18,7 @@ const START_BUTTON = 'start-button';
 const PROCEED_BUTTON = 'proceed-button';
 const CLEAR_BUTTON = 'clear-hint-button';
 const SUBMIT_BUTTON = 'submit-button';
+const GENERATE_BUTTON = 'generate-button';
 
 // URLs that data should be fetched from.
 const DATA_URL = '/go-data';
@@ -27,11 +28,14 @@ const HOME_URL = 'index.html';
 // Div IDs that text or a map should be inserted into.
 const HINT_DISPLAY = 'hint-area';
 const RIDDLE_DISPLAY = 'riddle-area';
+const RIDDLE_BOX = 'riddle-container';
 const SUBMIT_DISPLAY = 'response-area';
+const SUBMIT_BOX = 'submit-container';
 const MAP_DISPLAY = 'map-area';
 const MAP_MSSG_DISPLAY = 'map-message-area';
 const TIMER_DISPLAY = 'timer-area';
 const PROGRESS_DISPLAY = 'progress-bar';
+const GENERATE_DISPLAY = 'generate-area';
 
 // Input IDs or parameters.
 const GUESS_INPUT = 'guess-input';
@@ -45,6 +49,8 @@ const WRONG_MSSG = 'Wrong. Try again!';
 const EXIT_MSSG = 'Do you want to exit this scavenger hunt?' +
     ' If so, make sure to bookmark this URL so you can return' +
     ' to this page later.';
+const NO_PLACEID_MSSG = 'No destination found.';
+const NO_PLACE_INFO_MSSG = 'No information found for this location.';
 
 // Interval durations.
 const MAP_INTERVAL_MS = 10000; // ten seconds
@@ -130,6 +136,8 @@ function getHunt() {
     }
     hunt = new ScavengerHuntManager(destIndex, 0, huntArr);
     updateToCurrentState();
+    window.setInterval(updateGeolocation, MAP_INTERVAL_MS);
+    updateGeolocation();
   });
 }
 
@@ -159,8 +167,7 @@ function createMap() { // eslint-disable-line
       // Centered at GooglePlex (updated below).
       {center: {lat: 37.422, lng: -122.084}, zoom: 7},
   );
-  window.setInterval(updateGeolocation, MAP_INTERVAL_MS);
-  updateGeolocation();
+  service = new google.maps.places.PlacesService(map);
 }
 
 /**
@@ -169,11 +176,10 @@ function createMap() { // eslint-disable-line
 function updateGeolocation() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition((position) => {
-      const pos = {lat: position.coords.latitude,
-        lng: position.coords.longitude};
+      hunt.setPos(position.coords.latitude, position.coords.longitude);
       addMarkerToMap(position.coords.latitude, position.coords.longitude,
           'Your current location');
-      map.setCenter(pos);
+      map.setCenter(hunt.getPos());
     },
     () => updateMessage(MAP_MSSG_DISPLAY,
         'Error: I can\'t find your location.'));
@@ -214,6 +220,54 @@ function getHint() { //eslint-disable-line
 }
 
 /**
+ * Generates a place_id near the midpoint between the user's
+ * position and the destination.
+ * Disable lint check because displayNearbyPlace() is called from go.html.
+ */
+function displayNearbyPlace() { //eslint-disable-line
+  // Midpoint coordinates between the user's current position and
+  // the current destination.
+  const midpoint = new google.maps.LatLng(
+      (hunt.getCurDestLat() + hunt.getPos().lat) / 2,
+      (hunt.getCurDestLng() + hunt.getPos().lng) / 2);
+
+  const request = {
+    location: midpoint,
+    radius: '5000', // in meters
+    types: ['tourist_attraction'],
+  };
+
+  service.nearbySearch(request, function(results, status) {
+    if (status === google.maps.places.PlacesServiceStatus.OK &&
+        results.length > 0) {
+      displayPlaceInfo(results[0].place_id);
+    } else {
+      updateMessage(GENERATE_DISPLAY, NO_PLACEID_MSSG);
+    }
+  });
+}
+
+/**
+ * Finds and displays a name and photo for the specified destination.
+ * @param {int} id Place ID of the destination to be found.
+ */
+function displayPlaceInfo(id) {
+  const request = {
+    placeId: id,
+    fields: ['name', 'photo'],
+  };
+  service.getDetails(request, (place, status) => {
+    if (status == google.maps.places.PlacesServiceStatus.OK &&
+        place.photos.length > 0) {
+      updateMessage(GENERATE_DISPLAY, place.name);
+      updatePhoto(GENERATE_DISPLAY, place.photos[0]);
+    } else {
+      updateMessage(GENERATE_DISPLAY, NO_PLACE_INFO_MSSG);
+    }
+  });
+}
+
+/**
  * Provides the user with the next auto-generated hint.
  */
 function getAutoHint() {
@@ -235,11 +289,12 @@ function generatePlaceID() {
     query: hunt.getCurDestName(),
     fields: ['place_id'],
   };
-  service = new google.maps.places.PlacesService(map);
   service.findPlaceFromQuery(request, function(results, status) {
     if (status === google.maps.places.PlacesServiceStatus.OK) {
       hunt.setPlaceID(results[0].place_id);
       getNextAutoHint();
+    } else {
+      updateMessage(GENERATE_DISPLAY, NO_PLACEID_MSSG);
     }
   });
 }
@@ -278,8 +333,10 @@ function generatePhotos() {
   service.getDetails(photosRequest, (place, status) => {
     if (status == google.maps.places.PlacesServiceStatus.OK) {
       hunt.setPhotos(place.photos);
+      displayNextPhoto();
+    } else {
+      updateMessage(GENERATE_DISPLAY, NO_PLACE_INFO_MSSG);
     }
-    displayNextPhoto();
   });
 }
 
@@ -308,8 +365,10 @@ function generateReviews() {
   service.getDetails(reviewsRequest, (place, status) => {
     if (status == google.maps.places.PlacesServiceStatus.OK) {
       hunt.setReviews(place.reviews);
+      displayNextReview();
+    } else {
+      updateMessage(GENERATE_DISPLAY, NO_PLACE_INFO_MSSG);
     }
-    displayNextReview();
   });
 }
 
@@ -363,11 +422,9 @@ function handleDestinationAnswer() { //eslint-disable-line
       '&answer=' + hunt.getCurDestName();
   fetch(queryStr).then((response) => response.json()).then((correctGuess) => {
     if (correctGuess) {
-      toggleProceedButton(false);
-      toggleHintButton(true);
-      updateMessage(SUBMIT_DISPLAY, CORRECT_MSSG);
-      updateMessage(RIDDLE_DISPLAY, hunt.getCurDestName() + ': ' +
-          hunt.getCurDestDescription());
+      toggleProceedButton(/* hide = */ false);
+      hideHuntElements();
+      updateMessagesForCorrectGuess();
       addMarkerToMap(hunt.getCurDestLat(), hunt.getCurDestLng(),
           hunt.getCurDestName());
       clearTimeout(hintClock);
@@ -378,12 +435,27 @@ function handleDestinationAnswer() { //eslint-disable-line
 }
 
 /**
+ * Update the text display when the user correctly guesses
+ * the destination. Remove hints and photos from the page,
+ * and update the riddle to display information about the
+ * destination that was found.
+ */
+function updateMessagesForCorrectGuess() {
+  updateMessage(SUBMIT_DISPLAY, CORRECT_MSSG);
+  deleteMessage(GENERATE_DISPLAY);
+  deleteMessage(HINT_DISPLAY);
+  updateMessage(RIDDLE_DISPLAY, hunt.getCurDestName() + ': ' +
+      hunt.getCurDestDescription());
+}
+
+/**
  * The user presses the start button.
  * Disable lint check because startHunt() is called from go.html.
  */
 function startHunt() { //eslint-disable-line
   hunt.start();
   sendIndexToServlet(0);
+  document.getElementById(RIDDLE_BOX).classList.remove(INVISIBLE_CLASS);
   updateToCurrentState();
 }
 
@@ -392,11 +464,10 @@ function startHunt() { //eslint-disable-line
  */
 function updateToCurrentState() {
   if (hunt.hasNotStarted()) {
-    toggleHintButton(/* hide = */ true);
-    toggleSubmitForm(/* hide = */ true);
+    hideHuntElements();
+    document.getElementById(RIDDLE_BOX).classList.add(INVISIBLE_CLASS);
   } else { // The user has started the hunt, and needs to solve the riddle.
-    delayHintButton();
-    toggleSubmitForm(/* hide = */ false);
+    showElementsDuringHunt();
     hideStartButton();
     updateMessage(RIDDLE_DISPLAY, 'Riddle: ' + hunt.getCurDestPuzzle());
   }
@@ -406,6 +477,33 @@ function updateToCurrentState() {
     addMarkerToMap(hunt.getDest(i).lat, hunt.getDest(i).lng,
         hunt.getDest(i).name);
   }
+}
+
+/**
+ * While the user is not going on the hunt (i.e. before they click
+ * the start button, after they finish the hunt, after they correctly
+ * guess a destination), hide the hint button, text input bar, and the
+ * 'Nearby Destinations' button.
+ */
+function hideHuntElements() {
+  toggleHintButton(/* hide = */ true);
+  toggleSubmitForm(/* hide = */ true);
+  toggleGenerateButton(/* hide = */ true);
+  document.getElementById(HINT_DISPLAY).classList.add(INVISIBLE_CLASS);
+  document.getElementById(SUBMIT_BOX).classList.add(INVISIBLE_CLASS);
+}
+
+/**
+ * While the user is going on the hunt (i.e. after they click the start
+ * button and before they finish the hunt), show the hint button, text input
+ * bar, and 'Nearby Destinations' button.
+ */
+function showElementsDuringHunt() {
+  delayHintButton();
+  toggleSubmitForm(/* hide = */ false);
+  toggleGenerateButton(/* hide = */ false);
+  document.getElementById(HINT_DISPLAY).classList.remove(INVISIBLE_CLASS);
+  document.getElementById(SUBMIT_BOX).classList.remove(INVISIBLE_CLASS);
 }
 
 /**
@@ -422,6 +520,20 @@ function toggleSubmitForm(hide) {
   } else {
     guessBar.classList.remove(INVISIBLE_CLASS);
     guessButton.classList.remove(INVISIBLE_CLASS);
+  }
+}
+
+/**
+ * Show or hide the generate button that allows users to see
+ * a nearby destination (that isn't the one they're trying to find).
+ * @param {boolean} hide Whether the button should be hidden or shown.
+ */
+function toggleGenerateButton(hide) {
+  const generateButton = document.getElementById(GENERATE_BUTTON);
+  if (hide) {
+    generateButton.classList.add(INVISIBLE_CLASS);
+  } else {
+    generateButton.classList.remove(INVISIBLE_CLASS);
   }
 }
 
@@ -521,17 +633,24 @@ function proceed() { //eslint-disable-line
   sendIndexToServlet(hunt.getDestIndex());
   if (hunt.getDestIndex() < hunt.getNumItems()) {
     updateMessage(RIDDLE_DISPLAY, 'Riddle: ' + hunt.getCurDestPuzzle());
-    delayHintButton();
-    toggleSubmitForm(/* hide = */ false);
+    showElementsDuringHunt();
   } else {
     updateRiddleToFinalMessage();
-    toggleHintButton(/* hide = */ true);
-    toggleSubmitForm(/* hide = */ true);
+    hideHuntElements();
   }
+  resetForNextDestination();
+}
+
+/**
+ * Clear all text from display as the user proceeds to the
+ * next destination.
+ */
+function resetForNextDestination() {
   updateProgressBar();
   toggleProceedButton(/* hide = */ true);
   deleteMessage(SUBMIT_DISPLAY);
   deleteMessage(HINT_DISPLAY);
+  deleteMessage(GENERATE_DISPLAY);
   hunt.resetForNextDest();
 }
 

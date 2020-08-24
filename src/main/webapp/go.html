@@ -12,36 +12,41 @@
     <script src="config.js"></script>
     <script src="go.js"></script>
   </head>
-  <body>
-    <div class="content">
-      <div class="progress-container">
-        <div id="progress-area">
-          <div id="progress-bar"></div>
-        </div>
-      </div>
-      <div class="map-container">
-        <div id="map-area"></div>
-      </div>
+  <body class="background content">
+    <div class="title-block">
+      <h1>Go On a Scavenger Hunt</h1>
+    </div>
+    <div class="map-container">
+      <div id="map-area"></div>
       <div class="center-text" id="map-message-area"></div>
       <div class="center-text" id="timer-area"></div>
+      <div id="progress-area">
+        <div id="progress-bar"></div>
+      </div>
+    </div>
+    <div id="submit-container">
       <div class="submit-block">
-        <input type="text" name="guess-input" id="guess-input" size="50"/>
+        <input type="text" name="guess-input" id="guess-input" size="45"/>
         <button class="button" id="submit-button" type="button" onclick="handleDestinationAnswer()">Submit</button>
       </div>
       <div class="center-text" id="response-area"></div>
-      <div class="text-block">
-        <div class="center-block riddle-row" id="riddle-area"></div>
-        <div class="center-block button-row">
-          <button class="button" id="start-button" type="button" onclick="startHunt()">Start Hunt</button>
-          <button class="button" id="hint-button" type="button" onclick="getHint()">Get a Hint</button>
-          <button class="button" id="proceed-button" type="button" onclick="proceed()">Proceed to Next Destination</button>
-          <button class="button" id="clear-hint-button" type="button" onclick="deleteMessage(HINT_DISPLAY)">Clear Hints</button>
-        </div>
+    </div>
+    <div class="button-row">
+      <button class="button" id="start-button" type="button" onclick="startHunt()">Start Hunt</button>
+      <button class="button" id="hint-button" type="button" onclick="getHint()">Get Hint</button>
+      <button class="button" id="proceed-button" type="button" onclick="proceed()">Proceed to Next Destination</button>
+      <button class="button" id="clear-hint-button" type="button" onclick="deleteMessage(HINT_DISPLAY)">Clear Hints</button>
+    </div>
+    <div class="text-block" id="riddle-container">
+      <div class="riddle-row" id="riddle-area"></div>
+      <div class="button-row">
+        <button class="button" id="generate-button" type="button" onclick="displayNearbyPlace()">Destinations Nearby</button>
       </div>
-      <div class="center-block hint-row" id="hint-area"></div>
-      <div class="footer">
-        <button class="button" type="button" onclick="exit()">Exit</button>
-      </div>
+      <div class="generate-row" id="generate-area"></div>
+    </div>
+    <div class="hint-row" id="hint-area"></div>
+    <div class="footer">
+      <button class="button" type="button" onclick="exit()">Exit</button>
     </div>
   </body>
 </html>

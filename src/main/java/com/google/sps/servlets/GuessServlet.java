@@ -54,7 +54,7 @@ public class GuessServlet extends HttpServlet {
   }
 
   /** Extracts and returns entities from {@code word} using the Natural Language API. */
-  private ArrayList<String> findEntities(String word) throws IOException {
+  ArrayList<String> findEntities(String word) throws IOException {
     ArrayList<String> entities = new ArrayList<String>();
 
     LanguageServiceClient service = LanguageServiceClient.create();
