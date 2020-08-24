@@ -70,6 +70,10 @@ public class Destination {
     return this.location;
   }
 
+  public String getPlaceId() {
+    return this.placeId;
+  }
+
   /* Return one Riddle. TODO: Make this a random riddle. */
   public Riddle getRandomRiddle() {
     return riddles.get(0);

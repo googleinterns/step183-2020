@@ -17,11 +17,14 @@ package com.google.sps.servlets;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
 import com.google.gson.Gson;
 import com.google.sps.data.Destination;
 import com.google.sps.data.LatLng;
 import com.google.sps.data.Riddle;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -31,6 +34,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import static javax.swing.JOptionPane.showMessageDialog;
 
 /* Stores a destination in datastore */
 @WebServlet("/destination-data")
@@ -48,8 +52,12 @@ public class DestinationDataServlet extends HttpServlet {
   private static final String TAG_PARAMETER = "tag";
   private static final String PLACEID_PARAMETER = "placeId";
   private static final String HOME_URL = "/index.html";
+  private static final String ERROR_TITLE = "This destination already exists";
+  private static final String ERROR_MESSAGE = "Please try creating another destination";
 
   private static final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+  private static final Query QUERY = new Query(Constants.DESTINATION_ENTITY);
+  private static final PreparedQuery RESULTS = datastore.prepare(QUERY);
 
   private static final Gson GSON = new Gson();
 
@@ -59,6 +67,13 @@ public class DestinationDataServlet extends HttpServlet {
    */
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    String placeId = request.getParameter(PLACEID_PARAMETER);
+
+    ArrayList<Destination> destinations = getDestinationsFromDatastore();
+
+    if (searchForDuplicate(destinations, placeId)) {
+      infoBox(ERROR_MESSAGE, ERROR_TITLE);
+    }
     String name = request.getParameter(NAME_PARAMETER);
 
     LatLng location =
@@ -88,8 +103,6 @@ public class DestinationDataServlet extends HttpServlet {
             .filter(tag -> tag != null)
             .collect(Collectors.toList());
     Set<Destination.Tag> checkedTags = convertTagsToEnum(tags);
-
-    String placeId = request.getParameter(PLACEID_PARAMETER);
 
     Destination destination =
         new Destination.Builder()
@@ -152,5 +165,28 @@ public class DestinationDataServlet extends HttpServlet {
       default:
         return Destination.Obscurity.UNDEFINED;
     }
+  }
+
+  /* Query datastore for Destination objects, convert then to Destination class, store in ArrayList. */
+  public ArrayList<Destination> getDestinationsFromDatastore() {
+    ArrayList<Destination> allDestinations = new ArrayList();
+    for (Entity dest : RESULTS.asIterable()) {
+      Destination destination =
+          GSON.fromJson((String) dest.getProperty(Constants.DESTINATION_JSON), Destination.class);
+      allDestinations.add(destination);
+    }
+    return allDestinations;
+  }
+
+  /* Search for duplicate destinations based off of placeId*/
+  private boolean searchForDuplicate(ArrayList<Destination> destinations, String placeId) {
+    boolean found = false;
+    for (Destination destination : destinations) {
+      if (placeId.equals(destination.getPlaceId())) {
+        found = true;
+        return found;
+      }
+    }
+    return found;
   }
 }
