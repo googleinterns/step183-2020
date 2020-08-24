@@ -23,6 +23,22 @@ class ScavengerHuntManager { //eslint-disable-line
     this.placeID = -1;
     this.photos = [];
     this.reviews = [];
+    this.pos = {lat: 0, lng: 0};
+  }
+
+  /**
+   * @param {Double} curLat User's location (latitude)
+   * @param {Double} curLng User's location (longitude)
+   */
+  setPos(curLat, curLng) {
+    this.pos = {lat: curLat, lng: curLng};
+  }
+
+  /**
+   * @return {LatLng} User's current location
+   */
+  getPos() {
+    return this.pos;
   }
 
   /**

@@ -1,3 +1,8 @@
+body,
+html {
+  height: 100%;
+}
+
 .invisible {
   display: none;
 }
@@ -11,7 +16,7 @@
 }
 
 p {
-  font-size: 14px;
+  font-size: 15px;
 }
 
 .content {
@@ -20,6 +25,7 @@ p {
 
 .submit-block {
   flex-direction: row;
+  margin-bottom: 20px;
   padding-top: 10px;
 }
 
@@ -27,12 +33,19 @@ p {
   text-align: center;
 }
 
-.riddle-row {
-  top: 30%;
+.button-row {
+  display: inline-block;
 }
 
+.riddle-row,
+.generate-row,
 .button-row {
-  top: 50%;
+  margin: 0 auto;
+  position: relative;
+}
+
+.generate-row p {
+  font-size: 22px;
 }
 
 .hint-row {
@@ -71,22 +84,18 @@ button:hover a {
 }
 
 .text-block {
-  -ms-transform: translate(-50%, -50%);
   background-color: #b47eb3;
-  border-radius: 10px;
-  bottom: 10px;
-  height: 40%;
-  left: 50%;
-  margin-bottom: 0%;
-  margin-top: 20%;
-  padding-left: 100px;
-  padding-top: 300px;
-  position: relative;
-  transform: translate(-50%, -50%);
+  height: 600px;
+  margin: auto;
+  text-align: center;
   width: 70%;
 }
 
-.text-block .center-block {
+.position-block {
+  position: relative;
+}
+
+.text-block .hint-row {
   -ms-transform: translate(-50%, -50%);
   left: 50%;
   position: absolute;
