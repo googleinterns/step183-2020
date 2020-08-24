@@ -1,4 +1,5 @@
 package com.google.sps.data;
+
 import com.google.sps.servlets.GenerateServlet;
 import java.util.Arrays;
 import java.util.Collections;
@@ -96,7 +97,7 @@ public final class GenerateHuntTest {
 
   Destination cathedral =
       new Destination.Builder()
-          .withName("Cathedral")
+          .withName("Notre Dame Cathedral")
           .withCity("Paris")
           .withObscurity(Destination.Obscurity.EASY)
           .withTags(cathedralSet)
@@ -116,7 +117,6 @@ public final class GenerateHuntTest {
   List<Destination> allDestinations = Collections.unmodifiableList(arrayDest);
 
   @Test
-  /* Get all objects with San Francisco as the place, and all difficulties. */
   /* SF, all difficulties. */
   public void SanFrancisco() {
     HashSet<String> userPlaces = new HashSet();
@@ -129,10 +129,8 @@ public final class GenerateHuntTest {
     HashSet<Destination.Tag> userTags = new HashSet();
     GenerateServlet generate = new GenerateServlet();
 
-    Set<Destination> actual = generate.filter(allDestinations, userPlaces, userDiff);
     Set<Destination> actual = generate.filter(allDestinations, userPlaces, userDiff, userTags);
 
-    // Should return first 3 destinations
     // Should return golden gate, orpheum theater, tea garden, coit tower, fishermans wharf
     Set<Destination> expected = new HashSet();
     expected.add(goldenGate);
@@ -144,7 +142,6 @@ public final class GenerateHuntTest {
   }
 
   @Test
-  /* Get all objects with San Francisco as the place and medium difficulty. */
   /* SF, medium difficulty. */
   public void SanFranciscoMedium() {
     HashSet<String> userPlaces = new HashSet();
@@ -155,10 +152,8 @@ public final class GenerateHuntTest {
     HashSet<Destination.Tag> userTags = new HashSet();
     GenerateServlet generate = new GenerateServlet();
 
-    Set<Destination> actual = generate.filter(allDestinations, userPlaces, userDiff);
     Set<Destination> actual = generate.filter(allDestinations, userPlaces, userDiff, userTags);
 
-    // Should return only 2nd destination
     // Should return tea garden, fishermans wharf
     Set<Destination> expected = new HashSet();
     expected.add(teaGarden);
@@ -167,7 +162,6 @@ public final class GenerateHuntTest {
   }
 
   @Test
-  /* Get all objects in SF and Paris, that are easy difficulty. */
   /* SF and Paris, easy difficulty. */
   public void SanFranciscoParisEasy() {
     HashSet<String> userPlaces = new HashSet();
@@ -179,10 +173,8 @@ public final class GenerateHuntTest {
     HashSet<Destination.Tag> userTags = new HashSet();
     GenerateServlet generate = new GenerateServlet();
 
-    Set<Destination> actual = generate.filter(allDestinations, userPlaces, userDiff);
     Set<Destination> actual = generate.filter(allDestinations, userPlaces, userDiff, userTags);
 
-    // Should return objects 1 and 4
     // Should return golden gate, coit tower, louvre, cathedral
     Set<Destination> expected = new HashSet();
     expected.add(goldenGate);
@@ -193,12 +185,13 @@ public final class GenerateHuntTest {
   }
 
   @Test
-  /* Press all filters. */
   /* All places and difficulties. */
   public void allFiltersAllowed() {
     HashSet<String> userPlaces = new HashSet();
     userPlaces.add("San Francisco");
-@@ -127,18 +196,176 @@ public void allFiltersAllowed() {
+    userPlaces.add("Paris");
+    userPlaces.add("New York City");
+    HashSet<Destination.Obscurity> userDiff = new HashSet();
     userDiff.add(Destination.Obscurity.EASY);
     userDiff.add(Destination.Obscurity.MEDIUM);
     userDiff.add(Destination.Obscurity.HARD);
@@ -206,7 +199,6 @@ public final class GenerateHuntTest {
     HashSet<Destination.Tag> userTags = new HashSet();
     GenerateServlet generate = new GenerateServlet();
 
-    Set<Destination> actual = generate.filter(allDestinations, userPlaces, userDiff);
     Set<Destination> actual = generate.filter(allDestinations, userPlaces, userDiff, userTags);
 
     // Should return all Destinations
