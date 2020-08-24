@@ -3,6 +3,11 @@ h1 {
   font-size: 80px;
 }
 
+p {
+  font-size: 15px;
+  color: white;
+}
+
 .title-block,
 .map-container,
 #submit-container,
@@ -15,7 +20,7 @@ h1 {
 }
 
 .title-block {
-  padding: 0px 20px 0px;
+  padding: 0 20px 0;
   text-align: center;
 }
 
@@ -56,11 +61,6 @@ h1 {
 
 button {
   font-size: 20px;
-}
-
-p {
-  font-size: 15px;
-  color: white;
 }
 
 .content {
