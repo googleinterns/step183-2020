@@ -26,6 +26,8 @@ const MAP = 'map';
 // Class name constants
 const PLACE_CLASS = '.place';
 
+// URL Parameter for sending place id to check for duplicates
+const PLACE_ID_URL_PARAM = 'place-id';
 /*
  * Adds a Script for the places api to the head of the destinationCreation.html
  */
@@ -81,6 +83,7 @@ function searchForPlace() { // eslint-disable-line
 
 function fillInValues() { // eslint-disable-line
   const place = this.dataset.placeId;
+  searchForDuplicate(place);
   const lat = this.dataset.lat;
   const lng = this.dataset.lng;
   const nameField = document.getElementById(NAME_INPUT);
@@ -103,7 +106,6 @@ function fillInValues() { // eslint-disable-line
   });
 }
 
-
 /**
  * Removes all  place divs
  * @param {String} elemcls name of the class to be queried
@@ -113,4 +115,14 @@ function removeElements(elemcls) {
   for (let i = 0; i < element.length; i++) {
     element[i].remove();
   }
+}
+
+function searchForDuplicate(data) {
+  fetch('/duplicates?' + PLACE_ID_URL_PARAM + '=' + data, {method: 'POST'})
+    .then((response) => response.text())
+    .then((message) => {
+        if(message.trim() === 'duplicate'){
+          alert('This destination has already been created!');
+        }
+    });
 }
