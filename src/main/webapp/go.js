@@ -455,6 +455,7 @@ function updateMessagesForCorrectGuess() {
 function startHunt() { //eslint-disable-line
   hunt.start();
   sendIndexToServlet(0);
+  document.getElementById(RIDDLE_BOX).classList.remove(INVISIBLE_CLASS);
   updateToCurrentState();
 }
 
@@ -464,6 +465,7 @@ function startHunt() { //eslint-disable-line
 function updateToCurrentState() {
   if (hunt.hasNotStarted()) {
     hideHuntElements();
+    document.getElementById(RIDDLE_BOX).classList.add(INVISIBLE_CLASS);
   } else { // The user has started the hunt, and needs to solve the riddle.
     showElementsDuringHunt();
     hideStartButton();
@@ -487,7 +489,6 @@ function hideHuntElements() {
   toggleHintButton(/* hide = */ true);
   toggleSubmitForm(/* hide = */ true);
   toggleGenerateButton(/* hide = */ true);
-  document.getElementById(RIDDLE_BOX).classList.add(INVISIBLE_CLASS);
   document.getElementById(HINT_DISPLAY).classList.add(INVISIBLE_CLASS);
   document.getElementById(SUBMIT_BOX).classList.add(INVISIBLE_CLASS);
 }
@@ -501,7 +502,6 @@ function showElementsDuringHunt() {
   delayHintButton();
   toggleSubmitForm(/* hide = */ false);
   toggleGenerateButton(/* hide = */ false);
-  document.getElementById(RIDDLE_BOX).classList.remove(INVISIBLE_CLASS);
   document.getElementById(HINT_DISPLAY).classList.remove(INVISIBLE_CLASS);
   document.getElementById(SUBMIT_BOX).classList.remove(INVISIBLE_CLASS);
 }
