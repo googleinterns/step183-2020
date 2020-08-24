@@ -45,6 +45,7 @@ public class Destination {
   private ArrayList<Riddle> riddles = new ArrayList<>();
   private Obscurity level;
   private Set<Tag> categories = new HashSet<>();
+  private String placeId;
 
   private Destination() {}
 
@@ -137,6 +138,7 @@ public class Destination {
     private ArrayList<Riddle> riddles = new ArrayList<>();
     private Obscurity level;
     private Set<Tag> categories = new HashSet<>();
+    private String placeId;
 
     public Builder withName(String name) {
       this.name = name;
@@ -175,6 +177,11 @@ public class Destination {
       return this;
     }
 
+    public Builder withPlaceId(String placeId) {
+      this.placeId = placeId;
+      return this;
+    }
+
     public Destination build() {
       Destination destination = new Destination();
       destination.name = this.name;
@@ -184,6 +191,7 @@ public class Destination {
       destination.riddles.addAll(this.riddles);
       destination.categories.addAll(this.categories);
       destination.level = this.level;
+      destination.placeId = this.placeId;
 
       return destination;
     }
