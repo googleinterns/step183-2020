@@ -65,11 +65,14 @@ public class DuplicateServlet extends HttpServlet {
 
   /* Search for duplicate destinations based off of placeId*/
   private boolean searchForDuplicate(ArrayList<Destination> destinations, String placeId) {
+    return destinations.stream().anyMatch(dest -> placeId.equals(dest.getPlaceId()));
+    /*
     for (Destination destination : destinations) {
       if (placeId.equals(destination.getPlaceId())) {
         return true;
       }
     }
     return false;
+    */
   }
 }
