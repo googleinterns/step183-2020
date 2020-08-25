@@ -44,11 +44,10 @@ public class DuplicateServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String placeId = request.getParameter(PLACE_ID_URL_PARAMETER);
     ArrayList<Destination> destinations = getDestinationsFromDatastore();
-    if(searchForDuplicate(destinations, placeId)){
-      response.setContentType("text/html");
+    response.setContentType("text/html");
+    if (searchForDuplicate(destinations, placeId)) {
       response.getWriter().println(DUPLICATE);
     } else {
-      response.setContentType("text/html");
       response.getWriter().println(ORIGINAL);
     }
   }
