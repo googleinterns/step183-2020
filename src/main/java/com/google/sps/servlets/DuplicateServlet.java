@@ -41,7 +41,7 @@ public class DuplicateServlet extends HttpServlet {
 
   private static final Gson GSON = new Gson();
 
-  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String placeId = request.getParameter(PLACE_ID_URL_PARAMETER);
     ArrayList<Destination> destinations = getDestinationsFromDatastore();
     response.setContentType("text/html");
@@ -53,7 +53,7 @@ public class DuplicateServlet extends HttpServlet {
   }
 
   /* Query datastore for Destination objects, convert then to Destination class, store in ArrayList. */
-  public ArrayList<Destination> getDestinationsFromDatastore() {
+  private ArrayList<Destination> getDestinationsFromDatastore() {
     ArrayList<Destination> allDestinations = new ArrayList();
     for (Entity dest : RESULTS.asIterable()) {
       Destination destination =

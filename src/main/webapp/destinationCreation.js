@@ -119,10 +119,11 @@ function removeElements(elemcls) {
 
 /**
  * Fetch the data from /duplicates servlet
+ * if yes, alert the user that they are creating a duplicate destination
  * @param {String} data placeId to be checked if it is already in datastore
  */
 function searchForDuplicate(data) {
-  fetch('/duplicates?' + PLACE_ID_URL_PARAM + '=' + data, {method: 'POST'})
+  fetch('/duplicates?' + PLACE_ID_URL_PARAM + '=' + data)
       .then((response) => response.text())
       .then((message) => {
         if (message.trim() === 'duplicate') {
