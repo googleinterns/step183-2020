@@ -48,8 +48,6 @@ public class DestinationDataServlet extends HttpServlet {
   private static final String TAG_PARAMETER = "tag";
   private static final String PLACEID_PARAMETER = "placeId";
   private static final String HOME_URL = "/index.html";
-  private static final String ERROR_TITLE = "This destination already exists";
-  private static final String ERROR_MESSAGE = "Please try creating another destination";
 
   private static final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
