@@ -1,6 +1,6 @@
 h1 {
   color: white;
-  font-size: 80px;
+  font-size: 60px;
 }
 
 p {
@@ -70,6 +70,8 @@ button {
 .submit-block {
   flex-direction: row;
   padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
 }
 
 .center-text {
