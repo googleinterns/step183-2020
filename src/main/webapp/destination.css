@@ -20,3 +20,11 @@
   height: 300px;
   width: 800px;
 }
+
+.content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+  text-align: center;
+}
