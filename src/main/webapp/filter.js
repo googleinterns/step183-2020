@@ -4,6 +4,7 @@ const CLICKED = 'clicked-filter';
 const PLACE_ARRAY_URL_PARAM = 'user-places';
 const DIFF_ARRAY_URL_PARAM = 'user-diff';
 const NUM_STOPS_URL_PARAM = 'user-num-stops';
+const TAG_URL_PARAM = 'user-tags';
 
 /**
 * Swap between "clicked" and "unclicked" classes
@@ -58,12 +59,24 @@ function sendClickedFiltersToServer() { //eslint-disable-line
 
   // Get clicked num stops
   numStops = document.getElementById('num-stops').value;
+  if (numStops === '') {
+    window.alert('Please enter a number of stops.');
+  }
 
-  // TODO: Get clicked tags
+  // Get clicked tags
+  let clickedTags = [];
+  if (document.getElementsByClassName('tag').length > 0) {
+    const tagContainer = document.getElementsByClassName('tag')[0];
+    clickedTags =
+      Array.from(tagContainer.getElementsByClassName(CLICKED))
+          .map((element) => element.innerText);
+  }
+  const jsonTagArray = JSON.stringify(clickedTags);
 
   fetch('/generate-hunt?' + PLACE_ARRAY_URL_PARAM + '=' + jsonPlaceArray + '&' +
     DIFF_ARRAY_URL_PARAM + '=' + jsonDiffArray + '&' +
-    NUM_STOPS_URL_PARAM + '=' + numStops,
+    NUM_STOPS_URL_PARAM + '=' + numStops + '&' +
+    TAG_URL_PARAM + '=' + jsonTagArray,
   {method: 'POST'}).then((response) => response.text())
       .then((message) => {
         // If success, redirect to scavenger hunt with ID

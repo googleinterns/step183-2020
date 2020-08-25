@@ -79,20 +79,47 @@ public class Destination {
     return riddles.get(0);
   }
 
+  public Set<Tag> getTags() {
+    return categories;
+  }
+
   public static Obscurity stringToObscurity(String difficulty) {
-    Obscurity level = Obscurity.UNDEFINED;
     switch (difficulty.toLowerCase()) {
       case "easy":
-        level = Obscurity.EASY;
-        break;
+        return Obscurity.EASY;
       case "medium":
-        level = Obscurity.MEDIUM;
-        break;
+        return Obscurity.MEDIUM;
       case "hard":
-        level = Obscurity.HARD;
-        break;
+        return Obscurity.HARD;
+      default:
+        return Obscurity.UNDEFINED;
     }
-    return level;
+  }
+
+  public static Tag stringToTag(String stringTag) {
+    switch (stringTag.toLowerCase()) {
+      case "food":
+        return Tag.FOOD;
+      case "tourist":
+        return Tag.TOURIST;
+      case "sport":
+        return Tag.SPORT;
+      case "historical":
+        return Tag.HISTORICAL;
+      case "art":
+        return Tag.ART;
+      case "family":
+        return Tag.FAMILY;
+      default:
+        return Tag.UNDEFINED;
+    }
+  }
+
+  public Boolean hasAtLeastOneCommonTag(Set<Tag> userTags) {
+    Set<Tag> currTags = new HashSet<Tag>(this.getTags());
+    currTags.retainAll(userTags);
+
+    return !currTags.isEmpty();
   }
 
   public HuntItem convertToHuntItem() {
