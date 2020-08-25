@@ -123,10 +123,10 @@ function removeElements(elemcls) {
  */
 function searchForDuplicate(data) {
   fetch('/duplicates?' + PLACE_ID_URL_PARAM + '=' + data, {method: 'POST'})
-    .then((response) => response.text())
-    .then((message) => {
-        if(message.trim() === 'duplicate'){
+      .then((response) => response.text())
+      .then((message) => {
+        if (message.trim() === 'duplicate') {
           alert('This destination has already been created!');
         }
-    });
+      });
 }
