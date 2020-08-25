@@ -60,6 +60,7 @@ const TIMER_INTERVAL_MS = 1000; // eslint-disable-line
 
 // Other constants.
 const INVISIBLE_CLASS = 'invisible';
+const LOADER = 'submit-loader';
 
 // Global variables.
 let hunt;
@@ -408,28 +409,47 @@ function updatePhoto(display, photo) {
 /**
  * Determines whether the user entered the correct destination, and
  * adjusts the display accordingly.
- * Disable lint check because handleDestinationAnswer() is called
+ * Disable lint check because checkUserDestinationGuess() is called
  * from go.html.
  */
-function handleDestinationAnswer() { //eslint-disable-line
+function checkUserDestinationGuess() { //eslint-disable-line
   if (hunt.hasNotStarted()) { // User has not yet started the hunt.
     return;
   }
   const userGuess = document.getElementById(GUESS_INPUT).value;
+  
+  // Check to see if userGuess is an exact match (ignoring case)
+  if (userGuess.toLowerCase() === hunt.getCurDestName().toLowerCase()) {
+    handleDestinationAnswer(/* correct = */ true);
+    return;
+  }
+
+  // If userGuess is not an exact match, perform entity extraction.
   const queryStr = GUESS_URL + '?' + GUESS_INPUT + '=' + userGuess +
       '&answer=' + hunt.getCurDestName();
+  toggleLoader(/* hide = */ false);
   fetch(queryStr).then((response) => response.json()).then((correctGuess) => {
-    if (correctGuess) {
-      toggleProceedButton(/* hide = */ false);
-      hideHuntElements();
-      updateMessagesForCorrectGuess();
-      addMarkerToMap(hunt.getCurDestLat(), hunt.getCurDestLng(),
-          hunt.getCurDestName());
-      clearTimeout(hintClock);
-    } else {
-      updateMessage(SUBMIT_DISPLAY, WRONG_MSSG);
-    }
+    toggleLoader(/* hide = */ true);
+    handleDestinationAnswer(correctGuess);
   });
+}
+
+/**
+ * Update the DOM according to whether the user's guess is correct
+ * or incorrect.
+ * @param {boolean} correct Whether the user's guess is correct.
+ */
+function handleDestinationAnswer(correct) {
+  if (correct) {
+    toggleProceedButton(/* hide = */ false);
+    hideHuntElements();
+    updateMessagesForCorrectGuess();
+    addMarkerToMap(hunt.getCurDestLat(), hunt.getCurDestLng(),
+      hunt.getCurDestName());
+    clearTimeout(hintClock);
+  } else {
+    updateMessage(SUBMIT_DISPLAY, WRONG_MSSG);
+  }
 }
 
 /**
@@ -462,6 +482,7 @@ function startHunt() { //eslint-disable-line
 function updateToCurrentState() {
   if (hunt.hasNotStarted()) {
     hideHuntElements();
+    toggleLoader(/* hide = */ true);
   } else { // The user has started the hunt, and needs to solve the riddle.
     showElementsDuringHunt();
     hideStartButton();
@@ -472,6 +493,20 @@ function updateToCurrentState() {
   for (let i = 0; i < hunt.getDestIndex(); i++) {
     addMarkerToMap(hunt.getDest(i).lat, hunt.getDest(i).lng,
         hunt.getDest(i).name);
+  }
+}
+
+/**
+ * Show or hide the loader, which shows that the user's guess of the
+ * destination name is currently being checked for correctness.
+ * @param {boolean} hide Whether the loader should be hidden or shown.
+ */
+function toggleLoader(hide) {
+  const loader = document.getElementById(LOADER);
+  if (hide) {
+    loader.classList.add(INVISIBLE_CLASS);
+  } else {
+    loader.classList.remove(INVISIBLE_CLASS);
   }
 }
 

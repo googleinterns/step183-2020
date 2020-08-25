@@ -131,3 +131,22 @@ button:hover a {
   font-size: 22px;
   font-weight: bold;
 }
+
+#submit-loader {
+  animation: spin 2s linear infinite;
+  border: 10px solid #dcccbb;
+  border-radius: 50%;
+  border-top: 10px solid #b80c09;
+  height: 15px;
+  margin: auto 10px;
+  width: 15px;
+}
+
+@keyframes spin {
+  0% { 
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
