@@ -417,7 +417,7 @@ function checkUserDestinationGuess() { //eslint-disable-line
     return;
   }
   const userGuess = document.getElementById(GUESS_INPUT).value;
-  
+
   // Check to see if userGuess is an exact match (ignoring case)
   if (userGuess.toLowerCase() === hunt.getCurDestName().toLowerCase()) {
     handleDestinationAnswer(/* correct = */ true);
@@ -445,7 +445,7 @@ function handleDestinationAnswer(correct) {
     hideHuntElements();
     updateMessagesForCorrectGuess();
     addMarkerToMap(hunt.getCurDestLat(), hunt.getCurDestLng(),
-      hunt.getCurDestName());
+        hunt.getCurDestName());
     clearTimeout(hintClock);
   } else {
     updateMessage(SUBMIT_DISPLAY, WRONG_MSSG);
