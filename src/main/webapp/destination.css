@@ -33,6 +33,7 @@ label {
   border: 2px solid white;
   border-radius: 12px;
   margin: 20px auto;
+  color: white;
 }
 
 #search-results {
