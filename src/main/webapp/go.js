@@ -68,10 +68,12 @@ let hintClock;
 let huntID;
 let service;
 
+/*
 window.onload = function() {
   addScriptToHead();
   getHunt();
 };
+*/
 
 /**
  * Updates the timer with the total number of seconds, minutes,
@@ -90,19 +92,23 @@ function updateTimer() { // eslint-disable-line
       standardizeTime(minutes) + ':' + standardizeTime(seconds);
 }
 
+let convert = {};
+
 /**
  * Standardize timer display by ensuring that {@code num} is an
  * integer and is two digits long.
  * @param {int} num Number to be standardized.
  * @return {String} standardized number.
  */
-function standardizeTime(num) {
+convert.standardizeTime = function standardizeTime(num) {
   if (num < 10) {
     return '0' + Math.floor(num);
   } else {
     return Math.floor(num);
   }
 }
+
+module.exports = convert;
 
 /**
  * Add the Map API key to the head.
