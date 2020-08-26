@@ -21,7 +21,7 @@ const PLACE_INPUT = 'place-input';
 
 // DIV IDs that retrieve information from the DOM
 const SEARCH = 'search';
-const MAP = 'map';
+const MAP = 'map-area';
 
 // Class name constants
 const PLACE_CLASS = '.place';

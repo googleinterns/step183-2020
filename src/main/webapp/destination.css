@@ -1,9 +1,6 @@
-.required {
-  color: red;
-}
-
 .required::after {
   content: "*";
+  color: red;
 }
 
 .place {
@@ -12,13 +9,8 @@
   padding-bottom: 5px;
   border-style: solid;
   border-width: 2px;
-  border-color: grey;
+  border-color: white;
   width: 200px;
-}
-
-#map {
-  height: 300px;
-  width: 800px;
 }
 
 .content {
@@ -27,4 +19,90 @@
   height: 100%;
   justify-content: center;
   text-align: center;
+}
+
+.form-box {
+  margin-right: 250px;
+  margin-left: 250px;
+  background-color: #5d5179;
+  flex-grow: 1;
+  overflow: auto;
+  border: 2px solid white;
+  border-radius: 12px;
+  margin: 20px auto;
+}
+
+#search-results {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.map-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#map-area {
+  height: 300px;
+  width: 800px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#desc-input {
+  width: 400px;
+  margin-top: 5px;
+}
+
+#name-input {
+  margin-top: 5px;
+}
+
+#hint1-input {
+  margin-top: 5px;
+  width: 299px;
+}
+
+#hint2-input {
+  margin-top: 5px;
+  width: 300px;
+}
+
+#hint3-input {
+  margin-top: 5px;
+  width: 300px;
+  margin-bottom: 5px;
+}
+
+#riddle-input {
+  margin-top: 5px;
+  width: 300px;
+}
+
+#submit {
+  margin-top: 15px;
+  margin-bottom: 10px;
+}
+
+#city-input {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+#lat-input {
+  margin-bottom: 5px;
+  width: 100px;
+  margin-top: 5px;
+}
+
+#lng-input {
+  margin-bottom: 5px;
+  width: 100px;
+  margin-top: 5px;
 }
