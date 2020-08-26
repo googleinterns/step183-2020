@@ -5,8 +5,7 @@
 
 .place {
   cursor: pointer;
-  padding-top: 5px;
-  padding-bottom: 5px;
+  margin-bottom: 5px;
   border-style: solid;
   border-width: 2px;
   border-color: white;
@@ -22,8 +21,6 @@
 }
 
 .form-box {
-  margin-right: 250px;
-  margin-left: 250px;
   background-color: #5d5179;
   flex-grow: 1;
   overflow: auto;
