@@ -36,7 +36,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Servlet that returns bucket list content */
 @WebServlet("/generate-hunt")
 public class GenerateServlet extends HttpServlet {
 

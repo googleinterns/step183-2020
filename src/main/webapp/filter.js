@@ -5,6 +5,36 @@ const PLACE_ARRAY_URL_PARAM = 'user-places';
 const DIFF_ARRAY_URL_PARAM = 'user-diff';
 const NUM_STOPS_URL_PARAM = 'user-num-stops';
 const TAG_URL_PARAM = 'user-tags';
+const CITY_CONTAINER = 'city-container';
+
+/**
+Onload function.
+**/
+function start() {
+  getCities();
+  turnBlueWhenClicked();
+}
+
+/**
+* Get the list of cities from Destinations in Datastore.  
+ **/
+function getCities() {
+  fetch('/get-cities').then((response) => response.text())
+      .then((message) => {
+      console.log(message);
+      let cities = JSON.parse(message);
+
+      // Create divs 
+      for (let i = 0; i < cities.length; i++) {
+        div = document.createElement('div');
+        div.innerText = cities[i];
+        div.classList.add('filter');
+        div.classList.add(UNCLICKED);
+        div.onclick = turnBlueWhenClicked;
+        document.getElementById(CITY_CONTAINER).appendChild(div);
+      }
+  });
+}
 
 /**
 * Swap between "clicked" and "unclicked" classes
