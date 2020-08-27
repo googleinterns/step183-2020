@@ -156,7 +156,7 @@ public class GenerateServlet extends HttpServlet {
     return newFilteredDests;
   }
 
-  /* Convert all Destinations in set to Hunt Items, and organize by Latitude. */
+  /* Convert all Destinations in set to Hunt Items, and organize by Longitude. */
   public ArrayList<HuntItem> convertToHuntItems(Set<Destination> filteredDestinations) {
     TreeMap<Double, Destination> sortDests = new TreeMap<Double, Destination>();
     for (Destination destination : filteredDestinations) {
