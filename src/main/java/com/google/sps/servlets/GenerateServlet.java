@@ -22,6 +22,7 @@ import com.google.appengine.api.datastore.Query;
 import com.google.gson.Gson;
 import com.google.sps.data.Destination;
 import com.google.sps.data.HuntItem;
+import com.google.sps.data.LatLng;
 import com.google.sps.data.ScavengerHunt;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -154,10 +156,17 @@ public class GenerateServlet extends HttpServlet {
     return newFilteredDests;
   }
 
-  /* Convert all Destinations in set to Hunt Items. */
-  public ArrayList<HuntItem> convertToHuntItems(Set<Destination> allDestinations) {
+  /* Convert all Destinations in set to Hunt Items, and organize by Longitude. */
+  public ArrayList<HuntItem> convertToHuntItems(Set<Destination> filteredDestinations) {
+    TreeMap<Double, Destination> sortDests = new TreeMap<Double, Destination>();
+    for (Destination destination : filteredDestinations) {
+      LatLng location = destination.getLocation();
+      Double lng = location.getLng();
+      sortDests.put(lng, destination);
+    }
+
     ArrayList<HuntItem> filteredHuntItems = new ArrayList();
-    for (Destination destination : allDestinations) {
+    for (Destination destination : sortDests.values()) {
       HuntItem item = destination.convertToHuntItem();
       filteredHuntItems.add(item);
     }
