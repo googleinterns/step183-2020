@@ -21,7 +21,6 @@ function start() {
 function getCities() {
   fetch('/get-cities').then((response) => response.text())
       .then((message) => {
-      console.log(message);
       let cities = JSON.parse(message);
 
       // Create divs 
@@ -30,9 +29,9 @@ function getCities() {
         div.innerText = cities[i];
         div.classList.add('filter');
         div.classList.add(UNCLICKED);
-        div.onclick = turnBlueWhenClicked;
         document.getElementById(CITY_CONTAINER).appendChild(div);
       }
+      turnBlueWhenClicked();
   });
 }
 
