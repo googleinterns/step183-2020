@@ -1,6 +1,52 @@
-body,
-html {
-  height: 100%;
+h1 {
+  color: white;
+  font-size: 60px;
+}
+
+p {
+  font-size: 15px;
+  color: white;
+}
+
+.title-block,
+.map-container,
+#submit-container,
+.hint-row,
+.text-block {
+  background-color: #5d5179;
+  border: 2px solid white;
+  border-radius: 12px;
+  margin: 20px auto;
+}
+
+.title-block {
+  padding: 0 20px 0;
+  text-align: center;
+}
+
+.map-container {
+  padding: 30px;
+  text-align: center;
+}
+
+#submit-container {
+  padding: 10px;
+  text-align: center;
+}
+
+.hint-row {
+  padding: 10px;
+  width: 60%;
+}
+
+.hint-row p {
+  font-size: 20px;
+}
+
+.text-block {
+  text-align: center;
+  padding: 20px;
+  width: 60%;
 }
 
 .invisible {
@@ -8,15 +54,13 @@ html {
 }
 
 .content,
-.map-container,
-.progress-container,
 .submit-block {
   display: flex;
   justify-content: center;
 }
 
-p {
-  font-size: 15px;
+button {
+  font-size: 20px;
 }
 
 .content {
@@ -25,11 +69,11 @@ p {
 
 .submit-block {
   flex-direction: row;
-  margin-bottom: 20px;
-  padding-top: 10px;
+  padding: 10px 0 10px 20px;
 }
 
 .center-text {
+  color: white;
   text-align: center;
 }
 
@@ -48,60 +92,6 @@ p {
   font-size: 22px;
 }
 
-.hint-row {
-  border: 1px solid black;
-  margin: 10%;
-  padding-left: 10px;
-  padding-right: 10px;
-}
-
-button,
-#submit-button {
-  background-color: #e1f0c4;
-  border: 2px solid #413c58;
-  border-radius: 12px;
-  cursor: pointer;
-  font-size: 16px;
-  margin: 4px 2px;
-  padding: 16px 32px;
-  text-align: center;
-  transition-duration: 0.4s;
-}
-
-button:hover,
-#submit-button:hover {
-  background-color: #413c58;
-  color: white;
-}
-
-a {
-  color: #413c58;
-  text-decoration: none;
-}
-
-button:hover a {
-  color: white;
-}
-
-.text-block {
-  background-color: #b47eb3;
-  height: 600px;
-  margin: auto;
-  text-align: center;
-  width: 70%;
-}
-
-.position-block {
-  position: relative;
-}
-
-.text-block .hint-row {
-  -ms-transform: translate(-50%, -50%);
-  left: 50%;
-  position: absolute;
-  transform: translate(-50%, -50%);
-}
-
 .footer {
   bottom: 30px;
   left: 0;
@@ -113,21 +103,35 @@ button:hover a {
 #map-area {
   border: thin solid black;
   height: 500px;
-  width: 70%;
+  width: 500px;
 }
 
 #progress-area {
-  background-color: grey;
-  width: 70%;
+  background-color: #dcccbb;
 }
 
 #progress-bar {
-  background-color: #e1f0c4;
+  background-color: #b80c09;
   height: 30px;
   width: 1%;
 }
 
 #riddle-area p {
-  font-size: 22px;
+  font-size: 25px;
   font-weight: bold;
+}
+
+#submit-loader {
+  animation: spin 2s linear infinite;
+  border: 10px solid #dcccbb;
+  border-radius: 50%;
+  border-top: 10px solid #b80c09;
+  height: 15px;
+  margin: auto 10px;
+  width: 15px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }

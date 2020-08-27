@@ -1,0 +1,52 @@
+p {
+  font-size: 20px;
+}
+
+h1 {
+  color: white;
+  font-size: 80px;
+}
+
+.button {
+  border: 2px solid white;
+}
+
+.button-row {
+  display: inline-block;
+  margin: 20px auto;
+  position: relative;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+  text-align: center;
+}
+
+.title-block,
+.description-block {
+  background-color: #5d5179;
+  border: 2px solid white;
+  border-radius: 12px;
+  margin: 20px auto;
+}
+
+.title-block {
+  padding-left: 20px;
+  padding-right: 20px;
+  text-align: center;
+}
+
+.description-block {
+  width: 70%;
+  padding: 3%;
+  line-height: 1.6;
+  text-align: left;
+}
+
+.description-block p {
+  color: white;
+  font-size: 200%;
+}

@@ -59,6 +59,8 @@ public class DestinationDataServlet extends HttpServlet {
    */
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    String placeId = request.getParameter(PLACEID_PARAMETER);
+
     String name = request.getParameter(NAME_PARAMETER);
 
     LatLng location =
@@ -88,8 +90,6 @@ public class DestinationDataServlet extends HttpServlet {
             .filter(tag -> tag != null)
             .collect(Collectors.toList());
     Set<Destination.Tag> checkedTags = convertTagsToEnum(tags);
-
-    String placeId = request.getParameter(PLACEID_PARAMETER);
 
     Destination destination =
         new Destination.Builder()
