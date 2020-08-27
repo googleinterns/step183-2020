@@ -482,13 +482,13 @@ function startHunt() { //eslint-disable-line
 function updateToCurrentState() {
   if (hunt.hasNotStarted()) {
     hideHuntElements();
-    toggleLoader(/* hide = */ true);
   } else { // The user has started the hunt, and needs to solve the riddle.
     showElementsDuringHunt();
     hideStartButton();
     updateMessage(RIDDLE_DISPLAY, 'Riddle: ' + hunt.getCurDestPuzzle());
   }
   toggleProceedButton(/* hide = */ true);
+  toggleLoader(/* hide = */ true);
   // Add all found destinations to the map as markers.
   for (let i = 0; i < hunt.getDestIndex(); i++) {
     addMarkerToMap(hunt.getDest(i).lat, hunt.getDest(i).lng,
