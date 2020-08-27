@@ -28,7 +28,9 @@ const HOME_URL = 'index.html';
 // Div IDs that text or a map should be inserted into.
 const HINT_DISPLAY = 'hint-area';
 const RIDDLE_DISPLAY = 'riddle-area';
+const RIDDLE_BOX = 'riddle-container';
 const SUBMIT_DISPLAY = 'response-area';
+const SUBMIT_BOX = 'submit-container';
 const MAP_DISPLAY = 'map-area';
 const MAP_MSSG_DISPLAY = 'map-message-area';
 const TIMER_DISPLAY = 'timer-area';
@@ -473,6 +475,7 @@ function updateMessagesForCorrectGuess() {
 function startHunt() { //eslint-disable-line
   hunt.start();
   sendIndexToServlet(0);
+  document.getElementById(RIDDLE_BOX).classList.remove(INVISIBLE_CLASS);
   updateToCurrentState();
 }
 
@@ -482,6 +485,7 @@ function startHunt() { //eslint-disable-line
 function updateToCurrentState() {
   if (hunt.hasNotStarted()) {
     hideHuntElements();
+    document.getElementById(RIDDLE_BOX).classList.add(INVISIBLE_CLASS);
   } else { // The user has started the hunt, and needs to solve the riddle.
     showElementsDuringHunt();
     hideStartButton();
@@ -520,6 +524,8 @@ function hideHuntElements() {
   toggleHintButton(/* hide = */ true);
   toggleSubmitForm(/* hide = */ true);
   toggleGenerateButton(/* hide = */ true);
+  document.getElementById(HINT_DISPLAY).classList.add(INVISIBLE_CLASS);
+  document.getElementById(SUBMIT_BOX).classList.add(INVISIBLE_CLASS);
 }
 
 /**
@@ -531,6 +537,8 @@ function showElementsDuringHunt() {
   delayHintButton();
   toggleSubmitForm(/* hide = */ false);
   toggleGenerateButton(/* hide = */ false);
+  document.getElementById(HINT_DISPLAY).classList.remove(INVISIBLE_CLASS);
+  document.getElementById(SUBMIT_BOX).classList.remove(INVISIBLE_CLASS);
 }
 
 /**
