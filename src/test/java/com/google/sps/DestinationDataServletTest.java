@@ -14,25 +14,18 @@ import com.google.sps.data.LatLng;
 import com.google.sps.data.Riddle;
 import com.google.sps.servlets.Constants;
 import com.google.sps.servlets.DestinationDataServlet;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.verify;
-import org.mockito.ArgumentCaptor;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.junit.Assert;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 @RunWith(JUnit4.class)
@@ -57,8 +50,7 @@ public final class DestinationDataServletTest {
   private DestinationDataServlet servlet;
   private static final Gson GSON = new Gson();
 
-  private final LocalServiceTestHelper helper = 
-      new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
+  private final LocalServiceTestHelper helper = new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
 
   @Before
   public void setUp() throws IOException {
@@ -67,7 +59,7 @@ public final class DestinationDataServletTest {
   }
 
   @After
-  public void tearDown(){
+  public void tearDown() {
     helper.tearDown();
   }
 
@@ -75,11 +67,7 @@ public final class DestinationDataServletTest {
   public void storeInDatastore() throws IOException {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
-    LatLng location =
-        new LatLng.Builder()
-            .withLat(123.456)
-            .withLng(234.567)
-            .build();
+    LatLng location = new LatLng.Builder().withLat(123.456).withLng(234.567).build();
 
     Riddle riddle =
         new Riddle.Builder()
@@ -110,6 +98,7 @@ public final class DestinationDataServletTest {
     destinationEntity.setProperty(Constants.DESTINATION_JSON, expected);
     datastore.put(destinationEntity);
 
-    Assert.assertEquals(1, datastore.prepare(new Query(Constants.DESTINATION_ENTITY)).countEntities(withLimit(10)));
+    Assert.assertEquals(
+        1, datastore.prepare(new Query(Constants.DESTINATION_ENTITY)).countEntities(withLimit(10)));
   }
 }
