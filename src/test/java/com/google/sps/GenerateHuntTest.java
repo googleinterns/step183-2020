@@ -6,9 +6,9 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.google.gson.Gson;
+import com.google.sps.servlets.Constants;
 import com.google.sps.servlets.GenerateServlet;
 import com.google.sps.servlets.GetCitiesServlet;
-import com.google.sps.servlets.Constants;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -398,10 +398,10 @@ public final class GenerateHuntTest {
 
     Destination disneyWorld =
         new Destination.Builder()
-          .withName("Disney World")
-          .withCity("Florida")
-          .withObscurity(Destination.Obscurity.EASY)
-          .build();
+            .withName("Disney World")
+            .withCity("Florida")
+            .withObscurity(Destination.Obscurity.EASY)
+            .build();
 
     String goldenGateJson = new Gson().toJson(goldenGate);
     String louvreJson = new Gson().toJson(louvre);

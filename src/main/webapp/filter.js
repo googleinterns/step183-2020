@@ -23,7 +23,7 @@ function getCities() { //eslint-disable-line
       .then((message) => {
         const cities = JSON.parse(message);
 
-        // Create divs 
+        // Create divs
         for (let i = 0; i < cities.length; i++) {
           div = document.createElement('div');
           div.innerText = cities[i];
@@ -32,7 +32,7 @@ function getCities() { //eslint-disable-line
           document.getElementById(CITY_CONTAINER).appendChild(div);
         }
         turnBlueWhenClicked();
-    });
+      });
 }
 
 /**
