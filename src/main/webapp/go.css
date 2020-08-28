@@ -8,6 +8,10 @@ p {
   color: white;
 }
 
+input {
+  font-size: 25px;
+}
+
 .title-block,
 .map-container,
 #submit-container,
