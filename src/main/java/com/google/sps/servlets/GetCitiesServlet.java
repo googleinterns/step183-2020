@@ -43,6 +43,17 @@ public class GetCitiesServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+   
+    Set<String> cities = getCities();
+
+    Gson gson = new Gson();
+    String json = gson.toJson(cities);
+
+    response.setContentType("text/html;");
+    response.getWriter().println(json);
+  }
+
+  public Set<String> getCities () {
     Query query = new Query(Constants.DESTINATION_ENTITY);
     PreparedQuery results = datastore.prepare(query);
 
@@ -53,11 +64,6 @@ public class GetCitiesServlet extends HttpServlet {
               .fromJson((String) dest.getProperty(Constants.DESTINATION_JSON), Destination.class);
       cities.add(destination.getCity());
     }
-
-    Gson gson = new Gson();
-    String json = gson.toJson(cities);
-
-    response.setContentType("text/html;");
-    response.getWriter().println(json);
+    return cities;
   }
 }

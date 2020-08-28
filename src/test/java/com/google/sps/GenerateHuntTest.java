@@ -1,6 +1,16 @@
 package com.google.sps.data;
 
 import com.google.sps.servlets.GenerateServlet;
+import com.google.sps.servlets.GetCitiesServlet;
+import com.google.sps.servlets.Constants;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
+import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
+import org.junit.After;
+import org.junit.Before;
+import com.google.gson.Gson;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -13,6 +23,9 @@ import org.junit.runners.JUnit4;
 
 @RunWith(JUnit4.class)
 public final class GenerateHuntTest {
+  private final LocalServiceTestHelper helper =
+      new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
+
   Set<Destination.Tag> goldenGateSet = new HashSet<>(Arrays.asList(Destination.Tag.HISTORICAL));
   Set<Destination.Tag> teaGardenSet = new HashSet<>(Arrays.asList(Destination.Tag.FOOD));
   Set<Destination.Tag> orpheumTheaterSet =
@@ -115,6 +128,16 @@ public final class GenerateHuntTest {
           arcDeTriomphe,
           cathedral);
   List<Destination> allDestinations = Collections.unmodifiableList(arrayDest);
+
+  @Before
+  public void setUp() {
+    helper.setUp();
+  }
+
+  @After
+  public void tearDown() {
+    helper.tearDown();
+  }
 
   @Test
   /* SF, all difficulties. */
@@ -365,6 +388,44 @@ public final class GenerateHuntTest {
 
     int actual = actualSet.size();
     int expected = 0;
+    Assert.assertEquals(expected, actual);
+  }
+
+  @Test
+  /* Get the right cities in datatstore. */ 
+  public void getRightCities() {
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+      
+    Destination disneyWorld =
+      new Destination.Builder()
+        .withName("Disney World")
+        .withCity("Florida")
+        .withObscurity(Destination.Obscurity.EASY)
+        .build();
+
+    String goldenGateJson = new Gson().toJson(goldenGate);
+    String louvreJson = new Gson().toJson(louvre);
+    String disneyJson = new Gson().toJson(disneyWorld);
+
+    Entity goldenGateEnt = new Entity(Constants.DESTINATION_ENTITY);
+    goldenGateEnt.setProperty(Constants.DESTINATION_JSON, goldenGateJson);
+    datastore.put(goldenGateEnt);
+
+    Entity louvreEnt = new Entity(Constants.DESTINATION_ENTITY);
+    louvreEnt.setProperty(Constants.DESTINATION_JSON, louvreJson);
+    datastore.put(louvreEnt);
+
+    Entity disneyEnt = new Entity(Constants.DESTINATION_ENTITY);
+    disneyEnt.setProperty(Constants.DESTINATION_JSON, disneyJson);
+    datastore.put(disneyEnt);
+
+    GetCitiesServlet cities = new GetCitiesServlet();
+    Set<String> actual = cities.getCities();
+
+    Set<String> expected = new HashSet<String>();
+    expected.add("San Francisco");
+    expected.add("Paris");
+    expected.add("Florida");
     Assert.assertEquals(expected, actual);
   }
 }
