@@ -72,7 +72,7 @@ public final class DestinationDataServletTest {
   }
 
   @Test
-  public void fillAllAvailableFields() throws IOException {
+  public void storeInDatastore() throws IOException {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
     LatLng location =
@@ -89,11 +89,10 @@ public final class DestinationDataServletTest {
             .withHint("You have to pay to use me")
             .build();
     String[] returnedTags = {"historical", "tourist"};
-    Destination.Obscurity level = convertLevelToEnum("easy");
-    List<String> tags =
-        Arrays.stream(returnedTags)
-            .collect(Collectors.toList());
-    Set<Destination.Tag> checkedTags = convertTagsToEnum(tags);
+    Destination.Obscurity level = Destination.Obscurity.EASY;
+    Set<Destination.Tag> tagEnums = new HashSet<Destination.Tag>();
+    tagEnums.add(Destination.Tag.HISTORICAL);
+    tagEnums.add(Destination.Tag.TOURIST);
 
     Destination expectedDestination =
         new Destination.Builder()
@@ -102,7 +101,7 @@ public final class DestinationDataServletTest {
             .withCity("San Francisco")
             .withDescription("Famous Bridge in SF")
             .withRiddle(riddle)
-            .withTags(checkedTags)
+            .withTags(tagEnums)
             .withObscurity(level)
             .withPlaceId("123")
             .build();
@@ -111,47 +110,6 @@ public final class DestinationDataServletTest {
     destinationEntity.setProperty(Constants.DESTINATION_JSON, expected);
     datastore.put(destinationEntity);
 
-    Assert.assertEquals(1, datastore.prepare(new Query(Constants.DESTINATION_ENTITY)));
-  }
-
-  private Set<Destination.Tag> convertTagsToEnum(List<String> tags) {
-    Set<Destination.Tag> tagEnums = new HashSet<Destination.Tag>();
-    for (String tag : tags) {
-      switch (tag) {
-        case "art":
-          tagEnums.add(Destination.Tag.ART);
-          break;
-        case "sports":
-          tagEnums.add(Destination.Tag.SPORT);
-          break;
-        case "historical":
-          tagEnums.add(Destination.Tag.HISTORICAL);
-          break;
-        case "food":
-          tagEnums.add(Destination.Tag.FOOD);
-          break;
-        case "family":
-          tagEnums.add(Destination.Tag.FAMILY);
-          break;
-        case "tourist":
-          tagEnums.add(Destination.Tag.TOURIST);
-          break;
-      }
-    }
-
-    return tagEnums;
-  }
-
-  private Destination.Obscurity convertLevelToEnum(String obscureLevel) {
-    switch (obscureLevel) {
-      case "easy":
-        return Destination.Obscurity.EASY;
-      case "medium":
-        return Destination.Obscurity.MEDIUM;
-      case "hard":
-        return Destination.Obscurity.HARD;
-      default:
-        return Destination.Obscurity.UNDEFINED;
-    }
+    Assert.assertEquals(1, datastore.prepare(new Query(Constants.DESTINATION_ENTITY)).countEntities(withLimit(10)));
   }
 }
