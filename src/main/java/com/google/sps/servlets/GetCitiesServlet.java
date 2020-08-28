@@ -21,16 +21,9 @@ import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.gson.Gson;
 import com.google.sps.data.Destination;
-import com.google.sps.data.HuntItem;
-import com.google.sps.data.ScavengerHunt;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -43,7 +36,7 @@ public class GetCitiesServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-   
+
     Set<String> cities = getCities();
 
     Gson gson = new Gson();
@@ -53,7 +46,7 @@ public class GetCitiesServlet extends HttpServlet {
     response.getWriter().println(json);
   }
 
-  public Set<String> getCities () {
+  public Set<String> getCities() {
     Query query = new Query(Constants.DESTINATION_ENTITY);
     PreparedQuery results = datastore.prepare(query);
 

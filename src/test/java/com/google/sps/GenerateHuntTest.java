@@ -1,22 +1,22 @@
 package com.google.sps.data;
 
-import com.google.sps.servlets.GenerateServlet;
-import com.google.sps.servlets.GetCitiesServlet;
-import com.google.sps.servlets.Constants;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
-import org.junit.After;
-import org.junit.Before;
 import com.google.gson.Gson;
+import com.google.sps.servlets.GenerateServlet;
+import com.google.sps.servlets.GetCitiesServlet;
+import com.google.sps.servlets.Constants;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -392,16 +392,16 @@ public final class GenerateHuntTest {
   }
 
   @Test
-  /* Get the right cities in datatstore. */ 
+  /* Get the right cities in datatstore. */
   public void getRightCities() {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-      
+
     Destination disneyWorld =
-      new Destination.Builder()
-        .withName("Disney World")
-        .withCity("Florida")
-        .withObscurity(Destination.Obscurity.EASY)
-        .build();
+        new Destination.Builder()
+          .withName("Disney World")
+          .withCity("Florida")
+          .withObscurity(Destination.Obscurity.EASY)
+          .build();
 
     String goldenGateJson = new Gson().toJson(goldenGate);
     String louvreJson = new Gson().toJson(louvre);

@@ -10,29 +10,29 @@ const CITY_CONTAINER = 'city-container';
 /**
 Onload function.
 **/
-function start() {
+function start() { //eslint-disable-line
   getCities();
   turnBlueWhenClicked();
 }
 
 /**
-* Get the list of cities from Destinations in Datastore.  
+* Get the list of cities from Destinations in Datastore.
  **/
-function getCities() {
+function getCities() { //eslint-disable-line
   fetch('/get-cities').then((response) => response.text())
       .then((message) => {
-      let cities = JSON.parse(message);
+        const cities = JSON.parse(message);
 
-      // Create divs 
-      for (let i = 0; i < cities.length; i++) {
-        div = document.createElement('div');
-        div.innerText = cities[i];
-        div.classList.add('filter');
-        div.classList.add(UNCLICKED);
-        document.getElementById(CITY_CONTAINER).appendChild(div);
-      }
-      turnBlueWhenClicked();
-  });
+        // Create divs 
+        for (let i = 0; i < cities.length; i++) {
+          div = document.createElement('div');
+          div.innerText = cities[i];
+          div.classList.add('filter');
+          div.classList.add(UNCLICKED);
+          document.getElementById(CITY_CONTAINER).appendChild(div);
+        }
+        turnBlueWhenClicked();
+    });
 }
 
 /**
