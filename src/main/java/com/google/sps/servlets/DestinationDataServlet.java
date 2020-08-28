@@ -49,9 +49,17 @@ public class DestinationDataServlet extends HttpServlet {
   private static final String PLACEID_PARAMETER = "placeId";
   private static final String HOME_URL = "/index.html";
 
-  private static final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+  private final DatastoreService datastore;
 
   private static final Gson GSON = new Gson();
+
+  public DestinationDataServlet(DatastoreService datastore) {
+    this.datastore = datastore;
+  }
+
+  public DestinationDataServlet() {
+    this.datastore = DatastoreServiceFactory.getDatastoreService();
+  }
 
   /*
    * Creates a destination object from the request parameters retreieved from user submitted information.
