@@ -66,7 +66,7 @@ public class DestinationDataServlet extends HttpServlet {
    * The destination object is then formatted into a JSON string and stored in datastore.
    */
   @Override
-  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String placeId = request.getParameter(PLACEID_PARAMETER);
 
     String name = request.getParameter(NAME_PARAMETER);

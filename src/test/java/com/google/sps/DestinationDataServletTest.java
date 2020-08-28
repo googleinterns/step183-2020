@@ -69,8 +69,8 @@ public final class DestinationDataServletTest {
     doReturn("Overlooks the water").when(request).getParameter(HINT1_PARAMETER);
     doReturn("Golden-red in color").when(request).getParameter(HINT2_PARAMETER);
     doReturn("You have to pay to use me").when(request).getParameter(HINT3_PARAMETER);
-    String[] tags = {"tourist", "family", "historical"};
-    doReturn(tags).when(request).getParameter(TAG_PARAMETER);
+    String[] returnedTags = {"historical", "tourist"};
+    doReturn(returnedTags).when(request).getParameterValues(TAG_PARAMETER);
     doReturn("easy").when(request).getParameter(OBSCURITY_PARAMETER);
     doReturn("123").when(request).getParameter(PLACEID_PARAMETER);
     servlet.doGet(request, response);
@@ -92,8 +92,10 @@ public final class DestinationDataServletTest {
             .build();
     
     Destination.Obscurity level = convertLevelToEnum("easy");
-    List<String> stringTags =  Arrays.stream(tags).collect(Collectors.toList());;
-    Set<Destination.Tag> checkedTags = convertTagsToEnum(stringTags);
+    List<String> tags =
+        Arrays.stream(returnedTags)
+            .collect(Collectors.toList());
+    Set<Destination.Tag> checkedTags = convertTagsToEnum(tags);
 
     Destination expectedDestination =
         new Destination.Builder()
@@ -113,7 +115,7 @@ public final class DestinationDataServletTest {
     verify(response).sendRedirect(HOME_URL);
   }
 
-    private Set<Destination.Tag> convertTagsToEnum(List<String> tags) {
+  private Set<Destination.Tag> convertTagsToEnum(List<String> tags) {
     Set<Destination.Tag> tagEnums = new HashSet<Destination.Tag>();
     for (String tag : tags) {
       switch (tag) {
