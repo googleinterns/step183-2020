@@ -1,8 +1,13 @@
 package com.google.sps;
 
+import static com.google.appengine.api.datastore.FetchOptions.Builder.withLimit;
+
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
+import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.google.gson.Gson;
 import com.google.sps.data.Destination;
 import com.google.sps.data.LatLng;
@@ -21,6 +26,7 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.junit.Assert;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,7 +37,6 @@ import org.mockito.MockitoAnnotations;
 
 @RunWith(JUnit4.class)
 public final class DestinationDataServletTest {
-  @Mock private DatastoreService datastore;
   @Mock private HttpServletRequest request;
   @Mock private HttpServletResponse response;
 
@@ -52,30 +57,23 @@ public final class DestinationDataServletTest {
   private DestinationDataServlet servlet;
   private static final Gson GSON = new Gson();
 
+  private final LocalServiceTestHelper helper = 
+      new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
+
   @Before
   public void setUp() throws IOException {
     MockitoAnnotations.initMocks(this);
-    servlet = new DestinationDataServlet(datastore);
+    helper.setUp();
+  }
+
+  @After
+  public void tearDown(){
+    helper.tearDown();
   }
 
   @Test
   public void fillAllAvailableFields() throws IOException {
-    doReturn("Golden Gate Bridge").when(request).getParameter(NAME_PARAMETER);
-    doReturn("123.456").when(request).getParameter(LAT_PARAMETER);
-    doReturn("234.567").when(request).getParameter(LNG_PARAMETER);
-    doReturn("San Francisco").when(request).getParameter(CITY_PARAMETER);
-    doReturn("Famous Bridge in SF").when(request).getParameter(DESCRIPTION_PARAMETER);
-    doReturn("Stay away from me if you're afraid of heights").when(request).getParameter(RIDDLE_PARAMETER);
-    doReturn("Overlooks the water").when(request).getParameter(HINT1_PARAMETER);
-    doReturn("Golden-red in color").when(request).getParameter(HINT2_PARAMETER);
-    doReturn("You have to pay to use me").when(request).getParameter(HINT3_PARAMETER);
-    String[] returnedTags = {"historical", "tourist"};
-    doReturn(returnedTags).when(request).getParameterValues(TAG_PARAMETER);
-    doReturn("easy").when(request).getParameter(OBSCURITY_PARAMETER);
-    doReturn("123").when(request).getParameter(PLACEID_PARAMETER);
-    servlet.doGet(request, response);
-    ArgumentCaptor<Entity> entityCaptor = ArgumentCaptor.forClass(Entity.class);
-    verify(datastore).put(entityCaptor.capture());
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
     LatLng location =
         new LatLng.Builder()
@@ -90,7 +88,7 @@ public final class DestinationDataServletTest {
             .withHint("Golden-red in color")
             .withHint("You have to pay to use me")
             .build();
-    
+    String[] returnedTags = {"historical", "tourist"};
     Destination.Obscurity level = convertLevelToEnum("easy");
     List<String> tags =
         Arrays.stream(returnedTags)
@@ -109,10 +107,11 @@ public final class DestinationDataServletTest {
             .withPlaceId("123")
             .build();
     String expected = GSON.toJson(expectedDestination);
+    Entity destinationEntity = new Entity(Constants.DESTINATION_ENTITY);
+    destinationEntity.setProperty(Constants.DESTINATION_JSON, expected);
+    datastore.put(destinationEntity);
 
-    Assert.assertEquals(entityCaptor.getValue().getProperty(Constants.DESTINATION_JSON), expected);
-
-    verify(response).sendRedirect(HOME_URL);
+    Assert.assertEquals(1, datastore.prepare(new Query(Constants.DESTINATION_ENTITY)));
   }
 
   private Set<Destination.Tag> convertTagsToEnum(List<String> tags) {
