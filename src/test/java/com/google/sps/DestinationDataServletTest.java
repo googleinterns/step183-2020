@@ -50,7 +50,8 @@ public final class DestinationDataServletTest {
   private DestinationDataServlet servlet;
   private static final Gson GSON = new Gson();
 
-  private final LocalServiceTestHelper helper = new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
+  private final LocalServiceTestHelper helper =
+      new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
 
   @Before
   public void setUp() throws IOException {
