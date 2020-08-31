@@ -426,13 +426,60 @@ function checkUserDestinationGuess() { //eslint-disable-line
     return;
   }
 
-  // If userGuess is not an exact match, perform entity extraction.
+  // Check to see if userGuess can be used to identify the correct place
+  // using the Places library.
+  let answerID = getPlaceIDOfAnswer();
+  let guessID = getPlaceIDOfGuess(userGuess);
+  if (answerID != '' && guessID != '' && guessID === answerID) {
+    handleDestinationAnswer(/* correct = */ true);
+    return;
+  }
+
+  // Perform entity extraction.
   const queryStr = GUESS_URL + '?' + GUESS_INPUT + '=' + userGuess +
       '&answer=' + hunt.getCurDestName();
   toggleLoader(/* hide = */ false);
   fetch(queryStr).then((response) => response.json()).then((correctGuess) => {
     toggleLoader(/* hide = */ true);
     handleDestinationAnswer(correctGuess);
+  });
+}
+
+/**
+ * @return {String} Place ID of the current destination, retrieved
+ * using the Places library.
+ */
+function getPlaceIDOfAnswer() {
+  const answerRequest = {
+    query: hunt.getCurDestName(),
+    fields: ['place_id'],
+  };
+  service.findPlaceFromQuery(answerRequest, function(results, status) {
+    if (status === google.maps.places.PlacesServiceStatus.OK) {
+      return results[0].place_id;
+    } else {
+      return '';
+    }
+  });
+}
+
+/**
+ * @param {String} userGuess The user's guess for the name of the
+ * current destination.
+ * @return {String} Place ID of the user's guess, retrieved
+ * using the Places library.
+ */
+function getPlaceIDOfGuess(userGuess) {
+  const userRequest = {
+    query: userGuess,
+    fields: ['place_id'],
+  };
+  service.findPlaceFromQuery(userRequest, function(results, status) {
+    if (status === google.maps.places.PlacesServiceStatus.OK) {
+      return results[0].place_id;
+    } else {
+      return '';
+    }
   });
 }
 
