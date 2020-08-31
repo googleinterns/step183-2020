@@ -6,7 +6,7 @@ html {
 .background {
   background-image: url("scavenger_hunt_background.png");
   background-position: center;
-  background-repeat: no-repeat;
+  background-repeat: repeat-y;
   background-size: cover;
 }
 
