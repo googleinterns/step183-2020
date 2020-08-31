@@ -428,8 +428,8 @@ function checkUserDestinationGuess() { //eslint-disable-line
 
   // Check to see if userGuess can be used to identify the correct place
   // using the Places library.
-  let answerID = getPlaceIDOfAnswer();
-  let guessID = getPlaceIDOfGuess(userGuess);
+  const answerID = getPlaceIDOfAnswer();
+  const guessID = getPlaceIDOfGuess(userGuess);
   if (answerID != '' && guessID != '' && guessID === answerID) {
     handleDestinationAnswer(/* correct = */ true);
     return;
@@ -446,7 +446,7 @@ function checkUserDestinationGuess() { //eslint-disable-line
 }
 
 /**
- * @return {String} Place ID of the current destination, retrieved
+ * Retrieves the place ID of the current destination, retrieved
  * using the Places library.
  */
 function getPlaceIDOfAnswer() {
@@ -464,10 +464,10 @@ function getPlaceIDOfAnswer() {
 }
 
 /**
+ * Retrieves the place ID of the user's guess, retrieved
+ * using the Places library.
  * @param {String} userGuess The user's guess for the name of the
  * current destination.
- * @return {String} Place ID of the user's guess, retrieved
- * using the Places library.
  */
 function getPlaceIDOfGuess(userGuess) {
   const userRequest = {
