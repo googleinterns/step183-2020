@@ -19,6 +19,7 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Text;
 import com.google.gson.Gson;
 import com.google.sps.data.Destination;
 import com.google.sps.data.HuntItem;
@@ -175,8 +176,10 @@ public class GenerateServlet extends HttpServlet {
   /* Store Scavenger Hunt object in Datastore, return Id of created Hunt. */
   public long writeToDataStore(ScavengerHunt scavHunt) {
     String jsonScavHunt = new Gson().toJson(scavHunt);
+    Text scavHuntText = new Text(jsonScavHunt);
     Entity scavHuntEntity = new Entity(Constants.SCAVENGER_HUNT_ENTITY);
-    scavHuntEntity.setProperty(Constants.SCAVENGER_HUNT_ENTITY, jsonScavHunt);
+    scavHuntEntity.setProperty(Constants.SCAVENGER_HUNT_ENTITY, scavHuntText);
+   // scavHuntEntity.setUnindexedProperty(Constants.SCAVENGER_HUNT_ENTITY, jsonScavHunt);
     datastore.put(scavHuntEntity);
 
     return scavHuntEntity.getKey().getId();
