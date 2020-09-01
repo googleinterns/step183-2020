@@ -47,7 +47,7 @@ public class DestinationDataServlet extends HttpServlet {
   private static final String OBSCURITY_PARAMETER = "obscurity";
   private static final String TAG_PARAMETER = "tag";
   private static final String PLACEID_PARAMETER = "placeId";
-  private static final String HOME_URL = "/index.html";
+  private static final String SUCCESS_URL = "/destinationCreationSuccess.html";
 
   private final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
@@ -58,7 +58,7 @@ public class DestinationDataServlet extends HttpServlet {
    * The destination object is then formatted into a JSON string and stored in datastore.
    */
   @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String placeId = request.getParameter(PLACEID_PARAMETER);
 
     String name = request.getParameter(NAME_PARAMETER);
@@ -110,7 +110,7 @@ public class DestinationDataServlet extends HttpServlet {
     destinationEntity.setProperty(Constants.DESTINATION_JSON, jsonDestination);
     datastore.put(destinationEntity);
 
-    response.sendRedirect(HOME_URL);
+    response.sendRedirect(SUCCESS_URL + "?name=" + name);
   }
 
   private Set<Destination.Tag> convertTagsToEnum(List<String> tags) {
