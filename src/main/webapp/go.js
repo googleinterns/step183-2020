@@ -428,12 +428,7 @@ function checkUserDestinationGuess() { //eslint-disable-line
 
   // Check to see if userGuess can be used to identify the correct place
   // using the Places library.
-  const answerID = getPlaceIDOfAnswer();
-  const guessID = getPlaceIDOfGuess(userGuess);
-  if (answerID != '' && guessID != '' && guessID === answerID) {
-    handleDestinationAnswer(/* correct = */ true);
-    return;
-  }
+  checkUserGuessWithPlaceID(userGuess);
 
   // Perform entity extraction.
   const queryStr = GUESS_URL + '?' + GUESS_INPUT + '=' + userGuess +
@@ -446,39 +441,30 @@ function checkUserDestinationGuess() { //eslint-disable-line
 }
 
 /**
- * Retrieves the place ID of the current destination, retrieved
- * using the Places library.
+ * Retrieves the Place IDs for both the answer and the user's
+ * guess, and compares them to determine whether the user
+ * entered the right destination name.
+ * @param {String} userGuess The user's guess of the destination name.
  */
-function getPlaceIDOfAnswer() {
+function checkUserGuessWithPlaceID(userGuess) {
   const answerRequest = {
     query: hunt.getCurDestName(),
     fields: ['place_id'],
   };
-  service.findPlaceFromQuery(answerRequest, function(results, status) {
-    if (status === google.maps.places.PlacesServiceStatus.OK) {
-      return results[0].place_id;
-    } else {
-      return '';
-    }
-  });
-}
-
-/**
- * Retrieves the place ID of the user's guess, retrieved
- * using the Places library.
- * @param {String} userGuess The user's guess for the name of the
- * current destination.
- */
-function getPlaceIDOfGuess(userGuess) {
-  const userRequest = {
-    query: userGuess,
-    fields: ['place_id'],
-  };
-  service.findPlaceFromQuery(userRequest, function(results, status) {
-    if (status === google.maps.places.PlacesServiceStatus.OK) {
-      return results[0].place_id;
-    } else {
-      return '';
+  service.findPlaceFromQuery(answerRequest, function(answerResults, answerStatus) {
+    if (answerStatus === google.maps.places.PlacesServiceStatus.OK) {
+      const answerID = answerResults[0].place_id;
+      const userRequest = {
+        query: userGuess,
+        fields: ['place_id'],
+      };
+      service.findPlaceFromQuery(userRequest, function(userResults, userStatus) {
+        if (userStatus === google.maps.places.PlacesServiceStatus.OK) {
+          if (answerID === userResults[0].place_id) {
+            handleDestinationAnswer(true);
+          }
+        }
+      });
     }
   });
 }
