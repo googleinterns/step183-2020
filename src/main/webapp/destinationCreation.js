@@ -123,7 +123,7 @@ function removeElements(elemcls) {
  * @param {String} data placeId to be checked if it is already in datastore
  */
 function searchForDuplicate(data) {
-  fetch('/duplicates?' + PLACE_ID_URL_PARAM + '=' + data)
+  fetch('/duplicates?' + PLACE_ID_URL_PARAM + '=' + data, {method: 'POST'})
       .then((response) => response.text())
       .then((message) => {
         if (message.trim() === 'duplicate') {
