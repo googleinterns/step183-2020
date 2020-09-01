@@ -12,10 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-function confirmCreation () {
+/**
+ * Retrieves the name of the destination created from the url
+ * and alerts the user this destination was created
+ */
+function confirmCreation() { // eslint-disable-line
   const params = new URLSearchParams(window.location.search);
-  let name = params.get('name');
+  const name = params.get('name');
   const p = document.createElement('p');
-  p.innerText = name + " has been successfully created!"
+  p.innerText = name + ' has been successfully created!';
   document.getElementById('confirmation-block').appendChild(p);
 }
