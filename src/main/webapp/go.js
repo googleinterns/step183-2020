@@ -464,8 +464,7 @@ function getPlaceIDOfGuess(userGuess, answerID) {
   const userRequest = createRequestForPlaceID(userGuess);
   service.findPlaceFromQuery(userRequest, function(results, status) {
     if (status === google.maps.places.PlacesServiceStatus.OK) {
-      const guessID = results[0].place_id;
-      if (guessID === answerID) {
+      if (results[0].place_id === answerID) {
         handleDestinationAnswer(/* correct = */ true);
       } else {
         checkGuessWithEntities(userGuess);
