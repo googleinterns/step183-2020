@@ -428,44 +428,65 @@ function checkUserDestinationGuess() { //eslint-disable-line
 
   // Check to see if userGuess can be used to identify the correct place
   // using the Places library.
-  checkUserGuessWithPlaceID(userGuess);
+  checkGuessWithPlaceIDs(userGuess);
+}
 
-  // Perform entity extraction.
+/**
+ * Retrieves place ID for the answer, and compares this to the place
+ * ID retrieved for the user's guess.
+ * @param {String} userGuess User's guess for current destination.
+ */
+function checkGuessWithPlaceIDs(userGuess) {
+  const answerRequest = {
+    query: hunt.getCurDestName(),
+    fields: ['place_id'],
+  };
+  service.findPlaceFromQuery(answerRequest, function(results, status) {
+    if (status === google.maps.places.PlacesServiceStatus.OK) {
+      const answerID = results[0].place_id;
+      getPlaceIDOfGuess(userGuess, answerID);
+    }
+  });
+}
+
+/**
+ * @param {String} userGuess The user's guess for the name of the
+ * current destination.
+ * @param {String} answerID Place ID corresponding to the correct
+ * destination
+ */
+function getPlaceIDOfGuess(userGuess, answerID) {
+  const userRequest = {
+    query: userGuess,
+    fields: ['place_id'],
+  };
+  service.findPlaceFromQuery(userRequest, function(results, status) {
+    if (status === google.maps.places.PlacesServiceStatus.OK) {
+      const guessID = results[0].place_id;
+      if (guessID === answerID) {
+        handleDestinationAnswer(/* correct = */ true);
+      } else {
+        checkGuessWithEntities(userGuess);
+      }
+    } else {
+      checkGuessWithEntities(userGuess);
+    }
+  });
+}
+
+/**
+ * Extract entities for the user's guess and the correct
+ * destination name to determine whether the user found the
+ * correct destination.
+ * @param {String} userGuess User's guess
+ */
+function checkGuessWithEntities(userGuess) {
   const queryStr = GUESS_URL + '?' + GUESS_INPUT + '=' + userGuess +
       '&answer=' + hunt.getCurDestName();
   toggleLoader(/* hide = */ false);
   fetch(queryStr).then((response) => response.json()).then((correctGuess) => {
     toggleLoader(/* hide = */ true);
     handleDestinationAnswer(correctGuess);
-  });
-}
-
-/**
- * Retrieves the Place IDs for both the answer and the user's
- * guess, and compares them to determine whether the user
- * entered the right destination name.
- * @param {String} userGuess The user's guess of the destination name.
- */
-function checkUserGuessWithPlaceID(userGuess) {
-  const answerRequest = {
-    query: hunt.getCurDestName(),
-    fields: ['place_id'],
-  };
-  service.findPlaceFromQuery(answerRequest, function(answerResults, answerStatus) {
-    if (answerStatus === google.maps.places.PlacesServiceStatus.OK) {
-      const answerID = answerResults[0].place_id;
-      const userRequest = {
-        query: userGuess,
-        fields: ['place_id'],
-      };
-      service.findPlaceFromQuery(userRequest, function(userResults, userStatus) {
-        if (userStatus === google.maps.places.PlacesServiceStatus.OK) {
-          if (answerID === userResults[0].place_id) {
-            handleDestinationAnswer(true);
-          }
-        }
-      });
-    }
   });
 }
 
