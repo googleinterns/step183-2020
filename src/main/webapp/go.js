@@ -286,10 +286,7 @@ function getAutoHint() {
  * destination, before getting a new hint.
  */
 function generatePlaceID() {
-  const request = {
-    query: hunt.getCurDestName(),
-    fields: ['place_id'],
-  };
+  const request = createRequestForPlaceID(hunt.getCurDestName());
   service.findPlaceFromQuery(request, function(results, status) {
     if (status === google.maps.places.PlacesServiceStatus.OK) {
       hunt.setPlaceID(results[0].place_id);
@@ -298,6 +295,17 @@ function generatePlaceID() {
       updateMessage(GENERATE_DISPLAY, NO_PLACEID_MSSG);
     }
   });
+}
+
+/**
+ * @param {String} queryName Query for place search
+ * @return {String} request to be used in place search
+ */
+function createRequestForPlaceID(queryName) {
+  return request = {
+    query: queryName,
+    fields: ['place_id'],
+  };
 }
 
 /**
@@ -437,10 +445,7 @@ function checkUserDestinationGuess() { //eslint-disable-line
  * @param {String} userGuess User's guess for current destination.
  */
 function checkGuessWithPlaceIDs(userGuess) {
-  const answerRequest = {
-    query: hunt.getCurDestName(),
-    fields: ['place_id'],
-  };
+  const answerRequest = createRequestForPlaceID(hunt.getCurDestName());
   service.findPlaceFromQuery(answerRequest, function(results, status) {
     if (status === google.maps.places.PlacesServiceStatus.OK) {
       const answerID = results[0].place_id;
@@ -456,10 +461,7 @@ function checkGuessWithPlaceIDs(userGuess) {
  * destination
  */
 function getPlaceIDOfGuess(userGuess, answerID) {
-  const userRequest = {
-    query: userGuess,
-    fields: ['place_id'],
-  };
+  const userRequest = createRequestForPlaceID(userGuess);
   service.findPlaceFromQuery(userRequest, function(results, status) {
     if (status === google.maps.places.PlacesServiceStatus.OK) {
       const guessID = results[0].place_id;
