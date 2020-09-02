@@ -83,12 +83,11 @@ public final class DestinationDataServletTest {
         .when(request)
         .getParameter(DestinationDataServlet.OBSCURITY_PARAMETER);
     doReturn(PLACEID_INPUT).when(request).getParameter(DestinationDataServlet.PLACEID_PARAMETER);
+
     servlet.doPost(request, response);
 
     Query query = new Query(Constants.DESTINATION_ENTITY);
     PreparedQuery results = datastore.prepare(query);
-
-    Assert.assertEquals(1, results.countEntities());
 
     Destination destination =
         GSON.fromJson(
@@ -97,9 +96,9 @@ public final class DestinationDataServletTest {
 
     String actual = GSON.toJson(destination);
 
-    String expected = getExpectedDestination();
+    Assert.assertEquals(1, results.countEntities());
 
-    Assert.assertEquals(actual, expected);
+    Assert.assertEquals(actual, getExpectedDestination());
 
     verify(response).sendRedirect(DestinationDataServlet.HOME_URL);
   }
