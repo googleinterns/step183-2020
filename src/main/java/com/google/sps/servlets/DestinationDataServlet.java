@@ -47,7 +47,7 @@ public class DestinationDataServlet extends HttpServlet {
   private static final String OBSCURITY_PARAMETER = "obscurity";
   private static final String TAG_PARAMETER = "tag";
   private static final String PLACEID_PARAMETER = "placeId";
-  private static final String HOME_URL = "/index.html";
+  private static final String SUCCESS_URL = "/destinationCreationSuccess.html";
 
   private static final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
@@ -110,7 +110,7 @@ public class DestinationDataServlet extends HttpServlet {
     destinationEntity.setProperty(Constants.DESTINATION_JSON, jsonDestination);
     datastore.put(destinationEntity);
 
-    response.sendRedirect(HOME_URL);
+    response.sendRedirect(SUCCESS_URL + "?name=" + name);
   }
 
   private Set<Destination.Tag> convertTagsToEnum(List<String> tags) {
