@@ -1,6 +1,8 @@
 package com.google.sps;
 
 import static com.google.appengine.api.datastore.FetchOptions.Builder.withLimit;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.verify;
 
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -33,6 +35,8 @@ public final class DestinationDataServletTest {
   @Mock private HttpServletRequest request;
   @Mock private HttpServletResponse response;
 
+  private DestinationDataServlet servlet;
+
   private static final String NAME_PARAMETER = "name";
   private static final String LAT_PARAMETER = "latitude";
   private static final String LNG_PARAMETER = "longitude";
@@ -47,7 +51,6 @@ public final class DestinationDataServletTest {
   private static final String PLACEID_PARAMETER = "placeId";
   private static final String HOME_URL = "/index.html";
 
-  private DestinationDataServlet servlet;
   private static final Gson GSON = new Gson();
 
   private final LocalServiceTestHelper helper =
@@ -67,39 +70,25 @@ public final class DestinationDataServletTest {
   @Test
   public void storeInDatastore() throws IOException {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-
-    LatLng location = new LatLng.Builder().withLat(123.456).withLng(234.567).build();
-
-    Riddle riddle =
-        new Riddle.Builder()
-            .withPuzzle("Stay away from me if you're afraid of heights")
-            .withHint("Overlooks the water")
-            .withHint("Golden-red in color")
-            .withHint("You have to pay to use me")
-            .build();
+    servlet = new DestinationDataServlet(datastore);
+    doReturn("Golden Gate Bridge").when(request).getParameter(NAME_PARAMETER);
+    doReturn("123.456").when(request).getParameter(LAT_PARAMETER);
+    doReturn("234.567").when(request).getParameter(LNG_PARAMETER);
+    doReturn("San Francisco").when(request).getParameter(CITY_PARAMETER);
+    doReturn("Famous Bridge in SF").when(request).getParameter(DESCRIPTION_PARAMETER);
+    doReturn("Stay away from me if you're afraid of heights").when(request).getParameter(RIDDLE_PARAMETER);
+    doReturn("Overlooks the water").when(request).getParameter(HINT1_PARAMETER);
+    doReturn("Golden-red in color").when(request).getParameter(HINT2_PARAMETER);
+    doReturn("You have to pay to use me").when(request).getParameter(HINT3_PARAMETER);
     String[] returnedTags = {"historical", "tourist"};
-    Destination.Obscurity level = Destination.Obscurity.EASY;
-    Set<Destination.Tag> tagEnums = new HashSet<Destination.Tag>();
-    tagEnums.add(Destination.Tag.HISTORICAL);
-    tagEnums.add(Destination.Tag.TOURIST);
-
-    Destination expectedDestination =
-        new Destination.Builder()
-            .withName("Golden Gate Bridge")
-            .withLocation(location)
-            .withCity("San Francisco")
-            .withDescription("Famous Bridge in SF")
-            .withRiddle(riddle)
-            .withTags(tagEnums)
-            .withObscurity(level)
-            .withPlaceId("123")
-            .build();
-    String expected = GSON.toJson(expectedDestination);
-    Entity destinationEntity = new Entity(Constants.DESTINATION_ENTITY);
-    destinationEntity.setProperty(Constants.DESTINATION_JSON, expected);
-    datastore.put(destinationEntity);
+    doReturn(returnedTags).when(request).getParameterValues(TAG_PARAMETER);
+    doReturn("easy").when(request).getParameter(OBSCURITY_PARAMETER);
+    doReturn("123").when(request).getParameter(PLACEID_PARAMETER);
+    servlet.doPost(request, response);
 
     Assert.assertEquals(
         1, datastore.prepare(new Query(Constants.DESTINATION_ENTITY)).countEntities(withLimit(10)));
+
+    verify(response).sendRedirect(HOME_URL);
   }
 }
