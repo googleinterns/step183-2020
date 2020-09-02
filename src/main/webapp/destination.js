@@ -10,13 +10,15 @@ class Destination { //eslint-disable-line
    * @param {array} hints Array of hints to supplement puzzle
    * @param {Double} lat Latitude of destination
    * @param {Double} lng Longitude of destination
+   * @param {String} placeId Place ID of destination
    */
-  constructor(name, description, puzzle, hints, lat, lng) {
+  constructor(name, description, puzzle, hints, lat, lng, placeId) {
     this.name = name;
     this.description = description;
     this.puzzle = puzzle;
     this.hints = hints;
     this.lat = lat;
     this.lng = lng;
+    this.placeId = placeId;
   }
 }
