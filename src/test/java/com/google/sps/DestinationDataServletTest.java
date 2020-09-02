@@ -64,7 +64,6 @@ public final class DestinationDataServletTest {
   private static final String OBSCURITY_INPUT = "easy";
   private static final String PLACEID_INPUT = "123";
 
-
   private static final Gson GSON = new Gson();
 
   private final LocalServiceTestHelper helper =
