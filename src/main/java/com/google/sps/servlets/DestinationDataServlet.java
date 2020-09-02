@@ -49,6 +49,7 @@ public class DestinationDataServlet extends HttpServlet {
   public static final String TAG_PARAMETER = "tag";
   public static final String PLACEID_PARAMETER = "placeId";
   public static final String HOME_URL = "/index.html";
+  public static final String SUCCESS_URL = "/destinationCreationSuccess.html";
 
   private final DatastoreService datastore;
 
