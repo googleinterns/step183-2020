@@ -38,19 +38,6 @@ public final class DestinationDataServletTest {
 
   private DestinationDataServlet servlet;
 
-  private static final String NAME_PARAMETER = "name";
-  private static final String LAT_PARAMETER = "latitude";
-  private static final String LNG_PARAMETER = "longitude";
-  private static final String CITY_PARAMETER = "city";
-  private static final String DESCRIPTION_PARAMETER = "description";
-  private static final String RIDDLE_PARAMETER = "riddle";
-  private static final String HINT1_PARAMETER = "hint1";
-  private static final String HINT2_PARAMETER = "hint2";
-  private static final String HINT3_PARAMETER = "hint3";
-  private static final String OBSCURITY_PARAMETER = "obscurity";
-  private static final String TAG_PARAMETER = "tag";
-  private static final String PLACEID_PARAMETER = "placeId";
-  private static final String HOME_URL = "/index.html";
   private static final String NAME_INPUT = "Golden Gate Bridge";
   private static final String LAT_INPUT = "123.456";
   private static final String LNG_INPUT = "234.567";
@@ -84,36 +71,38 @@ public final class DestinationDataServletTest {
   public void storeInDatastore() throws IOException {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     servlet = new DestinationDataServlet(datastore);
-    doReturn(NAME_INPUT).when(request).getParameter(NAME_PARAMETER);
-    doReturn(LAT_INPUT).when(request).getParameter(LAT_PARAMETER);
-    doReturn(LNG_INPUT).when(request).getParameter(LNG_PARAMETER);
-    doReturn(CITY_INPUT).when(request).getParameter(CITY_PARAMETER);
-    doReturn(DESC_INPUT).when(request).getParameter(DESCRIPTION_PARAMETER);
-    doReturn(RIDDLE_INPUT).when(request).getParameter(RIDDLE_PARAMETER);
-    doReturn(H1_INPUT).when(request).getParameter(HINT1_PARAMETER);
-    doReturn(H2_INPUT).when(request).getParameter(HINT2_PARAMETER);
-    doReturn(H3_INPUT).when(request).getParameter(HINT3_PARAMETER);
-    doReturn(TAG_INPUT).when(request).getParameterValues(TAG_PARAMETER);
-    doReturn(OBSCURITY_INPUT).when(request).getParameter(OBSCURITY_PARAMETER);
-    doReturn(PLACEID_INPUT).when(request).getParameter(PLACEID_PARAMETER);
+    doReturn(NAME_INPUT).when(request).getParameter(DestinationDataServlet.NAME_PARAMETER);
+    doReturn(LAT_INPUT).when(request).getParameter(DestinationDataServlet.LAT_PARAMETER);
+    doReturn(LNG_INPUT).when(request).getParameter(DestinationDataServlet.LNG_PARAMETER);
+    doReturn(CITY_INPUT).when(request).getParameter(DestinationDataServlet.CITY_PARAMETER);
+    doReturn(DESC_INPUT).when(request).getParameter(DestinationDataServlet.DESCRIPTION_PARAMETER);
+    doReturn(RIDDLE_INPUT).when(request).getParameter(DestinationDataServlet.RIDDLE_PARAMETER);
+    doReturn(H1_INPUT).when(request).getParameter(DestinationDataServlet.HINT1_PARAMETER);
+    doReturn(H2_INPUT).when(request).getParameter(DestinationDataServlet.HINT2_PARAMETER);
+    doReturn(H3_INPUT).when(request).getParameter(DestinationDataServlet.HINT3_PARAMETER);
+    doReturn(TAG_INPUT).when(request).getParameterValues(DestinationDataServlet.TAG_PARAMETER);
+    doReturn(OBSCURITY_INPUT).when(request).getParameter(DestinationDataServlet.OBSCURITY_PARAMETER);
+    doReturn(PLACEID_INPUT).when(request).getParameter(DestinationDataServlet.PLACEID_PARAMETER);
     servlet.doPost(request, response);
-
-    Assert.assertEquals(
-        1, datastore.prepare(new Query(Constants.DESTINATION_ENTITY)).countEntities());
 
     Query query = new Query(Constants.DESTINATION_ENTITY);
     PreparedQuery results = datastore.prepare(query);
 
-    ArrayList<Destination> destinations = new ArrayList();
-    for (Entity dest : results.asIterable()) {
-      Destination destination =
-          new Gson()
-              .fromJson((String) dest.getProperty(Constants.DESTINATION_JSON), Destination.class);
-      destinations.add(destination);
-    }
+    Assert.assertEquals(
+        1, results.countEntities());
 
-    String actual = GSON.toJson(destinations.get(0));
+    Destination destination = GSON.fromJson((String) results.asSingleEntity().getProperty(Constants.DESTINATION_JSON), Destination.class);
 
+    String actual = GSON.toJson(destination);
+
+    String expected = getExpectedDestination();
+
+    Assert.assertEquals(actual, expected);
+
+    verify(response).sendRedirect(DestinationDataServlet.HOME_URL);
+  }
+
+  private String getExpectedDestination() {
     LatLng location = new LatLng.Builder().withLat(123.456).withLng(234.567).build();
 
     Riddle riddle =
@@ -139,10 +128,6 @@ public final class DestinationDataServletTest {
             .withObscurity(level)
             .withPlaceId(PLACEID_INPUT)
             .build();
-    String expected = GSON.toJson(expectedDestination);
-
-    Assert.assertEquals(actual, expected);
-
-    verify(response).sendRedirect(HOME_URL);
+    return GSON.toJson(expectedDestination);
   }
 }
