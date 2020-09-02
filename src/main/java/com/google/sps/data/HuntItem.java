@@ -21,6 +21,7 @@ public class HuntItem {
   private LatLng location;
   private String description;
   private Riddle riddle;
+  private String placeId;
 
   private HuntItem() {}
 
@@ -33,6 +34,7 @@ public class HuntItem {
     private LatLng location;
     private String description;
     private Riddle riddle;
+    private String placeId;
 
     public Builder withName(String name) {
       this.name = name;
@@ -54,12 +56,18 @@ public class HuntItem {
       return this;
     }
 
+    public Builder withPlaceId(String placeId) {
+      this.placeId = placeId;
+      return this;
+    }
+
     public HuntItem build() {
       HuntItem item = new HuntItem();
       item.name = this.name;
       item.location = this.location;
       item.description = this.description;
       item.riddle = this.riddle;
+      item.placeId = this.placeId;
 
       return item;
     }
