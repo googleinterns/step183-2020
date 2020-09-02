@@ -437,16 +437,20 @@ function checkUserDestinationGuess() { //eslint-disable-line
   // Check to see if userGuess can be used to identify the correct place
   // using the Places library.
   //checkGuessWithPlaceIDs(userGuess);
-  getPlaceIDOfGuess(userGuess, hunt.getCurDestId());
+  checkGuessWithIDOrEntities(userGuess, hunt.getCurDestId());
 }
 
 /**
+ * Compares the Place ID retrieved using {@code userGuess} with
+ * {@code answerID}. If the IDs match, the user's guess is correct.
+ * If the IDs don't match or if an ID could not be retrieved,
+ * then entity extraction is performed.
  * @param {String} userGuess The user's guess for the name of the
  * current destination.
  * @param {String} answerID Place ID corresponding to the correct
  * destination
  */
-function getPlaceIDOfGuess(userGuess, answerID) {
+function checkGuessWithIDOrEntities(userGuess, answerID) {
   const userRequest = createRequestForPlaceID(userGuess);
   service.findPlaceFromQuery(userRequest, function(results, status) {
     if (status === google.maps.places.PlacesServiceStatus.OK) {
