@@ -58,7 +58,7 @@ public class DestinationDataServlet extends HttpServlet {
   }
 
   public DestinationDataServlet() {
-    this.datastore =  DatastoreServiceFactory.getDatastoreService();
+    this.datastore = DatastoreServiceFactory.getDatastoreService();
   }
 
   /*

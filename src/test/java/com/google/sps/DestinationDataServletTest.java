@@ -6,19 +6,13 @@ import static org.mockito.Mockito.verify;
 
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
-import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.google.gson.Gson;
-import com.google.sps.data.Destination;
-import com.google.sps.data.LatLng;
-import com.google.sps.data.Riddle;
 import com.google.sps.servlets.Constants;
 import com.google.sps.servlets.DestinationDataServlet;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.junit.After;
@@ -76,7 +70,9 @@ public final class DestinationDataServletTest {
     doReturn("234.567").when(request).getParameter(LNG_PARAMETER);
     doReturn("San Francisco").when(request).getParameter(CITY_PARAMETER);
     doReturn("Famous Bridge in SF").when(request).getParameter(DESCRIPTION_PARAMETER);
-    doReturn("Stay away from me if you're afraid of heights").when(request).getParameter(RIDDLE_PARAMETER);
+    doReturn("Stay away from me if you're afraid of heights")
+        .when(request)
+        .getParameter(RIDDLE_PARAMETER);
     doReturn("Overlooks the water").when(request).getParameter(HINT1_PARAMETER);
     doReturn("Golden-red in color").when(request).getParameter(HINT2_PARAMETER);
     doReturn("You have to pay to use me").when(request).getParameter(HINT3_PARAMETER);
