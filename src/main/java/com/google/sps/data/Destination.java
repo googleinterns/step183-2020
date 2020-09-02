@@ -129,6 +129,7 @@ public class Destination {
             .atLocation(this.location)
             .withDescription(this.description)
             .withRiddle(this.getRandomRiddle())
+            .withPlaceId(this.placeId)
             .build();
 
     return item;
