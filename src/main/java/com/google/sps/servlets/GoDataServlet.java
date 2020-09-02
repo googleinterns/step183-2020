@@ -56,7 +56,8 @@ public class GoDataServlet extends HttpServlet {
 
       // Update index of scavenger hunt.
       ScavengerHunt hunt =
-          gson.fromJson(((Text) huntEntity.getProperty(Constants.HUNT_VAL)).getValue(), ScavengerHunt.class);
+          gson.fromJson(
+              ((Text) huntEntity.getProperty(Constants.HUNT_VAL)).getValue(), ScavengerHunt.class);
       hunt.updateIndex(index);
 
       // Convert hunt to JSON string and put into Datastore

@@ -179,7 +179,6 @@ public class GenerateServlet extends HttpServlet {
     Text scavHuntText = new Text(jsonScavHunt);
     Entity scavHuntEntity = new Entity(Constants.SCAVENGER_HUNT_ENTITY);
     scavHuntEntity.setProperty(Constants.SCAVENGER_HUNT_ENTITY, scavHuntText);
-   // scavHuntEntity.setUnindexedProperty(Constants.SCAVENGER_HUNT_ENTITY, jsonScavHunt);
     datastore.put(scavHuntEntity);
 
     return scavHuntEntity.getKey().getId();
