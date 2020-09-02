@@ -62,6 +62,7 @@ const TIMER_INTERVAL_MS = 1000; // eslint-disable-line
 
 // Other constants.
 const INVISIBLE_CLASS = 'invisible';
+const LOADER = 'submit-loader';
 
 // Global variables.
 let hunt;
@@ -132,7 +133,7 @@ function getHunt() {
       const cur = mssg.items[i];
       huntArr.push(new Destination(cur.name, cur.description,
           cur.riddle.puzzle, cur.riddle.hints, cur.location.lat,
-          cur.location.lng));
+          cur.location.lng, cur.placeId));
     }
     hunt = new ScavengerHuntManager(destIndex, 0, huntArr);
     updateToCurrentState();
@@ -271,39 +272,6 @@ function displayPlaceInfo(id) {
  * Provides the user with the next auto-generated hint.
  */
 function getAutoHint() {
-  // First time getting an auto hint for current destination.
-  if (hunt.getPlaceID() == -1) {
-    generatePlaceID();
-  } else {
-    getNextAutoHint();
-  }
-}
-
-/**
- * Get the first auto-generated hint for the current destination.
- * This involves first retrieving the place ID for the current
- * destination, before getting a new hint.
- */
-function generatePlaceID() {
-  const request = {
-    query: hunt.getCurDestName(),
-    fields: ['place_id'],
-  };
-  service.findPlaceFromQuery(request, function(results, status) {
-    if (status === google.maps.places.PlacesServiceStatus.OK) {
-      hunt.setPlaceID(results[0].place_id);
-      getNextAutoHint();
-    } else {
-      updateMessage(GENERATE_DISPLAY, NO_PLACEID_MSSG);
-    }
-  });
-}
-
-/**
- * Gets a new auto-generated hint, assuming that the place
- * ID for the current destination has already been determined.
- */
-function getNextAutoHint() {
   const random = Math.random();
   if (random < 0.5) { // Get a hint in the form of a photo
     if (hunt.getPhotos().length == 0) {
@@ -321,13 +289,24 @@ function getNextAutoHint() {
 }
 
 /**
+ * @param {String} queryName Query for place search
+ * @return {String} request to be used in place search
+ */
+function createRequestForPlaceID(queryName) {
+  return request = {
+    query: queryName,
+    fields: ['place_id'],
+  };
+}
+
+/**
  * Generate array of photos for the current destination using
  * the Places API, which will later be used to retrieve and
  * display photos.
  */
 function generatePhotos() {
   const photosRequest = {
-    placeId: hunt.getPlaceID(),
+    placeId: hunt.getCurDestId(),
     fields: ['photo'],
   };
   service.getDetails(photosRequest, (place, status) => {
@@ -359,7 +338,7 @@ function displayNextPhoto() {
  */
 function generateReviews() {
   const reviewsRequest = {
-    placeId: hunt.getPlaceID(),
+    placeId: hunt.getCurDestId(),
     fields: ['review'],
   };
   service.getDetails(reviewsRequest, (place, status) => {
@@ -410,28 +389,80 @@ function updatePhoto(display, photo) {
 /**
  * Determines whether the user entered the correct destination, and
  * adjusts the display accordingly.
- * Disable lint check because handleDestinationAnswer() is called
+ * Disable lint check because checkUserDestinationGuess() is called
  * from go.html.
  */
-function handleDestinationAnswer() { //eslint-disable-line
+function checkUserDestinationGuess() { //eslint-disable-line
   if (hunt.hasNotStarted()) { // User has not yet started the hunt.
     return;
   }
   const userGuess = document.getElementById(GUESS_INPUT).value;
-  const queryStr = GUESS_URL + '?' + GUESS_INPUT + '=' + userGuess +
-      '&answer=' + hunt.getCurDestName();
-  fetch(queryStr).then((response) => response.json()).then((correctGuess) => {
-    if (correctGuess) {
-      toggleProceedButton(/* hide = */ false);
-      hideHuntElements();
-      updateMessagesForCorrectGuess();
-      addMarkerToMap(hunt.getCurDestLat(), hunt.getCurDestLng(),
-          hunt.getCurDestName());
-      clearTimeout(hintClock);
+
+  // Check to see if userGuess is an exact match (ignoring case)
+  if (userGuess.toLowerCase() === hunt.getCurDestName().toLowerCase()) {
+    handleDestinationAnswer(/* correct = */ true);
+    return;
+  }
+
+  // Check to see if userGuess can be used to identify the correct place
+  // using the Places library.
+  checkGuessWithIDOrEntities(userGuess, hunt.getCurDestId());
+}
+
+/**
+ * Compares the Place ID retrieved using {@code userGuess} with
+ * {@code answerID}. If the IDs match, the user's guess is correct.
+ * If the IDs don't match or if an ID could not be retrieved,
+ * then entity extraction is performed.
+ * @param {String} userGuess The user's guess for the name of the
+ * current destination.
+ * @param {String} answerID Place ID corresponding to the correct
+ * destination
+ */
+function checkGuessWithIDOrEntities(userGuess, answerID) {
+  const userRequest = createRequestForPlaceID(userGuess);
+  service.findPlaceFromQuery(userRequest, function(results, status) {
+    if (status === google.maps.places.PlacesServiceStatus.OK &&
+        results[0].place_id === answerID) {
+      handleDestinationAnswer(/* correct = */ true);
     } else {
-      updateMessage(SUBMIT_DISPLAY, WRONG_MSSG);
+      checkGuessWithEntities(userGuess);
     }
   });
+}
+
+/**
+ * Extract entities for the user's guess and the correct
+ * destination name to determine whether the user found the
+ * correct destination.
+ * @param {String} userGuess User's guess
+ */
+function checkGuessWithEntities(userGuess) {
+  const queryStr = GUESS_URL + '?' + GUESS_INPUT + '=' + userGuess +
+      '&answer=' + hunt.getCurDestName();
+  toggleLoader(/* hide = */ false);
+  fetch(queryStr).then((response) => response.json()).then((correctGuess) => {
+    toggleLoader(/* hide = */ true);
+    handleDestinationAnswer(correctGuess);
+  });
+}
+
+/**
+ * Update the DOM according to whether the user's guess is correct
+ * or incorrect.
+ * @param {boolean} correct Whether the user's guess is correct.
+ */
+function handleDestinationAnswer(correct) {
+  if (correct) {
+    toggleProceedButton(/* hide = */ false);
+    hideHuntElements();
+    updateMessagesForCorrectGuess();
+    addMarkerToMap(hunt.getCurDestLat(), hunt.getCurDestLng(),
+        hunt.getCurDestName());
+    clearTimeout(hintClock);
+  } else {
+    updateMessage(SUBMIT_DISPLAY, WRONG_MSSG);
+  }
 }
 
 /**
@@ -472,10 +503,25 @@ function updateToCurrentState() {
     updateMessage(RIDDLE_DISPLAY, 'Riddle: ' + hunt.getCurDestPuzzle());
   }
   toggleProceedButton(/* hide = */ true);
+  toggleLoader(/* hide = */ true);
   // Add all found destinations to the map as markers.
   for (let i = 0; i < hunt.getDestIndex(); i++) {
     addMarkerToMap(hunt.getDest(i).lat, hunt.getDest(i).lng,
         hunt.getDest(i).name);
+  }
+}
+
+/**
+ * Show or hide the loader, which shows that the user's guess of the
+ * destination name is currently being checked for correctness.
+ * @param {boolean} hide Whether the loader should be hidden or shown.
+ */
+function toggleLoader(hide) {
+  const loader = document.getElementById(LOADER);
+  if (hide) {
+    loader.classList.add(INVISIBLE_CLASS);
+  } else {
+    loader.classList.remove(INVISIBLE_CLASS);
   }
 }
 

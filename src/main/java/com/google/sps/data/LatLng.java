@@ -21,6 +21,10 @@ public class LatLng {
 
   private LatLng() {}
 
+  public Double getLng() {
+    return this.lng;
+  }
+
   public static class Builder {
     private Double lat;
     private Double lng;

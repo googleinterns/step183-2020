@@ -1,0 +1,22 @@
+#confirmation-block {
+  background-color: #5d5179;
+  border: 2px solid white;
+  border-radius: 12px;
+  margin: 20px auto;
+  width: 70%;
+  padding: 3%;
+  line-height: 1.6;
+}
+
+#confirmation-block p {
+  color: white;
+  font-size: 200%;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+  text-align: center;
+}

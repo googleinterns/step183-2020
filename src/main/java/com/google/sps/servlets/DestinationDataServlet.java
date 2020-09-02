@@ -35,6 +35,7 @@ import javax.servlet.http.HttpServletResponse;
 /* Stores a destination in datastore */
 @WebServlet("/destination-data")
 public class DestinationDataServlet extends HttpServlet {
+
   public static final String NAME_PARAMETER = "name";
   public static final String LAT_PARAMETER = "latitude";
   public static final String LNG_PARAMETER = "longitude";
@@ -118,7 +119,7 @@ public class DestinationDataServlet extends HttpServlet {
     destinationEntity.setProperty(Constants.DESTINATION_JSON, jsonDestination);
     datastore.put(destinationEntity);
 
-    response.sendRedirect(HOME_URL);
+    response.sendRedirect(SUCCESS_URL + "?name=" + name);
   }
 
   private Set<Destination.Tag> convertTagsToEnum(List<String> tags) {

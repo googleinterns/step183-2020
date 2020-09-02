@@ -4,6 +4,10 @@
   flex-flow: column wrap;
 }
 
+.site-background {
+  background-image: url("scavenger_hunt_background.png");
+}
+
 .header {
   background: #5d5179;
   border: 1px solid white;

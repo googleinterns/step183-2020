@@ -1,3 +1,9 @@
+h1,
+p,
+label {
+  color: white;
+}
+
 .required::after {
   content: "*";
   color: red;
@@ -62,19 +68,14 @@
   margin-top: 5px;
 }
 
-#hint1-input {
-  margin-top: 5px;
-  width: 299px;
-}
-
-#hint2-input {
+#hint1-input,
+#hint2-input,
+#hint3-input {
   margin-top: 5px;
   width: 300px;
 }
 
 #hint3-input {
-  margin-top: 5px;
-  width: 300px;
   margin-bottom: 5px;
 }
 
