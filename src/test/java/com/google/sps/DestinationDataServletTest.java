@@ -19,7 +19,6 @@ import com.google.sps.servlets.DestinationDataServlet;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -107,7 +106,7 @@ public final class DestinationDataServletTest {
     String actual = GSON.toJson(destinations.get(0));
 
     LatLng location = new LatLng.Builder().withLat(123.456).withLng(234.567).build();
- 
+
     Riddle riddle =
         new Riddle.Builder()
             .withPuzzle("Stay away from me if you're afraid of heights")
@@ -119,7 +118,7 @@ public final class DestinationDataServletTest {
     Set<Destination.Tag> tagEnums = new HashSet<Destination.Tag>();
     tagEnums.add(Destination.Tag.HISTORICAL);
     tagEnums.add(Destination.Tag.TOURIST);
- 
+
     Destination expectedDestination =
         new Destination.Builder()
             .withName("Golden Gate Bridge")
