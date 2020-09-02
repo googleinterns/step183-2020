@@ -5,7 +5,6 @@ import static org.mockito.Mockito.verify;
 
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
-import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
@@ -17,7 +16,6 @@ import com.google.sps.data.Riddle;
 import com.google.sps.servlets.Constants;
 import com.google.sps.servlets.DestinationDataServlet;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
@@ -81,17 +79,21 @@ public final class DestinationDataServletTest {
     doReturn(H2_INPUT).when(request).getParameter(DestinationDataServlet.HINT2_PARAMETER);
     doReturn(H3_INPUT).when(request).getParameter(DestinationDataServlet.HINT3_PARAMETER);
     doReturn(TAG_INPUT).when(request).getParameterValues(DestinationDataServlet.TAG_PARAMETER);
-    doReturn(OBSCURITY_INPUT).when(request).getParameter(DestinationDataServlet.OBSCURITY_PARAMETER);
+    doReturn(OBSCURITY_INPUT)
+        .when(request)
+        .getParameter(DestinationDataServlet.OBSCURITY_PARAMETER);
     doReturn(PLACEID_INPUT).when(request).getParameter(DestinationDataServlet.PLACEID_PARAMETER);
     servlet.doPost(request, response);
 
     Query query = new Query(Constants.DESTINATION_ENTITY);
     PreparedQuery results = datastore.prepare(query);
 
-    Assert.assertEquals(
-        1, results.countEntities());
+    Assert.assertEquals(1, results.countEntities());
 
-    Destination destination = GSON.fromJson((String) results.asSingleEntity().getProperty(Constants.DESTINATION_JSON), Destination.class);
+    Destination destination =
+        GSON.fromJson(
+            (String) results.asSingleEntity().getProperty(Constants.DESTINATION_JSON),
+            Destination.class);
 
     String actual = GSON.toJson(destination);
 
