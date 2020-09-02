@@ -133,7 +133,7 @@ function getHunt() {
       const cur = mssg.items[i];
       huntArr.push(new Destination(cur.name, cur.description,
           cur.riddle.puzzle, cur.riddle.hints, cur.location.lat,
-          cur.location.lng));
+          cur.location.lng, cur.placeId));
     }
     hunt = new ScavengerHuntManager(destIndex, 0, huntArr);
     updateToCurrentState();
@@ -436,22 +436,8 @@ function checkUserDestinationGuess() { //eslint-disable-line
 
   // Check to see if userGuess can be used to identify the correct place
   // using the Places library.
-  checkGuessWithPlaceIDs(userGuess);
-}
-
-/**
- * Retrieves place ID for the answer, and compares this to the place
- * ID retrieved for the user's guess.
- * @param {String} userGuess User's guess for current destination.
- */
-function checkGuessWithPlaceIDs(userGuess) {
-  const answerRequest = createRequestForPlaceID(hunt.getCurDestName());
-  service.findPlaceFromQuery(answerRequest, function(results, status) {
-    if (status === google.maps.places.PlacesServiceStatus.OK) {
-      const answerID = results[0].place_id;
-      getPlaceIDOfGuess(userGuess, answerID);
-    }
-  });
+  //checkGuessWithPlaceIDs(userGuess);
+  getPlaceIDOfGuess(userGuess, hunt.getCurDestId());
 }
 
 /**
