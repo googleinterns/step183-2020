@@ -100,7 +100,7 @@ public final class DestinationDataServletTest {
 
     Assert.assertEquals(actual, getExpectedDestination());
 
-    verify(response).sendRedirect(DestinationDataServlet.SUCCESS_URL +  "?name=" + NAME_INPUT);
+    verify(response).sendRedirect(DestinationDataServlet.SUCCESS_URL + "?name=" + NAME_INPUT);
   }
 
   private String getExpectedDestination() {
