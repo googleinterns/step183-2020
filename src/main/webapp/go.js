@@ -436,7 +436,7 @@ function checkUserDestinationGuess() { //eslint-disable-line
 
   // Check to see if userGuess can be used to identify the correct place
   // using the Places library.
-  //checkGuessWithPlaceIDs(userGuess);
+  // checkGuessWithPlaceIDs(userGuess);
   checkGuessWithIDOrEntities(userGuess, hunt.getCurDestId());
 }
 
