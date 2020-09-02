@@ -51,6 +51,19 @@ public final class DestinationDataServletTest {
   private static final String TAG_PARAMETER = "tag";
   private static final String PLACEID_PARAMETER = "placeId";
   private static final String HOME_URL = "/index.html";
+  private static final String NAME_INPUT = "Golden Gate Bridge";
+  private static final String LAT_INPUT = "123.456";
+  private static final String LNG_INPUT = "234.567";
+  private static final String CITY_INPUT = "San Francisco";
+  private static final String DESC_INPUT = "Famous Bridge in SF";
+  private static final String RIDDLE_INPUT = "Stay away from me if you're afraid of heights";
+  private static final String H1_INPUT = "Overlooks the water";
+  private static final String H2_INPUT = "Golden-red in color";
+  private static final String H3_INPUT = "You have to pay to use me";
+  private static final String[] TAG_INPUT = {"historical", "tourist"};
+  private static final String OBSCURITY_INPUT = "easy";
+  private static final String PLACEID_INPUT = "123";
+
 
   private static final Gson GSON = new Gson();
 
@@ -72,21 +85,18 @@ public final class DestinationDataServletTest {
   public void storeInDatastore() throws IOException {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     servlet = new DestinationDataServlet(datastore);
-    doReturn("Golden Gate Bridge").when(request).getParameter(NAME_PARAMETER);
-    doReturn("123.456").when(request).getParameter(LAT_PARAMETER);
-    doReturn("234.567").when(request).getParameter(LNG_PARAMETER);
-    doReturn("San Francisco").when(request).getParameter(CITY_PARAMETER);
-    doReturn("Famous Bridge in SF").when(request).getParameter(DESCRIPTION_PARAMETER);
-    doReturn("Stay away from me if you're afraid of heights")
-        .when(request)
-        .getParameter(RIDDLE_PARAMETER);
-    doReturn("Overlooks the water").when(request).getParameter(HINT1_PARAMETER);
-    doReturn("Golden-red in color").when(request).getParameter(HINT2_PARAMETER);
-    doReturn("You have to pay to use me").when(request).getParameter(HINT3_PARAMETER);
-    String[] returnedTags = {"historical", "tourist"};
-    doReturn(returnedTags).when(request).getParameterValues(TAG_PARAMETER);
-    doReturn("easy").when(request).getParameter(OBSCURITY_PARAMETER);
-    doReturn("123").when(request).getParameter(PLACEID_PARAMETER);
+    doReturn(NAME_INPUT).when(request).getParameter(NAME_PARAMETER);
+    doReturn(LAT_INPUT).when(request).getParameter(LAT_PARAMETER);
+    doReturn(LNG_INPUT).when(request).getParameter(LNG_PARAMETER);
+    doReturn(CITY_INPUT).when(request).getParameter(CITY_PARAMETER);
+    doReturn(DESC_INPUT).when(request).getParameter(DESCRIPTION_PARAMETER);
+    doReturn(RIDDLE_INPUT).when(request).getParameter(RIDDLE_PARAMETER);
+    doReturn(H1_INPUT).when(request).getParameter(HINT1_PARAMETER);
+    doReturn(H2_INPUT).when(request).getParameter(HINT2_PARAMETER);
+    doReturn(H3_INPUT).when(request).getParameter(HINT3_PARAMETER);
+    doReturn(TAG_INPUT).when(request).getParameterValues(TAG_PARAMETER);
+    doReturn(OBSCURITY_INPUT).when(request).getParameter(OBSCURITY_PARAMETER);
+    doReturn(PLACEID_INPUT).when(request).getParameter(PLACEID_PARAMETER);
     servlet.doPost(request, response);
 
     Assert.assertEquals(
@@ -109,10 +119,10 @@ public final class DestinationDataServletTest {
 
     Riddle riddle =
         new Riddle.Builder()
-            .withPuzzle("Stay away from me if you're afraid of heights")
-            .withHint("Overlooks the water")
-            .withHint("Golden-red in color")
-            .withHint("You have to pay to use me")
+            .withPuzzle(RIDDLE_INPUT)
+            .withHint(H1_INPUT)
+            .withHint(H2_INPUT)
+            .withHint(H3_INPUT)
             .build();
     Destination.Obscurity level = Destination.Obscurity.EASY;
     Set<Destination.Tag> tagEnums = new HashSet<Destination.Tag>();
@@ -121,14 +131,14 @@ public final class DestinationDataServletTest {
 
     Destination expectedDestination =
         new Destination.Builder()
-            .withName("Golden Gate Bridge")
+            .withName(NAME_INPUT)
             .withLocation(location)
-            .withCity("San Francisco")
-            .withDescription("Famous Bridge in SF")
+            .withCity(CITY_INPUT)
+            .withDescription(DESC_INPUT)
             .withRiddle(riddle)
             .withTags(tagEnums)
             .withObscurity(level)
-            .withPlaceId("123")
+            .withPlaceId(PLACEID_INPUT)
             .build();
     String expected = GSON.toJson(expectedDestination);
 
