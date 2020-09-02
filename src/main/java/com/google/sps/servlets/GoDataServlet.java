@@ -19,6 +19,7 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.datastore.Text;
 import com.google.gson.Gson;
 import com.google.sps.data.ScavengerHunt;
 import java.io.IOException;
@@ -55,12 +56,14 @@ public class GoDataServlet extends HttpServlet {
 
       // Update index of scavenger hunt.
       ScavengerHunt hunt =
-          gson.fromJson((String) huntEntity.getProperty(Constants.HUNT_VAL), ScavengerHunt.class);
+          gson.fromJson(
+              ((Text) huntEntity.getProperty(Constants.HUNT_VAL)).getValue(), ScavengerHunt.class);
       hunt.updateIndex(index);
 
       // Convert hunt to JSON string and put into Datastore
       String huntStr = gson.toJson(hunt);
-      huntEntity.setProperty(Constants.HUNT_VAL, huntStr);
+      Text huntStrText = new Text(huntStr);
+      huntEntity.setProperty(Constants.HUNT_VAL, huntStrText);
       datastore.put(huntEntity);
     } catch (Exception e) {
     }
@@ -84,7 +87,7 @@ public class GoDataServlet extends HttpServlet {
     if (huntEntity == null) {
       response.getWriter().println(ERROR_MSSG);
     } else {
-      String json = (String) huntEntity.getProperty(Constants.HUNT_VAL);
+      String json = ((Text) huntEntity.getProperty(Constants.HUNT_VAL)).getValue();
       response.getWriter().println(json);
     }
   }
