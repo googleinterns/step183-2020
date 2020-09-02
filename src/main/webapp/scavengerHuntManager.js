@@ -154,6 +154,13 @@ class ScavengerHuntManager { //eslint-disable-line
   }
 
   /**
+   * @return {String} place ID of the current destination.
+   */
+  getCurDestId() {
+    return this.huntArr[this.destIndex].placeId;
+  }
+
+  /**
    * @return {String} name of the current destination.
    */
   getCurDestName() {
