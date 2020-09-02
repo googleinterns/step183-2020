@@ -422,12 +422,9 @@ function checkUserDestinationGuess() { //eslint-disable-line
 function checkGuessWithIDOrEntities(userGuess, answerID) {
   const userRequest = createRequestForPlaceID(userGuess);
   service.findPlaceFromQuery(userRequest, function(results, status) {
-    if (status === google.maps.places.PlacesServiceStatus.OK) {
-      if (results[0].place_id === answerID) {
-        handleDestinationAnswer(/* correct = */ true);
-      } else {
-        checkGuessWithEntities(userGuess);
-      }
+    if (status === google.maps.places.PlacesServiceStatus.OK &&
+        results[0].place_id === answerID) {
+      handleDestinationAnswer(/* correct = */ true);
     } else {
       checkGuessWithEntities(userGuess);
     }
