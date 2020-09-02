@@ -272,47 +272,6 @@ function displayPlaceInfo(id) {
  * Provides the user with the next auto-generated hint.
  */
 function getAutoHint() {
-  // First time getting an auto hint for current destination.
-  if (hunt.getPlaceID() == -1) {
-    generatePlaceID();
-  } else {
-    getNextAutoHint();
-  }
-}
-
-/**
- * Get the first auto-generated hint for the current destination.
- * This involves first retrieving the place ID for the current
- * destination, before getting a new hint.
- */
-function generatePlaceID() {
-  const request = createRequestForPlaceID(hunt.getCurDestName());
-  service.findPlaceFromQuery(request, function(results, status) {
-    if (status === google.maps.places.PlacesServiceStatus.OK) {
-      hunt.setPlaceID(results[0].place_id);
-      getNextAutoHint();
-    } else {
-      updateMessage(GENERATE_DISPLAY, NO_PLACEID_MSSG);
-    }
-  });
-}
-
-/**
- * @param {String} queryName Query for place search
- * @return {String} request to be used in place search
- */
-function createRequestForPlaceID(queryName) {
-  return request = {
-    query: queryName,
-    fields: ['place_id'],
-  };
-}
-
-/**
- * Gets a new auto-generated hint, assuming that the place
- * ID for the current destination has already been determined.
- */
-function getNextAutoHint() {
   const random = Math.random();
   if (random < 0.5) { // Get a hint in the form of a photo
     if (hunt.getPhotos().length == 0) {
@@ -330,13 +289,24 @@ function getNextAutoHint() {
 }
 
 /**
+ * @param {String} queryName Query for place search
+ * @return {String} request to be used in place search
+ */
+function createRequestForPlaceID(queryName) {
+  return request = {
+    query: queryName,
+    fields: ['place_id'],
+  };
+}
+
+/**
  * Generate array of photos for the current destination using
  * the Places API, which will later be used to retrieve and
  * display photos.
  */
 function generatePhotos() {
   const photosRequest = {
-    placeId: hunt.getPlaceID(),
+    placeId: hunt.getCurDestId(),
     fields: ['photo'],
   };
   service.getDetails(photosRequest, (place, status) => {
@@ -368,7 +338,7 @@ function displayNextPhoto() {
  */
 function generateReviews() {
   const reviewsRequest = {
-    placeId: hunt.getPlaceID(),
+    placeId: hunt.getCurDestId(),
     fields: ['review'],
   };
   service.getDetails(reviewsRequest, (place, status) => {
@@ -436,7 +406,6 @@ function checkUserDestinationGuess() { //eslint-disable-line
 
   // Check to see if userGuess can be used to identify the correct place
   // using the Places library.
-  // checkGuessWithPlaceIDs(userGuess);
   checkGuessWithIDOrEntities(userGuess, hunt.getCurDestId());
 }
 

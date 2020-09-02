@@ -94,20 +94,6 @@ class ScavengerHuntManager { //eslint-disable-line
   }
 
   /**
-   * @return {int} Place ID corresponding to current destination.
-   */
-  getPlaceID() {
-    return this.placeID;
-  }
-
-  /**
-   * @param {int} newID Place ID of the current destination.
-   */
-  setPlaceID(newID) {
-    this.placeID = newID;
-  }
-
-  /**
    * Reset all destination-specific fields to their default state.
    * This method is called when the user moves on to a new
    * destination.
