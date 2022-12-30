@@ -4,7 +4,7 @@
   "description": "Capstone project for STEP internship for the TTD team.",
   "main": "index.js",
   "dependencies": {
-    "mocha": "^8.1.1"
+    "mocha": "^8.4.0"
   },
   "devDependencies": {
     "eslint": "^7.5.0",
