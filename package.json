@@ -4,10 +4,10 @@
   "description": "Capstone project for STEP internship for the TTD team.",
   "main": "index.js",
   "dependencies": {
-    "mocha": "^8.1.1"
+    "mocha": "^11.7.5"
   },
   "devDependencies": {
-    "eslint": "^7.5.0",
+    "eslint": "^9.39.1",
     "eslint-config-google": "^0.14.0",
     "htmllint-cli": "0.0.7",
     "markdownlint": "^0.20.4",
